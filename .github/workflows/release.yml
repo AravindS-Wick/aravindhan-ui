@@ -37,6 +37,12 @@ jobs:
       - name: Build CSS
         run: npm run build:css
 
+      - name: Build icons
+        run: npm run build:icons
+
+      - name: Build JS
+        run: npm run build:js
+
       - name: Run semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

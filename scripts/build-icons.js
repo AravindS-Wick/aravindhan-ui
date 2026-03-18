@@ -32,6 +32,12 @@ if (svgFiles.length === 0) {
   process.exit(0);
 }
 
+function sanitizeAttr(str) {
+  return str.replace(/[&"'<>]/g, (c) => ({
+    '&': '&amp;', '"': '&quot;', "'": '&#39;', '<': '&lt;', '>': '&gt;',
+  }[c]));
+}
+
 // Build sprite
 const symbols = svgFiles.map((file) => {
   const name = basename(file, '.svg');
@@ -50,7 +56,7 @@ const symbols = svgFiles.map((file) => {
     .replace(/\s+/g, ' ')
     .trim();
 
-  return `  <symbol id="${name}" viewBox="${viewBox}">\n    ${content}\n  </symbol>`;
+  return `  <symbol id="${sanitizeAttr(name)}" viewBox="${sanitizeAttr(viewBox)}">\n    ${content}\n  </symbol>`;
 });
 
 const sprite = `<?xml version="1.0" encoding="UTF-8"?>
