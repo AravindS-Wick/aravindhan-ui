@@ -100,7 +100,7 @@ async function build() {
   );
 
   const combined = [
-    '/* @aravindhan/ui — CSS Custom Properties */',
+    '/* @aravi1008/ui — CSS Custom Properties */',
     '/* Base tokens */',
     baseCss,
     '',
@@ -126,7 +126,7 @@ async function build() {
   );
 
   const combinedScss = [
-    '// @aravindhan/ui — SCSS Variables',
+    '// @aravi1008/ui — SCSS Variables',
     '// Base tokens',
     baseScss,
     '',

@@ -1,5 +1,5 @@
 /**
- * @aravindhan/ui — Token build output tests
+ * @aravi1008/ui — Token build output tests
  * These run after `npm run build:tokens` has generated dist/tokens/
  */
 

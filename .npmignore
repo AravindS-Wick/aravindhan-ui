@@ -1,0 +1,39 @@
+# Source (raw SCSS/JS — consumers use dist/)
+src/
+
+# Tokens source (consumers use dist/tokens/)
+tokens/
+
+# Scripts
+scripts/
+
+# Tests
+tests/
+coverage/
+
+# Config files
+rollup.config.js
+rollup.js.config.js
+jest.config.js
+.eslintrc.cjs
+.stylelintrc.json
+.releaserc.json
+.env.example
+.babelrc
+postcss.config.js
+
+# GitHub
+.github/
+
+# Docs
+docs/
+
+# Icons source (consumers use dist/icons/)
+icons/
+
+# Misc
+*.log
+*.swp
+.DS_Store
+.eslintcache
+.stylelintcache

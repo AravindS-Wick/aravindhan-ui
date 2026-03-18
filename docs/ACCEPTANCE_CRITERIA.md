@@ -1,4 +1,4 @@
-# @aravindhan/ui — Final Acceptance Criteria
+# @aravi1008/ui — Final Acceptance Criteria
 
 > Each phase must meet ALL criteria before merging to main.
 > Last updated: 2026-03-18
@@ -21,7 +21,7 @@
 ## Phase 1 — Foundation
 
 ### Package Setup
-- [ ] `package.json` present with correct `name: "@aravindhan/ui"`
+- [ ] `package.json` present with correct `name: "@aravi1008/ui"`
 - [ ] `version` starts at `0.0.1`
 - [ ] `license: "MIT"` present
 - [ ] `main`, `module`, `exports` fields configured
@@ -70,8 +70,8 @@
   - Large text: ≥ 3:1
 
 ### Validation
-- [ ] Import `@aravindhan/ui/tokens` works in a test project
-- [ ] SCSS import `@use '@aravindhan/ui/scss/tokens'` resolves correctly
+- [ ] Import `@aravi1008/ui/tokens` works in a test project
+- [ ] SCSS import `@use '@aravi1008/ui/scss/tokens'` resolves correctly
 - [ ] All 6 themes visually validated (screenshot test or manual review)
 
 ---
@@ -175,7 +175,7 @@ For each component:
 
 ### Package
 - [ ] `npm pack` output contains only necessary files
-- [ ] Install in a blank project: `npm install @aravindhan/ui` works
+- [ ] Install in a blank project: `npm install @aravi1008/ui` works
 - [ ] CSS import works in plain HTML project
 - [ ] SCSS import works in a Vite SCSS project
 - [ ] No peer dependency warnings on install
@@ -185,7 +185,7 @@ For each component:
 - [ ] Version bumped correctly by semantic-release
 - [ ] CHANGELOG.md updated automatically
 - [ ] GitHub release created automatically
-- [ ] npm package published to `@aravindhan/ui`
+- [ ] npm package published to `@aravi1008/ui`
 
 ---
 

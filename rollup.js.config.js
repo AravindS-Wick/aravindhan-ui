@@ -1,5 +1,5 @@
 /**
- * @aravindhan/ui — JS bundle config
+ * @aravi1008/ui — JS bundle config
  * Builds the theme switcher and utility helpers into ESM + CJS
  */
 import { resolve, dirname } from 'path';

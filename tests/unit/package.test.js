@@ -1,5 +1,5 @@
 /**
- * @aravindhan/ui — Package.json validation tests
+ * @aravi1008/ui — Package.json validation tests
  */
 
 import { readFileSync } from 'fs';
@@ -13,7 +13,7 @@ const pkg = JSON.parse(
 
 describe('package.json', () => {
   test('has correct package name', () => {
-    expect(pkg.name).toBe('@aravindhan/ui');
+    expect(pkg.name).toBe('@aravi1008/ui');
   });
 
   test('has MIT license', () => {
