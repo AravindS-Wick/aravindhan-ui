@@ -47,3 +47,13 @@
 @keyframes av-progress-stripes {
   to { background-position-x: 1rem; }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .av-progress-bar {
+    transition: none;
+
+    &.av-progress-animated {
+      animation: none;
+    }
+  }
+}

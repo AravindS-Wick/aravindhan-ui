@@ -29,6 +29,11 @@
     user-select: none;
 
     &:hover { background-color: $av-color-surface-raised; color: $av-color-text-primary; border-color: $av-color-border-strong; }
+
+    &:focus-visible {
+      outline: 2px solid $av-color-focus-ring;
+      outline-offset: 2px;
+    }
   }
 
   &.av-active .av-page-link {

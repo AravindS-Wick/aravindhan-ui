@@ -52,6 +52,11 @@
 
   &:hover { background-color: $av-color-surface; color: $av-color-text-primary; }
   &.av-active { background-color: $av-color-primary-subtle; color: $av-color-primary; }
+
+  &:focus-visible {
+    outline: 2px solid $av-color-focus-ring;
+    outline-offset: 2px;
+  }
 }
 
 .av-navbar-actions {

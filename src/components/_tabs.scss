@@ -31,6 +31,12 @@
 
   &:hover { color: $av-color-text-primary; }
 
+  &:focus-visible {
+    outline: 2px solid $av-color-focus-ring;
+    outline-offset: -2px;
+    border-radius: $av-radius-sm;
+  }
+
   &.av-active {
     color: $av-color-primary;
     border-bottom-color: $av-color-primary;

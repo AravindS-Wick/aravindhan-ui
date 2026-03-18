@@ -162,3 +162,10 @@
 @keyframes av-spin {
   to { transform: rotate(360deg); }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .av-btn-loading::before {
+    animation: none;
+    opacity: 0.5;
+  }
+}
