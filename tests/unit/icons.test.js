@@ -1,5 +1,5 @@
 /**
- * @aravindhan/ui — Icons build output tests
+ * @aravi1008/ui — Icons build output tests
  */
 
 import { readFileSync, existsSync, readdirSync } from 'fs';

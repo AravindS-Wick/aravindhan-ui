@@ -1,5 +1,5 @@
 /**
- * @aravindhan/ui — Theme switcher unit tests
+ * @aravi1008/ui — Theme switcher unit tests
  */
 
 import { setTheme, getTheme, toggleDarkMode, initTheme, themes, getCssVar } from '../../src/index.js';

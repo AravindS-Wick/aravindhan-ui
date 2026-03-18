@@ -11,7 +11,7 @@
 
 1. Go to [npmjs.com](https://www.npmjs.com)
 2. Sign in or create account
-3. Your username becomes your scope — for `@aravindhan/ui` you need username `aravindhan`
+3. Your username becomes your scope — for `@aravi1008/ui` you need username `aravindhan`
    - If your npm username is different, the publish will fail
    - Check: `npm whoami` in terminal after `npm login`
 
@@ -23,7 +23,7 @@
    - Token name: `aravindhan-ui-ci`
    - Expiration: 365 days (or no expiry)
    - Packages and scopes: **Read and write**
-   - Select package: `@aravindhan/ui` (or "All packages")
+   - Select package: `@aravi1008/ui` (or "All packages")
 4. Click **Generate Token**
 5. **Copy the token immediately** — you won't see it again
 
@@ -182,42 +182,42 @@ git pull origin main
 Once published, install in any project:
 
 ```bash
-npm install @aravindhan/ui
+npm install @aravi1008/ui
 ```
 
 ### Usage in different project types
 
 **Plain HTML:**
 ```html
-<link rel="stylesheet" href="node_modules/@aravindhan/ui/css">
+<link rel="stylesheet" href="node_modules/@aravi1008/ui/css">
 ```
 
 **React / Vite / Next.js:**
 ```js
 // in main.js or _app.js
-import '@aravindhan/ui/css';
+import '@aravi1008/ui/css';
 ```
 
 **SCSS project:**
 ```scss
-@use '@aravindhan/ui/scss';
+@use '@aravi1008/ui/scss';
 ```
 
 **Tokens only (no full CSS):**
 ```js
-import '@aravindhan/ui/tokens/css';
+import '@aravi1008/ui/tokens/css';
 ```
 
 ---
 
 ## 8. Package Renaming (Future)
 
-If you ever want to rename from `@aravindhan/ui` to something else:
+If you ever want to rename from `@aravi1008/ui` to something else:
 
 ```bash
 # 1. Create new package with new name (new repo or same repo, new package.json name)
 # 2. Deprecate the old one
-npm deprecate @aravindhan/ui@"*" "This package has been moved to @newscope/newname. Please update."
+npm deprecate @aravi1008/ui@"*" "This package has been moved to @newscope/newname. Please update."
 
 # 3. Publish new package
 npm publish --access public

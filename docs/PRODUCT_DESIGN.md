@@ -1,4 +1,4 @@
-# @aravindhan/ui — Product Design Specification
+# @aravi1008/ui — Product Design Specification
 
 > Living document. Updated as design decisions are finalized.
 > Last updated: 2026-03-18
@@ -377,8 +377,8 @@ CSS class usage:
 
 Icons are available as:
 1. **CSS classes** via SVG sprite: `<span class="av-icon av-icon-{name} av-icon-md"></span>`
-2. **Inline SVG**: included via `@aravindhan/ui/icons/{name}.svg`
-3. **JS imports** (future): `import { SearchIcon } from '@aravindhan/ui/icons'`
+2. **Inline SVG**: included via `@aravi1008/ui/icons/{name}.svg`
+3. **JS imports** (future): `import { SearchIcon } from '@aravi1008/ui/icons'`
 
 ### Icon Sizes
 ```
@@ -396,25 +396,25 @@ av-icon-2xl: 48px
 
 ### Plain CSS
 ```css
-@import '@aravindhan/ui/css';
+@import '@aravi1008/ui/css';
 ```
 
 ### SCSS
 ```scss
-@use '@aravindhan/ui/scss' as av;
+@use '@aravi1008/ui/scss' as av;
 @include av.theme('dark');
 ```
 
 ### LESS
 ```less
-@import '@aravindhan/ui/less';
+@import '@aravi1008/ui/less';
 ```
 
 ### PostCSS
 ```js
 // postcss.config.js
 module.exports = {
-  plugins: [require('@aravindhan/ui/postcss')]
+  plugins: [require('@aravi1008/ui/postcss')]
 }
 ```
 
@@ -430,7 +430,7 @@ module.exports = {
 
 ### JS helper
 ```js
-import { setTheme } from '@aravindhan/ui';
+import { setTheme } from '@aravi1008/ui';
 setTheme('ocean'); // switches instantly
 ```
 

@@ -1,7 +1,7 @@
-# @aravindhan/ui — Creative Product Development Plan
+# @aravi1008/ui — Creative Product Development Plan
 
 > **Owner**: Aravindhan Sivaraman
-> **Package**: `@aravindhan/ui`
+> **Package**: `@aravi1008/ui`
 > **Repo**: aravindhan-ui
 > **Started**: 2026-03-18
 > **No co-authors/co-owners**
@@ -185,7 +185,7 @@ BREAKING CHANGE: renamed --av-primary to --av-color-primary
 
 ## npm Publishing
 
-- Scope: `@aravindhan/ui`
+- Scope: `@aravi1008/ui`
 - Access: `public` (free forever)
 - Registry: npmjs.com
 - Auto-publish on merge to `main` via GitHub Actions + semantic-release
@@ -194,7 +194,7 @@ BREAKING CHANGE: renamed --av-primary to --av-color-primary
 ### Renaming Later
 When/if renaming the package:
 1. Create new package with new name
-2. `npm deprecate @aravindhan/ui@"*" "Moved to @newname/package"`
+2. `npm deprecate @aravi1008/ui@"*" "Moved to @newname/package"`
 3. New package published separately — no data loss
 
 ---

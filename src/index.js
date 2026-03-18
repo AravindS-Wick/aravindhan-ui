@@ -1,7 +1,7 @@
 /**
- * @aravindhan/ui — JavaScript Entry Point
+ * @aravi1008/ui — JavaScript Entry Point
  * Provides theme switching, token access, and utility helpers.
- * CSS must be imported separately: import '@aravindhan/ui/css'
+ * CSS must be imported separately: import '@aravi1008/ui/css'
  */
 
 // ── Theme switcher ────────────────────────────────────────────────────────────

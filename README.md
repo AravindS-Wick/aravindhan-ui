@@ -1,8 +1,8 @@
-# @aravindhan/ui
+# @aravi1008/ui
 
 > A personal professional-grade design system. One install — full global CSS, tokens, themes, icons, utilities, and components.
 
-[![npm version](https://img.shields.io/npm/v/@aravindhan/ui)](https://www.npmjs.com/package/@aravindhan/ui)
+[![npm version](https://img.shields.io/npm/v/@aravi1008/ui)](https://www.npmjs.com/package/@aravi1008/ui)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 ---
@@ -10,7 +10,7 @@
 ## Install
 
 ```bash
-npm install @aravindhan/ui
+npm install @aravi1008/ui
 ```
 
 ---
@@ -20,19 +20,19 @@ npm install @aravindhan/ui
 ### Plain CSS
 
 ```js
-import '@aravindhan/ui/css';
+import '@aravi1008/ui/css';
 ```
 
 ### SCSS
 
 ```scss
-@use '@aravindhan/ui/scss';
+@use '@aravi1008/ui/scss';
 ```
 
 ### LESS
 
 ```less
-@import '@aravindhan/ui/less';
+@import '@aravi1008/ui/less';
 ```
 
 ---

@@ -1,4 +1,4 @@
-# @aravindhan/ui — Live Status Log
+# @aravi1008/ui — Live Status Log
 
 > Auto-updated each session. Next agent: read this file FIRST before doing anything.
 > Last updated: 2026-03-18 (Session 3)
@@ -87,7 +87,7 @@
 
 | Decision | Rationale | Date |
 | --- | --- | --- |
-| Package name: `@aravindhan/ui` | Personal scope, can deprecate/rename later | 2026-03-18 |
+| Package name: `@aravi1008/ui` | Personal scope, can deprecate/rename later | 2026-03-18 |
 | CSS prefix: `--av-` / `.av-` | Short for "aravindhan", no conflicts | 2026-03-18 |
 | System font stack | No external dependency | 2026-03-18 |
 | 6 themes: light, dark, forest, ocean, professional, corporate | Good v1 coverage | 2026-03-18 |
@@ -185,7 +185,7 @@ aravindhan-ui/
 
 | Item | Value |
 | --- | --- |
-| Package name | `@aravindhan/ui` |
+| Package name | `@aravi1008/ui` |
 | GitHub remote | `https://github.com/AravindS-Wick/aravindhan-ui.git` |
 | npm scope | `@aravindhan` (public, free) |
 | Versioning | semantic-release (auto on main merge) |
