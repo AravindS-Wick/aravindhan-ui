@@ -32,9 +32,11 @@
   "scripts": {
     "build:tokens": "node tokens/build.js",
     "build:css": "rollup -c rollup.config.js",
-    "build": "npm run build:tokens && npm run build:css",
+    "build:icons": "node scripts/build-icons.js",
+    "build:js": "rollup -c rollup.js.config.js",
+    "build": "npm run build:tokens && npm run build:icons && npm run build:css && npm run build:js",
     "dev": "rollup -c rollup.config.js --watch",
-    "lint:js": "eslint tokens tests --ext .js,.ts",
+    "lint:js": "eslint tokens tests scripts src --ext .js,.ts",
     "lint:css": "stylelint 'src/**/*.{css,scss}'",
     "lint": "npm run lint:js && npm run lint:css",
     "test": "node --experimental-vm-modules node_modules/.bin/jest --coverage",
