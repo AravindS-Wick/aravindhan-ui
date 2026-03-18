@@ -1,6 +1,5 @@
 import StyleDictionary from 'style-dictionary';
 import { promises as fs } from 'fs';
-import path from 'path';
 
 const themes = ['light', 'dark', 'forest', 'ocean', 'professional', 'corporate'];
 

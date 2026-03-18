@@ -65,9 +65,13 @@
   margin-left: auto;
 
   @include av-breakpoint(sm)  { max-width: 640px; }
+
   @include av-breakpoint(md)  { max-width: 768px; }
+
   @include av-breakpoint(lg)  { max-width: 1024px; }
+
   @include av-breakpoint(xl)  { max-width: 1280px; }
+
   @include av-breakpoint(2xl) { max-width: 1536px; }
 }
 

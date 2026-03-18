@@ -3,82 +3,77 @@
 // Edit source: tokens/base/*.json and tokens/themes/*.json
 
 // ── Spacing ──────────────────────────────────────────────────────────────────
-$av-spacing-0:   var(--av-spacing-0,   0);
-$av-spacing-1:   var(--av-spacing-1,   4px);
-$av-spacing-2:   var(--av-spacing-2,   8px);
-$av-spacing-3:   var(--av-spacing-3,   12px);
-$av-spacing-4:   var(--av-spacing-4,   16px);
-$av-spacing-5:   var(--av-spacing-5,   20px);
-$av-spacing-6:   var(--av-spacing-6,   24px);
-$av-spacing-8:   var(--av-spacing-8,   32px);
-$av-spacing-10:  var(--av-spacing-10,  40px);
-$av-spacing-12:  var(--av-spacing-12,  48px);
-$av-spacing-16:  var(--av-spacing-16,  64px);
-$av-spacing-xs:  var(--av-spacing-xs,  4px);
-$av-spacing-sm:  var(--av-spacing-sm,  8px);
-$av-spacing-md:  var(--av-spacing-md,  16px);
-$av-spacing-lg:  var(--av-spacing-lg,  24px);
-$av-spacing-xl:  var(--av-spacing-xl,  32px);
+$av-spacing-0: var(--av-spacing-0,   0);
+$av-spacing-1: var(--av-spacing-1,   4px);
+$av-spacing-2: var(--av-spacing-2,   8px);
+$av-spacing-3: var(--av-spacing-3,   12px);
+$av-spacing-4: var(--av-spacing-4,   16px);
+$av-spacing-5: var(--av-spacing-5,   20px);
+$av-spacing-6: var(--av-spacing-6,   24px);
+$av-spacing-8: var(--av-spacing-8,   32px);
+$av-spacing-10: var(--av-spacing-10,  40px);
+$av-spacing-12: var(--av-spacing-12,  48px);
+$av-spacing-16: var(--av-spacing-16,  64px);
+$av-spacing-xs: var(--av-spacing-xs,  4px);
+$av-spacing-sm: var(--av-spacing-sm,  8px);
+$av-spacing-md: var(--av-spacing-md,  16px);
+$av-spacing-lg: var(--av-spacing-lg,  24px);
+$av-spacing-xl: var(--av-spacing-xl,  32px);
 $av-spacing-2xl: var(--av-spacing-2xl, 48px);
 $av-spacing-3xl: var(--av-spacing-3xl, 64px);
 
 // ── Typography ────────────────────────────────────────────────────────────────
-$av-font-sans:   var(--av-font-sans);
-$av-font-mono:   var(--av-font-mono);
-$av-font-serif:  var(--av-font-serif);
-
-$av-text-xs:   var(--av-text-xs,   0.75rem);
-$av-text-sm:   var(--av-text-sm,   0.875rem);
+$av-font-sans: var(--av-font-sans);
+$av-font-mono: var(--av-font-mono);
+$av-font-serif: var(--av-font-serif);
+$av-text-xs: var(--av-text-xs,   0.75rem);
+$av-text-sm: var(--av-text-sm,   0.875rem);
 $av-text-base: var(--av-text-base, 1rem);
-$av-text-lg:   var(--av-text-lg,   1.125rem);
-$av-text-xl:   var(--av-text-xl,   1.25rem);
-$av-text-2xl:  var(--av-text-2xl,  1.5rem);
-$av-text-3xl:  var(--av-text-3xl,  1.875rem);
-$av-text-4xl:  var(--av-text-4xl,  2.25rem);
-$av-text-5xl:  var(--av-text-5xl,  3rem);
-$av-text-6xl:  var(--av-text-6xl,  3.75rem);
+$av-text-lg: var(--av-text-lg,   1.125rem);
+$av-text-xl: var(--av-text-xl,   1.25rem);
+$av-text-2xl: var(--av-text-2xl,  1.5rem);
+$av-text-3xl: var(--av-text-3xl,  1.875rem);
+$av-text-4xl: var(--av-text-4xl,  2.25rem);
+$av-text-5xl: var(--av-text-5xl,  3rem);
+$av-text-6xl: var(--av-text-6xl,  3.75rem);
 
 // ── Border Radius ─────────────────────────────────────────────────────────────
 $av-radius-none: var(--av-radius-none, 0);
-$av-radius-sm:   var(--av-radius-sm,   2px);
-$av-radius-md:   var(--av-radius-md,   4px);
-$av-radius-lg:   var(--av-radius-lg,   8px);
-$av-radius-xl:   var(--av-radius-xl,   12px);
-$av-radius-2xl:  var(--av-radius-2xl,  16px);
+$av-radius-sm: var(--av-radius-sm,   2px);
+$av-radius-md: var(--av-radius-md,   4px);
+$av-radius-lg: var(--av-radius-lg,   8px);
+$av-radius-xl: var(--av-radius-xl,   12px);
+$av-radius-2xl: var(--av-radius-2xl,  16px);
 $av-radius-full: var(--av-radius-full, 9999px);
 
 // ── Breakpoints (for use in @media) ──────────────────────────────────────────
-$av-bp-sm:  480px;
-$av-bp-md:  768px;
-$av-bp-lg:  1024px;
-$av-bp-xl:  1280px;
+$av-bp-sm: 480px;
+$av-bp-md: 768px;
+$av-bp-lg: 1024px;
+$av-bp-xl: 1280px;
 $av-bp-2xl: 1536px;
 
 // ── Breakpoint mixin ──────────────────────────────────────────────────────────
 @mixin av-breakpoint($bp) {
-  @if $bp == sm  { @media (min-width: 480px)  { @content; } }
-  @else if $bp == md  { @media (min-width: 768px)  { @content; } }
-  @else if $bp == lg  { @media (min-width: 1024px) { @content; } }
-  @else if $bp == xl  { @media (min-width: 1280px) { @content; } }
-  @else if $bp == 2xl { @media (min-width: 1536px) { @content; } }
+  @if $bp == sm  { @media (min-width: 480px)  { @content; } } @else if $bp == md  { @media (min-width: 768px)  { @content; } } @else if $bp == lg  { @media (min-width: 1024px) { @content; } } @else if $bp == xl  { @media (min-width: 1280px) { @content; } } @else if $bp == 2xl { @media (min-width: 1536px) { @content; } }
 }
 
 // ── Theme semantic tokens (referenced via CSS vars) ───────────────────────────
-$av-color-primary:         var(--av-theme-color-primary,        #3B82F6);
-$av-color-primary-hover:   var(--av-theme-color-primary-hover,  #2563EB);
-$av-color-primary-active:  var(--av-theme-color-primary-active, #1D4ED8);
-$av-color-primary-subtle:  var(--av-theme-color-primary-subtle, #EFF6FF);
-$av-color-secondary:       var(--av-theme-color-secondary,      #64748B);
-$av-color-surface:         var(--av-theme-color-surface,        #FFFFFF);
-$av-color-surface-raised:  var(--av-theme-color-surface-raised, #F8FAFC);
-$av-color-border:          var(--av-theme-color-border,         #E2E8F0);
-$av-color-border-strong:   var(--av-theme-color-border-strong,  #CBD5E1);
-$av-color-text-primary:    var(--av-theme-color-text-primary,   #0F172A);
-$av-color-text-secondary:  var(--av-theme-color-text-secondary, #64748B);
-$av-color-text-disabled:   var(--av-theme-color-text-disabled,  #CBD5E1);
-$av-color-text-inverse:    var(--av-theme-color-text-inverse,   #FFFFFF);
-$av-color-success:         var(--av-theme-color-success,        #22C55E);
-$av-color-warning:         var(--av-theme-color-warning,        #F59E0B);
-$av-color-error:           var(--av-theme-color-error,          #EF4444);
-$av-color-info:            var(--av-theme-color-info,           #06B6D4);
-$av-color-focus-ring:      var(--av-theme-color-focus-ring,     #3B82F6);
+$av-color-primary: var(--av-theme-color-primary,        #3B82F6);
+$av-color-primary-hover: var(--av-theme-color-primary-hover,  #2563EB);
+$av-color-primary-active: var(--av-theme-color-primary-active, #1D4ED8);
+$av-color-primary-subtle: var(--av-theme-color-primary-subtle, #EFF6FF);
+$av-color-secondary: var(--av-theme-color-secondary,      #64748B);
+$av-color-surface: var(--av-theme-color-surface,        #FFF);
+$av-color-surface-raised: var(--av-theme-color-surface-raised, #F8FAFC);
+$av-color-border: var(--av-theme-color-border,         #E2E8F0);
+$av-color-border-strong: var(--av-theme-color-border-strong,  #CBD5E1);
+$av-color-text-primary: var(--av-theme-color-text-primary,   #0F172A);
+$av-color-text-secondary: var(--av-theme-color-text-secondary, #64748B);
+$av-color-text-disabled: var(--av-theme-color-text-disabled,  #CBD5E1);
+$av-color-text-inverse: var(--av-theme-color-text-inverse,   #FFF);
+$av-color-success: var(--av-theme-color-success,        #22C55E);
+$av-color-warning: var(--av-theme-color-warning,        #F59E0B);
+$av-color-error: var(--av-theme-color-error,          #EF4444);
+$av-color-info: var(--av-theme-color-info,           #06B6D4);
+$av-color-focus-ring: var(--av-theme-color-focus-ring,     #3B82F6);
