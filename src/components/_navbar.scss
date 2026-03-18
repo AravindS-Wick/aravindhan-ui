@@ -1,0 +1,62 @@
+// @aravindhan/ui — Navbar Component
+
+@use '../tokens/variables' as *;
+
+.av-navbar {
+  display: flex;
+  align-items: center;
+  padding: 0 $av-spacing-lg;
+  height: 64px;
+  background-color: $av-color-surface-raised;
+  border-bottom: 1px solid $av-color-border;
+  position: sticky;
+  top: 0;
+  z-index: var(--av-zindex-sticky, 1100);
+
+  &.av-navbar-primary {
+    background-color: $av-color-primary;
+    border-color: $av-color-primary-hover;
+    color: #fff;
+
+    .av-navbar-link { color: rgba(255, 255, 255, 0.85);
+      &:hover { color: #fff; } }
+  }
+}
+
+.av-navbar-brand {
+  font-size: $av-text-lg;
+  font-weight: 700;
+  color: $av-color-text-primary;
+  text-decoration: none;
+  margin-right: $av-spacing-lg;
+  flex-shrink: 0;
+}
+
+.av-navbar-nav {
+  display: flex;
+  align-items: center;
+  gap: $av-spacing-1;
+  flex: 1;
+}
+
+.av-navbar-link {
+  display: inline-flex;
+  align-items: center;
+  padding: $av-spacing-2 $av-spacing-3;
+  font-size: $av-text-sm;
+  font-weight: 500;
+  color: $av-color-text-secondary;
+  text-decoration: none;
+  border-radius: $av-radius-md;
+  transition: background-color 0.15s ease, color 0.15s ease;
+
+  &:hover { background-color: $av-color-surface; color: $av-color-text-primary; }
+  &.av-active { background-color: $av-color-primary-subtle; color: $av-color-primary; }
+}
+
+.av-navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: $av-spacing-sm;
+  margin-left: auto;
+}

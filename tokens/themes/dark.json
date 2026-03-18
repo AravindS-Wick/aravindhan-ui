@@ -1,0 +1,30 @@
+{
+  "theme": {
+    "color": {
+      "primary":          { "value": "#60A5FA", "type": "color" },
+      "primary-hover":    { "value": "#93C5FD", "type": "color" },
+      "primary-active":   { "value": "#BFDBFE", "type": "color" },
+      "primary-subtle":   { "value": "#1E3A8A", "type": "color" },
+      "secondary":        { "value": "#94A3B8", "type": "color" },
+      "secondary-hover":  { "value": "#CBD5E1", "type": "color" },
+      "surface":          { "value": "#0F172A", "type": "color" },
+      "surface-raised":   { "value": "#1E293B", "type": "color" },
+      "surface-overlay":  { "value": "#1E293B", "type": "color" },
+      "border":           { "value": "#334155", "type": "color" },
+      "border-strong":    { "value": "#475569", "type": "color" },
+      "text-primary":     { "value": "#F8FAFC", "type": "color" },
+      "text-secondary":   { "value": "#94A3B8", "type": "color" },
+      "text-disabled":    { "value": "#334155", "type": "color" },
+      "text-inverse":     { "value": "#0F172A", "type": "color" },
+      "success":          { "value": "#4ADE80", "type": "color" },
+      "success-subtle":   { "value": "#14532D", "type": "color" },
+      "warning":          { "value": "#FBBF24", "type": "color" },
+      "warning-subtle":   { "value": "#78350F", "type": "color" },
+      "error":            { "value": "#F87171", "type": "color" },
+      "error-subtle":     { "value": "#7F1D1D", "type": "color" },
+      "info":             { "value": "#22D3EE", "type": "color" },
+      "info-subtle":      { "value": "#164E63", "type": "color" },
+      "focus-ring":       { "value": "#60A5FA", "type": "color" }
+    }
+  }
+}

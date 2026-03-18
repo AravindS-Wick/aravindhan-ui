@@ -1,0 +1,164 @@
+// @aravindhan/ui — Button Component
+
+@use '../tokens/variables' as *;
+
+// ── Base ──────────────────────────────────────────────────────────────────────
+.av-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $av-spacing-2;
+  font-family: $av-font-sans;
+  font-size: $av-text-sm;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: $av-radius-md;
+  padding: $av-spacing-2 $av-spacing-4;
+  transition: background-color 0.15s ease, border-color 0.15s ease,
+    color 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+  text-decoration: none;
+  user-select: none;
+  vertical-align: middle;
+
+  &:focus-visible {
+    outline: 2px solid $av-color-focus-ring;
+    outline-offset: 2px;
+  }
+
+  &:disabled,
+  &[aria-disabled='true'] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  // Loading state
+  &.av-btn-loading {
+    pointer-events: none;
+    opacity: 0.8;
+
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 0.875rem;
+      height: 0.875rem;
+      border: 2px solid currentColor;
+      border-right-color: transparent;
+      border-radius: $av-radius-full;
+      animation: av-spin 0.6s linear infinite;
+      margin-right: $av-spacing-2;
+    }
+  }
+}
+
+// ── Sizes ─────────────────────────────────────────────────────────────────────
+.av-btn-xs {
+  font-size: 0.6875rem;
+  padding: $av-spacing-1 $av-spacing-2;
+  border-radius: $av-radius-sm;
+}
+
+.av-btn-sm {
+  font-size: $av-text-xs;
+  padding: calc(#{$av-spacing-1} + 2px) $av-spacing-3;
+}
+
+.av-btn-md {
+  // default size, already set in base
+}
+
+.av-btn-lg {
+  font-size: $av-text-base;
+  padding: $av-spacing-3 $av-spacing-6;
+  border-radius: $av-radius-lg;
+}
+
+.av-btn-xl {
+  font-size: $av-text-lg;
+  padding: $av-spacing-4 $av-spacing-8;
+  border-radius: $av-radius-lg;
+}
+
+// Icon-only button
+.av-btn-icon {
+  padding: $av-spacing-2;
+  aspect-ratio: 1;
+}
+
+// Full width
+.av-btn-block {
+  display: flex;
+  width: 100%;
+}
+
+// ── Variants ──────────────────────────────────────────────────────────────────
+.av-btn-primary {
+  background-color: $av-color-primary;
+  border-color: $av-color-primary;
+  color: var(--av-theme-color-text-inverse, #fff);
+
+  &:hover:not(:disabled) { background-color: $av-color-primary-hover; border-color: $av-color-primary-hover; }
+  &:active:not(:disabled) { background-color: $av-color-primary-active; border-color: $av-color-primary-active; }
+}
+
+.av-btn-secondary {
+  background-color: $av-color-secondary;
+  border-color: $av-color-secondary;
+  color: var(--av-theme-color-text-inverse, #fff);
+
+  &:hover:not(:disabled) { background-color: var(--av-theme-color-secondary-hover, #475569); border-color: var(--av-theme-color-secondary-hover, #475569); }
+}
+
+.av-btn-outline {
+  background-color: transparent;
+  border-color: $av-color-primary;
+  color: $av-color-primary;
+
+  &:hover:not(:disabled) { background-color: $av-color-primary-subtle; }
+  &:active:not(:disabled) { background-color: $av-color-primary; color: var(--av-theme-color-text-inverse, #fff); }
+}
+
+.av-btn-ghost {
+  background-color: transparent;
+  border-color: transparent;
+  color: $av-color-primary;
+
+  &:hover:not(:disabled) { background-color: $av-color-primary-subtle; }
+  &:active:not(:disabled) { background-color: $av-color-border; }
+}
+
+.av-btn-danger {
+  background-color: $av-color-error;
+  border-color: $av-color-error;
+  color: #fff;
+
+  &:hover:not(:disabled) { background-color: var(--av-color-red-700, #B91C1C); border-color: var(--av-color-red-700, #B91C1C); }
+}
+
+.av-btn-success {
+  background-color: $av-color-success;
+  border-color: $av-color-success;
+  color: #fff;
+
+  &:hover:not(:disabled) { filter: brightness(0.9); }
+}
+
+.av-btn-link {
+  background-color: transparent;
+  border-color: transparent;
+  color: $av-color-primary;
+  padding-left: 0;
+  padding-right: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+
+  &:hover:not(:disabled) { color: $av-color-primary-hover; }
+}
+
+// ── Animation ─────────────────────────────────────────────────────────────────
+@keyframes av-spin {
+  to { transform: rotate(360deg); }
+}

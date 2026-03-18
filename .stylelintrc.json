@@ -1,0 +1,13 @@
+{
+  "extends": ["stylelint-config-standard-scss"],
+  "rules": {
+    "custom-property-pattern": "^av-[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+    "selector-class-pattern": "^av-[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+    "color-no-invalid-hex": true,
+    "declaration-block-no-duplicate-properties": true,
+    "no-duplicate-selectors": true,
+    "scss/dollar-variable-pattern": "^av-[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+    "max-nesting-depth": 3,
+    "declaration-no-important": true
+  }
+}

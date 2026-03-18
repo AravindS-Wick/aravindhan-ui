@@ -1,0 +1,60 @@
+// @aravindhan/ui — Table Component
+
+@use '../tokens/variables' as *;
+
+.av-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: $av-radius-lg;
+  border: 1px solid $av-color-border;
+}
+
+.av-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: $av-text-sm;
+
+  thead {
+    background-color: $av-color-surface-raised;
+
+    th {
+      padding: $av-spacing-3 $av-spacing-4;
+      text-align: left;
+      font-weight: 600;
+      color: $av-color-text-secondary;
+      border-bottom: 1px solid $av-color-border;
+      white-space: nowrap;
+      text-transform: uppercase;
+      font-size: 0.6875rem;
+      letter-spacing: 0.05em;
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: 1px solid $av-color-border;
+      transition: background-color 0.1s ease;
+
+      &:last-child { border-bottom: none; }
+
+      &:hover { background-color: $av-color-surface-raised; }
+    }
+
+    td {
+      padding: $av-spacing-3 $av-spacing-4;
+      color: $av-color-text-primary;
+      vertical-align: middle;
+    }
+  }
+
+  &.av-table-striped tbody tr:nth-child(even) {
+    background-color: $av-color-surface-raised;
+  }
+
+  &.av-table-compact {
+    thead th,
+    tbody td {
+      padding: $av-spacing-2 $av-spacing-3;
+    }
+  }
+}

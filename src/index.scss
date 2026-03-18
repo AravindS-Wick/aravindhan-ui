@@ -1,0 +1,36 @@
+// @aravindhan/ui — Main Entry Point
+// Import this file to get full design system: tokens, reset, utilities, components
+
+// ── 1. Tokens (CSS Custom Properties) ───────────────────────────────────────
+@forward 'tokens/variables';
+
+// ── 2. Base Reset & Typography ───────────────────────────────────────────────
+@forward 'base/reset';
+@forward 'base/typography';
+
+// ── 3. Utilities ─────────────────────────────────────────────────────────────
+@forward 'utilities/spacing';
+@forward 'utilities/display';
+@forward 'utilities/flexbox';
+@forward 'utilities/grid';
+@forward 'utilities/typography';
+@forward 'utilities/colors';
+@forward 'utilities/responsive';
+
+// ── 4. Components ─────────────────────────────────────────────────────────────
+@forward 'components/button';
+@forward 'components/form';
+@forward 'components/card';
+@forward 'components/badge';
+@forward 'components/alert';
+@forward 'components/table';
+@forward 'components/navbar';
+@forward 'components/tabs';
+@forward 'components/spinner';
+@forward 'components/progress';
+@forward 'components/avatar';
+@forward 'components/breadcrumb';
+@forward 'components/pagination';
+
+// ── 5. Icons ──────────────────────────────────────────────────────────────────
+@forward 'icons/icons';
