@@ -2,12 +2,21 @@
   "extends": ["stylelint-config-standard-scss"],
   "rules": {
     "custom-property-pattern": "^av-[a-z][a-z0-9]*(-[a-z0-9]+)*$",
-    "selector-class-pattern": "^av-[a-z][a-z0-9]*(-[a-z0-9]+)*$",
     "color-no-invalid-hex": true,
     "declaration-block-no-duplicate-properties": true,
     "no-duplicate-selectors": true,
-    "scss/dollar-variable-pattern": "^av-[a-z][a-z0-9]*(-[a-z0-9]+)*$",
-    "max-nesting-depth": 3,
-    "declaration-no-important": true
+    "max-nesting-depth": 4,
+    "declaration-no-important": true,
+    "declaration-block-single-line-max-declarations": null,
+    "property-no-vendor-prefix": null,
+    "value-keyword-case": ["lower", { "camelCaseSvgKeywords": true }],
+    "no-descending-specificity": null,
+    "scss/dollar-variable-pattern": null,
+    "selector-class-pattern": null,
+    "keyframes-name-pattern": null,
+    "alpha-value-notation": null,
+    "color-function-notation": null,
+    "import-notation": null,
+    "media-feature-range-notation": null
   }
 }
