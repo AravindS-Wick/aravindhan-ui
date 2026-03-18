@@ -1,0 +1,37 @@
+// @aravindhan/ui — Spinner & Loader
+
+@use '../tokens/variables' as *;
+
+.av-spinner {
+  display: inline-block;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 2px solid $av-color-border;
+  border-top-color: $av-color-primary;
+  border-radius: $av-radius-full;
+  animation: av-spin 0.7s linear infinite;
+
+  &.av-spinner-xs  { width: 0.75rem; height: 0.75rem; border-width: 1.5px; }
+  &.av-spinner-sm  { width: 1rem;    height: 1rem;    border-width: 2px; }
+  &.av-spinner-md  { /* default */ }
+  &.av-spinner-lg  { width: 2rem;    height: 2rem;    border-width: 2.5px; }
+  &.av-spinner-xl  { width: 3rem;    height: 3rem;    border-width: 3px; }
+
+  &.av-spinner-primary { border-top-color: $av-color-primary; }
+  &.av-spinner-white   { border-color: rgba(255,255,255,0.3); border-top-color: #fff; }
+}
+
+@keyframes av-spin {
+  to { transform: rotate(360deg); }
+}
+
+// Full-page overlay loader
+.av-loader-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: var(--av-zindex-overlay, 1200);
+}

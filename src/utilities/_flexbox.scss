@@ -1,0 +1,45 @@
+// @aravindhan/ui — Flexbox Utilities
+
+// Direction
+.av-flex-row         { flex-direction: row; }
+.av-flex-row-reverse { flex-direction: row-reverse; }
+.av-flex-col         { flex-direction: column; }
+.av-flex-col-reverse { flex-direction: column-reverse; }
+
+// Wrap
+.av-flex-wrap         { flex-wrap: wrap; }
+.av-flex-nowrap       { flex-wrap: nowrap; }
+.av-flex-wrap-reverse { flex-wrap: wrap-reverse; }
+
+// Justify content
+.av-justify-start   { justify-content: flex-start; }
+.av-justify-end     { justify-content: flex-end; }
+.av-justify-center  { justify-content: center; }
+.av-justify-between { justify-content: space-between; }
+.av-justify-around  { justify-content: space-around; }
+.av-justify-evenly  { justify-content: space-evenly; }
+
+// Align items
+.av-items-start    { align-items: flex-start; }
+.av-items-end      { align-items: flex-end; }
+.av-items-center   { align-items: center; }
+.av-items-baseline { align-items: baseline; }
+.av-items-stretch  { align-items: stretch; }
+
+// Align self
+.av-self-auto    { align-self: auto; }
+.av-self-start   { align-self: flex-start; }
+.av-self-end     { align-self: flex-end; }
+.av-self-center  { align-self: center; }
+.av-self-stretch { align-self: stretch; }
+
+// Flex grow/shrink
+.av-flex-1    { flex: 1 1 0%; }
+.av-flex-auto { flex: 1 1 auto; }
+.av-flex-none { flex: none; }
+.av-flex-grow { flex-grow: 1; }
+.av-flex-shrink { flex-shrink: 1; }
+.av-shrink-0  { flex-shrink: 0; }
+
+// Center shorthand
+.av-center { display: flex; align-items: center; justify-content: center; }

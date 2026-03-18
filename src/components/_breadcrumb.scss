@@ -1,0 +1,38 @@
+// @aravindhan/ui — Breadcrumb
+
+@use '../tokens/variables' as *;
+
+.av-breadcrumb {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: $av-spacing-1;
+  font-size: $av-text-sm;
+  color: $av-color-text-secondary;
+  list-style: none;
+}
+
+.av-breadcrumb-item {
+  display: flex;
+  align-items: center;
+  gap: $av-spacing-1;
+
+  a {
+    color: $av-color-text-secondary;
+    text-decoration: none;
+    transition: color 0.15s ease;
+
+    &:hover { color: $av-color-primary; }
+  }
+
+  &.av-active {
+    color: $av-color-text-primary;
+    font-weight: 500;
+  }
+
+  &:not(:last-child)::after {
+    content: '/';
+    color: $av-color-border-strong;
+    margin-left: $av-spacing-1;
+  }
+}

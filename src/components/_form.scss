@@ -1,0 +1,126 @@
+// @aravindhan/ui — Form Components
+
+@use '../tokens/variables' as *;
+
+// ── Shared input base ─────────────────────────────────────────────────────────
+%av-input-base {
+  display: block;
+  width: 100%;
+  font-family: $av-font-sans;
+  font-size: $av-text-sm;
+  line-height: 1.5;
+  color: $av-color-text-primary;
+  background-color: $av-color-surface;
+  border: 1px solid $av-color-border;
+  border-radius: $av-radius-md;
+  padding: $av-spacing-2 $av-spacing-3;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  appearance: none;
+
+  &::placeholder {
+    color: $av-color-text-secondary;
+    opacity: 1;
+  }
+
+  &:hover:not(:disabled) {
+    border-color: $av-color-border-strong;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $av-color-primary;
+    box-shadow: 0 0 0 3px var(--av-theme-color-primary-subtle, #EFF6FF);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    background-color: $av-color-surface-raised;
+  }
+}
+
+// ── Input ─────────────────────────────────────────────────────────────────────
+.av-input {
+  @extend %av-input-base;
+
+  &.av-input-sm { font-size: $av-text-xs; padding: $av-spacing-1 $av-spacing-2; }
+  &.av-input-lg { font-size: $av-text-base; padding: $av-spacing-3 $av-spacing-4; }
+
+  &.av-input-error {
+    border-color: $av-color-error;
+    &:focus { box-shadow: 0 0 0 3px var(--av-theme-color-error-subtle, #FEF2F2); }
+  }
+
+  &.av-input-success {
+    border-color: $av-color-success;
+    &:focus { box-shadow: 0 0 0 3px var(--av-theme-color-success-subtle, #F0FDF4); }
+  }
+}
+
+// ── Textarea ──────────────────────────────────────────────────────────────────
+.av-textarea {
+  @extend %av-input-base;
+  min-height: 100px;
+  resize: vertical;
+}
+
+// ── Select ────────────────────────────────────────────────────────────────────
+.av-select {
+  @extend %av-input-base;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right $av-spacing-3 center;
+  background-repeat: no-repeat;
+  background-size: 1.25rem;
+  padding-right: $av-spacing-8;
+}
+
+// ── Checkbox & Radio ──────────────────────────────────────────────────────────
+.av-checkbox,
+.av-radio {
+  display: inline-flex;
+  align-items: center;
+  gap: $av-spacing-2;
+  cursor: pointer;
+  font-size: $av-text-sm;
+  color: $av-color-text-primary;
+  user-select: none;
+
+  input[type='checkbox'],
+  input[type='radio'] {
+    width: 1rem;
+    height: 1rem;
+    cursor: pointer;
+    accent-color: $av-color-primary;
+    flex-shrink: 0;
+  }
+
+  &:has(input:disabled) {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+// ── Form Group ────────────────────────────────────────────────────────────────
+.av-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: $av-spacing-1;
+  margin-bottom: $av-spacing-md;
+}
+
+.av-label {
+  font-size: $av-text-sm;
+  font-weight: 500;
+  color: $av-color-text-primary;
+}
+
+.av-form-hint {
+  font-size: $av-text-xs;
+  color: $av-color-text-secondary;
+}
+
+.av-form-error {
+  font-size: $av-text-xs;
+  color: $av-color-error;
+}

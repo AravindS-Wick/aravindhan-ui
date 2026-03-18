@@ -1,0 +1,70 @@
+// @aravindhan/ui — Tabs Component
+
+@use '../tokens/variables' as *;
+
+.av-tabs {
+  display: flex;
+  flex-direction: column;
+}
+
+.av-tabs-list {
+  display: flex;
+  border-bottom: 1px solid $av-color-border;
+  gap: 0;
+}
+
+.av-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: $av-spacing-2;
+  padding: $av-spacing-3 $av-spacing-4;
+  font-size: $av-text-sm;
+  font-weight: 500;
+  color: $av-color-text-secondary;
+  cursor: pointer;
+  border: none;
+  background: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+  white-space: nowrap;
+
+  &:hover { color: $av-color-text-primary; }
+
+  &.av-active {
+    color: $av-color-primary;
+    border-bottom-color: $av-color-primary;
+  }
+
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}
+
+.av-tab-panel {
+  padding: $av-spacing-lg 0;
+  display: none;
+
+  &.av-active { display: block; }
+}
+
+// Pills variant
+.av-tabs-pills {
+  .av-tabs-list {
+    border-bottom: none;
+    gap: $av-spacing-1;
+    background-color: $av-color-surface-raised;
+    padding: $av-spacing-1;
+    border-radius: $av-radius-lg;
+  }
+
+  .av-tab {
+    border-radius: $av-radius-md;
+    border-bottom: none;
+    margin-bottom: 0;
+
+    &.av-active {
+      background-color: $av-color-surface;
+      color: $av-color-text-primary;
+      box-shadow: var(--av-shadow-sm);
+    }
+  }
+}

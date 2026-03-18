@@ -1,0 +1,70 @@
+// @aravindhan/ui — Typography Utilities
+
+@use '../tokens/variables' as *;
+
+// Font sizes
+.av-text-xs   { font-size: $av-text-xs; }
+.av-text-sm   { font-size: $av-text-sm; }
+.av-text-base { font-size: $av-text-base; }
+.av-text-lg   { font-size: $av-text-lg; }
+.av-text-xl   { font-size: $av-text-xl; }
+.av-text-2xl  { font-size: $av-text-2xl; }
+.av-text-3xl  { font-size: $av-text-3xl; }
+.av-text-4xl  { font-size: $av-text-4xl; }
+.av-text-5xl  { font-size: $av-text-5xl; }
+.av-text-6xl  { font-size: $av-text-6xl; }
+
+// Font weights
+.av-font-thin       { font-weight: 100; }
+.av-font-light      { font-weight: 300; }
+.av-font-normal     { font-weight: 400; }
+.av-font-medium     { font-weight: 500; }
+.av-font-semibold   { font-weight: 600; }
+.av-font-bold       { font-weight: 700; }
+.av-font-extrabold  { font-weight: 800; }
+.av-font-black      { font-weight: 900; }
+
+// Font family
+.av-font-sans   { font-family: $av-font-sans; }
+.av-font-mono   { font-family: $av-font-mono; }
+.av-font-serif  { font-family: $av-font-serif; }
+
+// Text alignment
+.av-text-left    { text-align: left; }
+.av-text-center  { text-align: center; }
+.av-text-right   { text-align: right; }
+.av-text-justify { text-align: justify; }
+
+// Text decoration
+.av-underline       { text-decoration: underline; }
+.av-no-underline    { text-decoration: none; }
+.av-line-through    { text-decoration: line-through; }
+
+// Text transform
+.av-uppercase   { text-transform: uppercase; }
+.av-lowercase   { text-transform: lowercase; }
+.av-capitalize  { text-transform: capitalize; }
+.av-normal-case { text-transform: none; }
+
+// Line height
+.av-leading-none    { line-height: 1; }
+.av-leading-tight   { line-height: 1.25; }
+.av-leading-snug    { line-height: 1.375; }
+.av-leading-normal  { line-height: 1.5; }
+.av-leading-relaxed { line-height: 1.625; }
+.av-leading-loose   { line-height: 2; }
+
+// Letter spacing
+.av-tracking-tighter { letter-spacing: -0.05em; }
+.av-tracking-tight   { letter-spacing: -0.025em; }
+.av-tracking-normal  { letter-spacing: 0; }
+.av-tracking-wide    { letter-spacing: 0.025em; }
+.av-tracking-wider   { letter-spacing: 0.05em; }
+.av-tracking-widest  { letter-spacing: 0.1em; }
+
+// Overflow
+.av-truncate       { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.av-text-ellipsis  { text-overflow: ellipsis; }
+.av-whitespace-nowrap { white-space: nowrap; }
+.av-break-words    { overflow-wrap: break-word; }
+.av-break-all      { word-break: break-all; }

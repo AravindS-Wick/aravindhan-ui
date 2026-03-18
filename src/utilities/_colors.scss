@@ -1,0 +1,66 @@
+// @aravindhan/ui — Color Utilities (semantic, theme-aware)
+
+@use '../tokens/variables' as *;
+
+// Text colors
+.av-text-primary    { color: $av-color-text-primary; }
+.av-text-secondary  { color: $av-color-text-secondary; }
+.av-text-disabled   { color: $av-color-text-disabled; }
+.av-text-inverse    { color: $av-color-text-inverse; }
+.av-text-brand      { color: $av-color-primary; }
+.av-text-success    { color: $av-color-success; }
+.av-text-warning    { color: $av-color-warning; }
+.av-text-error      { color: $av-color-error; }
+.av-text-info       { color: $av-color-info; }
+
+// Background colors
+.av-bg-surface        { background-color: $av-color-surface; }
+.av-bg-surface-raised { background-color: $av-color-surface-raised; }
+.av-bg-primary        { background-color: $av-color-primary; }
+.av-bg-primary-subtle { background-color: $av-color-primary-subtle; }
+.av-bg-success        { background-color: $av-color-success; }
+.av-bg-warning        { background-color: $av-color-warning; }
+.av-bg-error          { background-color: $av-color-error; }
+.av-bg-info           { background-color: $av-color-info; }
+.av-bg-transparent    { background-color: transparent; }
+
+// Border colors
+.av-border-default  { border-color: $av-color-border; }
+.av-border-strong   { border-color: $av-color-border-strong; }
+.av-border-primary  { border-color: $av-color-primary; }
+.av-border-error    { border-color: $av-color-error; }
+
+// Border width
+.av-border          { border-width: 1px; border-style: solid; }
+.av-border-0        { border-width: 0; }
+.av-border-2        { border-width: 2px; border-style: solid; }
+.av-border-t        { border-top-width: 1px; border-top-style: solid; }
+.av-border-b        { border-bottom-width: 1px; border-bottom-style: solid; }
+.av-border-l        { border-left-width: 1px; border-left-style: solid; }
+.av-border-r        { border-right-width: 1px; border-right-style: solid; }
+
+// Border radius
+.av-rounded-none { border-radius: 0; }
+.av-rounded-sm   { border-radius: 2px; }
+.av-rounded      { border-radius: 4px; }
+.av-rounded-md   { border-radius: 4px; }
+.av-rounded-lg   { border-radius: 8px; }
+.av-rounded-xl   { border-radius: 12px; }
+.av-rounded-2xl  { border-radius: 16px; }
+.av-rounded-full { border-radius: 9999px; }
+
+// Shadows
+.av-shadow-none { box-shadow: none; }
+.av-shadow-xs   { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
+.av-shadow-sm   { box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1); }
+.av-shadow-md   { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
+.av-shadow-lg   { box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1); }
+.av-shadow-xl   { box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); }
+.av-shadow-inner { box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05); }
+
+// Opacity
+.av-opacity-0   { opacity: 0; }
+.av-opacity-25  { opacity: 0.25; }
+.av-opacity-50  { opacity: 0.5; }
+.av-opacity-75  { opacity: 0.75; }
+.av-opacity-100 { opacity: 1; }

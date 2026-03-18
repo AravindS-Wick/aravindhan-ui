@@ -1,0 +1,44 @@
+// @aravindhan/ui — Card Component
+
+@use '../tokens/variables' as *;
+
+.av-card {
+  background-color: $av-color-surface-raised;
+  border: 1px solid $av-color-border;
+  border-radius: $av-radius-xl;
+  overflow: hidden;
+
+  &.av-card-shadow { box-shadow: var(--av-shadow-md, 0 4px 6px -1px rgb(0 0 0 / 0.1)); }
+  &.av-card-flat   { border: none; background-color: $av-color-surface; }
+  &.av-card-hover  { transition: box-shadow 0.2s ease, transform 0.2s ease;
+    &:hover { box-shadow: var(--av-shadow-lg, 0 10px 15px -3px rgb(0 0 0 / 0.1)); transform: translateY(-2px); } }
+}
+
+.av-card-header {
+  padding: $av-spacing-md $av-spacing-lg;
+  border-bottom: 1px solid $av-color-border;
+  font-weight: 600;
+  font-size: $av-text-base;
+  color: $av-color-text-primary;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $av-spacing-md;
+}
+
+.av-card-body {
+  padding: $av-spacing-lg;
+}
+
+.av-card-footer {
+  padding: $av-spacing-md $av-spacing-lg;
+  border-top: 1px solid $av-color-border;
+  display: flex;
+  align-items: center;
+  gap: $av-spacing-sm;
+}
+
+.av-card-image {
+  width: 100%;
+  object-fit: cover;
+}

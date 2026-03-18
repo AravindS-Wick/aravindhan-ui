@@ -1,0 +1,78 @@
+// @aravindhan/ui — Responsive Utilities
+// Prefix: av-{bp}:{utility} pattern via classes
+
+@use '../tokens/variables' as *;
+
+// Responsive display
+@include av-breakpoint(sm) {
+  .av-sm\:block        { display: block; }
+  .av-sm\:hidden       { display: none; }
+  .av-sm\:flex         { display: flex; }
+  .av-sm\:grid         { display: grid; }
+  .av-sm\:inline       { display: inline; }
+  .av-sm\:inline-block { display: inline-block; }
+  .av-sm\:inline-flex  { display: inline-flex; }
+}
+
+@include av-breakpoint(md) {
+  .av-md\:block        { display: block; }
+  .av-md\:hidden       { display: none; }
+  .av-md\:flex         { display: flex; }
+  .av-md\:grid         { display: grid; }
+  .av-md\:inline       { display: inline; }
+  .av-md\:inline-block { display: inline-block; }
+  .av-md\:inline-flex  { display: inline-flex; }
+  .av-md\:flex-row     { flex-direction: row; }
+  .av-md\:flex-col     { flex-direction: column; }
+
+  @for $i from 1 through 12 {
+    .av-md\:grid-cols-#{$i} { grid-template-columns: repeat(#{$i}, minmax(0, 1fr)); }
+    .av-md\:col-span-#{$i}  { grid-column: span #{$i} / span #{$i}; }
+  }
+}
+
+@include av-breakpoint(lg) {
+  .av-lg\:block        { display: block; }
+  .av-lg\:hidden       { display: none; }
+  .av-lg\:flex         { display: flex; }
+  .av-lg\:grid         { display: grid; }
+  .av-lg\:flex-row     { flex-direction: row; }
+  .av-lg\:flex-col     { flex-direction: column; }
+
+  @for $i from 1 through 12 {
+    .av-lg\:grid-cols-#{$i} { grid-template-columns: repeat(#{$i}, minmax(0, 1fr)); }
+    .av-lg\:col-span-#{$i}  { grid-column: span #{$i} / span #{$i}; }
+  }
+}
+
+@include av-breakpoint(xl) {
+  .av-xl\:block   { display: block; }
+  .av-xl\:hidden  { display: none; }
+  .av-xl\:flex    { display: flex; }
+  .av-xl\:grid    { display: grid; }
+
+  @for $i from 1 through 12 {
+    .av-xl\:grid-cols-#{$i} { grid-template-columns: repeat(#{$i}, minmax(0, 1fr)); }
+  }
+}
+
+// Container
+.av-container {
+  width: 100%;
+  padding-right: $av-spacing-md;
+  padding-left: $av-spacing-md;
+  margin-right: auto;
+  margin-left: auto;
+
+  @include av-breakpoint(sm)  { max-width: 640px; }
+  @include av-breakpoint(md)  { max-width: 768px; }
+  @include av-breakpoint(lg)  { max-width: 1024px; }
+  @include av-breakpoint(xl)  { max-width: 1280px; }
+  @include av-breakpoint(2xl) { max-width: 1536px; }
+}
+
+.av-container-fluid {
+  width: 100%;
+  padding-right: $av-spacing-md;
+  padding-left: $av-spacing-md;
+}
