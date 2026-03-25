@@ -26,7 +26,7 @@
     border-color: $av-color-border-strong;
   }
 
-  &:focus {
+  &:focus-visible {
     outline: none;
     border-color: $av-color-primary;
     box-shadow: 0 0 0 3px var(--av-theme-color-primary-subtle, #EFF6FF);
@@ -48,12 +48,12 @@
 
   &.av-input-error {
     border-color: $av-color-error;
-    &:focus { box-shadow: 0 0 0 3px var(--av-theme-color-error-subtle, #FEF2F2); }
+    &:focus-visible { box-shadow: 0 0 0 3px var(--av-theme-color-error-subtle, #FEF2F2); }
   }
 
   &.av-input-success {
     border-color: $av-color-success;
-    &:focus { box-shadow: 0 0 0 3px var(--av-theme-color-success-subtle, #F0FDF4); }
+    &:focus-visible { box-shadow: 0 0 0 3px var(--av-theme-color-success-subtle, #F0FDF4); }
   }
 }
 

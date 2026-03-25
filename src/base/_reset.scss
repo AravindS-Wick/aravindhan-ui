@@ -111,3 +111,17 @@ hr {
   scrollbar-width: thin;
   scrollbar-color: var(--av-theme-color-border, #E2E8F0) transparent;
 }
+
+// Reduced motion — disable all transitions and animations for users who
+// prefer it. Keyframe animations are handled individually per component
+// to provide a safe static fallback rather than a frozen mid-animation state.
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+    transition-duration: 0.01ms;
+    scroll-behavior: auto;
+  }
+}

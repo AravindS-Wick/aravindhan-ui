@@ -23,6 +23,12 @@
     transition: color 0.15s ease;
 
     &:hover { color: $av-color-primary; }
+
+    &:focus-visible {
+      outline: 2px solid $av-color-focus-ring;
+      outline-offset: 2px;
+      border-radius: $av-radius-sm;
+    }
   }
 
   &.av-active {
