@@ -57,4 +57,72 @@
       padding: $av-spacing-2 $av-spacing-3;
     }
   }
+
+  // Sortable column headers
+  &.av-table-sortable thead th {
+    cursor: pointer;
+    -webkit-user-select: none;
+    user-select: none;
+
+    &:hover { background-color: $av-color-border; }
+
+    &[aria-sort='ascending']::after  { content: ' ↑'; color: $av-color-primary; }
+    &[aria-sort='descending']::after { content: ' ↓'; color: $av-color-primary; }
+    &[aria-sort='none']::after       { content: ' ↕'; opacity: 0.4; }
+  }
+
+  // Bordered
+  &.av-table-bordered {
+    thead th,
+    tbody td {
+      border: 1px solid $av-color-border;
+    }
+  }
+}
+
+// ── Sticky header ─────────────────────────────────────────────────────────────
+.av-table-sticky {
+  .av-table thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+}
+
+// ── Responsive stack (mobile) ─────────────────────────────────────────────────
+// Add class av-table-stack to wrapper to stack cells on mobile
+@media (max-width: 639px) {
+  .av-table-stack .av-table {
+    thead { display: none; }
+
+    tr {
+      display: block;
+      border: 1px solid $av-color-border;
+      border-radius: $av-radius-md;
+      margin-bottom: $av-spacing-3;
+      padding: $av-spacing-2;
+    }
+
+    td {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: $av-spacing-2 $av-spacing-3;
+      border-bottom: 1px solid $av-color-border;
+      font-size: $av-text-sm;
+
+      &:last-child { border-bottom: none; }
+
+      &::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: $av-color-text-secondary;
+        font-size: 0.6875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        flex-shrink: 0;
+        margin-right: $av-spacing-2;
+      }
+    }
+  }
 }

@@ -17,9 +17,10 @@
 @forward 'utilities/colors';
 @forward 'utilities/responsive';
 
-// ── 4. Components ─────────────────────────────────────────────────────────────
+// ── 4. Components — base ──────────────────────────────────────────────────────
 @forward 'components/button';
 @forward 'components/form';
+@forward 'components/input-group';
 @forward 'components/card';
 @forward 'components/badge';
 @forward 'components/alert';
@@ -32,5 +33,20 @@
 @forward 'components/breadcrumb';
 @forward 'components/pagination';
 
-// ── 5. Icons ──────────────────────────────────────────────────────────────────
+// ── 5. Components — interactive ───────────────────────────────────────────────
+@forward 'components/modal';
+@forward 'components/drawer';
+@forward 'components/dropdown';
+@forward 'components/tooltip';
+@forward 'components/accordion';
+@forward 'components/toast';
+@forward 'components/switch';
+
+// ── 6. Components — data / layout ─────────────────────────────────────────────
+@forward 'components/skeleton';
+@forward 'components/stepper';
+@forward 'components/timeline';
+@forward 'components/stat';
+
+// ── 7. Icons ──────────────────────────────────────────────────────────────────
 @forward 'icons/icons';

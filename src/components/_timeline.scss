@@ -1,0 +1,71 @@
+// @aravi1008/ui — Timeline
+
+@use '../tokens/variables' as *;
+
+.av-timeline {
+  position: relative;
+  padding-left: 2rem;
+  list-style: none;
+
+  // Vertical line
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0.6875rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: $av-color-border;
+  }
+}
+
+// ── Timeline item ─────────────────────────────────────────────────────────────
+.av-timeline-item {
+  position: relative;
+  padding-bottom: $av-spacing-6;
+
+  &:last-child { padding-bottom: 0; }
+}
+
+// ── Dot ───────────────────────────────────────────────────────────────────────
+.av-timeline-dot {
+  position: absolute;
+  left: calc(-2rem + 2px);
+  top: 2px;
+  width: 1rem;
+  height: 1rem;
+  border-radius: $av-radius-full;
+  border: 2px solid $av-color-surface;
+  background-color: $av-color-border-strong;
+  box-shadow: 0 0 0 2px $av-color-border;
+  flex-shrink: 0;
+
+  &.av-timeline-dot-primary { background-color: $av-color-primary; box-shadow: 0 0 0 2px $av-color-primary-subtle; }
+  &.av-timeline-dot-success { background-color: $av-color-success; box-shadow: 0 0 0 2px var(--av-theme-color-success-subtle, #F0FDF4); }
+  &.av-timeline-dot-warning { background-color: $av-color-warning; box-shadow: 0 0 0 2px var(--av-theme-color-warning-subtle, #FFFBEB); }
+  &.av-timeline-dot-error   { background-color: $av-color-error; box-shadow: 0 0 0 2px var(--av-theme-color-error-subtle, #FEF2F2); }
+}
+
+// ── Content ───────────────────────────────────────────────────────────────────
+.av-timeline-content {
+  padding-left: $av-spacing-3;
+}
+
+.av-timeline-time {
+  font-size: $av-text-xs;
+  color: $av-color-text-secondary;
+  margin-bottom: $av-spacing-1;
+}
+
+.av-timeline-title {
+  font-size: $av-text-sm;
+  font-weight: 600;
+  color: $av-color-text-primary;
+  margin-bottom: $av-spacing-1;
+}
+
+.av-timeline-body {
+  font-size: $av-text-sm;
+  color: $av-color-text-secondary;
+  line-height: 1.5;
+}

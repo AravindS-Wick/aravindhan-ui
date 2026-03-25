@@ -21,7 +21,7 @@
 // ── Semantic background colors ─────────────────────────────────────────────────
 .av-bg-surface          { background-color: $av-color-surface; }
 .av-bg-surface-raised   { background-color: $av-color-surface-raised; }
-.av-bg-surface-overlay  { background-color: $av-color-surface-overlay; }
+.av-bg-surface-overlay  { background-color: var(--av-theme-color-surface-overlay, rgba(0 0 0 / 50%)); }
 .av-bg-primary          { background-color: $av-color-primary; }
 .av-bg-primary-subtle   { background-color: $av-color-primary-subtle; }
 .av-bg-secondary        { background-color: $av-color-secondary; }
@@ -66,7 +66,7 @@
 .av-rounded-lg    { border-radius: $av-radius-lg; }
 .av-rounded-xl    { border-radius: $av-radius-xl; }
 .av-rounded-2xl   { border-radius: $av-radius-2xl; }
-.av-rounded-3xl   { border-radius: $av-radius-3xl; }
+.av-rounded-3xl   { border-radius: 1.5rem; }
 .av-rounded-full  { border-radius: $av-radius-full; }
 
 .av-rounded-t-none  { border-top-left-radius: 0; border-top-right-radius: 0; }
