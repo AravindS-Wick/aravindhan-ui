@@ -9,8 +9,8 @@
 
 | Field | Value |
 | ------- | ------- |
-| Active branch | `main` (PR #6 merged) |
-| Next branch | `feat/data-components` (createTable, createList etc) |
+| Active branch | `main` (PR #8 merged) |
+| Next branch | `feat/typography-utils` |
 | Last updated | 2026-03-26 |
 
 ---
@@ -25,6 +25,8 @@
 | #4 | `feature/rename-scope-aravi1008` | Rename `@aravindhan/ui` → `@aravi1008/ui`, security hardening, CodeQL fix | All green | Merged | 2026-03-18 |
 | #5 | `feat/a11y-motion-focus` | `prefers-reduced-motion` + `:focus-visible` across all components | All green | Merged | 2026-03-25 |
 | #6 | `feat/color-scale` | Full 13-palette color scale (50→900), responsive spacing, dark mode variants, container queries, RTL, 139 icons, all interactive components, TS types, 179 tests | All green | Merged | 2026-03-26 |
+| #7 | `docs/status-update-pr6` | STATUS.md updated with PR #6 CI failure log | All green | Merged | 2026-03-26 |
+| #8 | `feat/data-components-icons-skills` | createTable() data component, 11 icons (150 total), 28 new tests (207 total), 95%+ coverage | All green | Merged | 2026-03-26 |
 
 ---
 
