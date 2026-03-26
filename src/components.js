@@ -487,7 +487,7 @@ export function initAll() {
  *
  * @param {string|HTMLElement} target  - Selector or element to render into
  * @param {object} options
- * @param {Array<{key,label,sortable?,width?,align?,render?}>} options.columns
+ * @param {Array<{key,label,sortable?,width?,align?,render?,sanitize?}>} options.columns
  * @param {Array<object>} options.rows
  * @param {object}  [options.pagination]
  * @param {boolean} [options.pagination.enabled=false]
@@ -585,7 +585,15 @@ export function createTable(target, options = {}) {
     return `<tbody>${visibleRows.map((row) =>
       `<tr>${cfg.columns.map((col) => {
         const val = row[col.key] ?? '';
-        const cell = col.render ? col.render(val, row) : _esc(val);
+        let cell;
+        if (col.render) {
+          const rendered = col.render(val, row);
+          // render() output is raw HTML by default; set sanitize:true to strip tags
+          cell = col.sanitize ? _esc(rendered) : rendered;
+        } else {
+          // Raw data values are always escaped unless sanitize is explicitly false
+          cell = col.sanitize === false ? String(val) : _esc(val);
+        }
         const align = col.align ? ` class="av-text-${col.align}"` : '';
         return `<td${align}>${cell}</td>`;
       }).join('')}</tr>`

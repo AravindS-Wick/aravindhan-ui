@@ -1130,4 +1130,38 @@ describe('createTable', () => {
     expect(wrap.innerHTML).not.toContain('<script>');
     expect(wrap.innerHTML).toContain('&lt;script&gt;');
   });
+
+  test('XSS: img onerror payload in cell data is escaped', () => {
+    const wrap = el('<div id="tbl26"></div>');
+    createTable('#tbl26', {
+      columns: [{ key: 'v', label: 'V' }],
+      rows: [{ v: '<img src=x onerror=alert(1)>' }],
+    });
+    expect(wrap.querySelector('img')).toBeNull();
+    expect(wrap.innerHTML).toContain('&lt;img');
+  });
+
+  test('sanitize:true on render() column escapes render output', () => {
+    const wrap = el('<div id="tbl27"></div>');
+    createTable('#tbl27', {
+      columns: [{
+        key: 'v', label: 'V',
+        render: (val) => `<b>${val}</b>`,
+        sanitize: true,
+      }],
+      rows: [{ v: 'hello' }],
+    });
+    // sanitize:true should escape the render output, so no <b> element
+    expect(wrap.querySelector('b')).toBeNull();
+    expect(wrap.innerHTML).toContain('&lt;b&gt;');
+  });
+
+  test('sanitize:false on data column allows raw HTML (opt-out)', () => {
+    const wrap = el('<div id="tbl28"></div>');
+    createTable('#tbl28', {
+      columns: [{ key: 'v', label: 'V', sanitize: false }],
+      rows: [{ v: '<strong>raw</strong>' }],
+    });
+    expect(wrap.querySelector('strong')).not.toBeNull();
+  });
 });
