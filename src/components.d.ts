@@ -77,6 +77,49 @@ export declare const navbar: {
  */
 export declare function initAll(): void;
 
+// ── createTable ───────────────────────────────────────────────────────────────
+
+export interface TableColumn {
+  key: string;
+  label: string;
+  sortable?: boolean;
+  width?: string;
+  align?: 'left' | 'center' | 'right';
+  render?: (value: unknown, row: Record<string, unknown>) => string;
+}
+
+export interface TablePagination {
+  enabled?: boolean;
+  page?: number;
+  rowsPerPage?: number;
+  rowsPerPageOptions?: number[];
+}
+
+export interface TableOptions {
+  columns: TableColumn[];
+  rows: Record<string, unknown>[];
+  pagination?: TablePagination;
+  striped?: boolean;
+  hoverable?: boolean;
+  bordered?: boolean;
+  stickyHeader?: boolean;
+  loading?: boolean;
+  emptyMessage?: string;
+}
+
+export interface TableController {
+  setRows(rows: Record<string, unknown>[]): void;
+  setPage(page: number): void;
+  setLoading(loading: boolean): void;
+  sort(key: string, dir: 'asc' | 'desc'): void;
+  destroy(): void;
+}
+
+export declare function createTable(
+  target: string | HTMLElement,
+  options?: TableOptions
+): TableController | null;
+
 declare const _default: {
   modal: typeof modal;
   drawer: typeof drawer;
@@ -86,6 +129,7 @@ declare const _default: {
   tabs: typeof tabs;
   navbar: typeof navbar;
   initAll: typeof initAll;
+  createTable: typeof createTable;
 };
 
 export default _default;
