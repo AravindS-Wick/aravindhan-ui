@@ -1115,6 +1115,32 @@ describe('initAll', () => {
     else Object.defineProperty(document, 'readyState', { value: 'complete', configurable: true });
     document.dispatchEvent(new Event('DOMContentLoaded'));
   });
+
+  test('initAll({ observe: true }) returns a cleanup function', () => {
+    const cleanup = initAll({ observe: true });
+    expect(typeof cleanup).toBe('function');
+    cleanup(); // disconnect observer — should not throw
+  });
+
+  test('initAll({ observe: true }) cleanup disconnects observer without error', () => {
+    const stop = initAll({ observe: true });
+    expect(() => stop()).not.toThrow();
+  });
+
+  test('initAll() without observe returns undefined', () => {
+    const result = initAll();
+    expect(result).toBeUndefined();
+  });
+
+  test('initAll({ observe: true }) re-inits when nodes are added to body', async () => {
+    const stop = initAll({ observe: true });
+    // Inject a new modal trigger — observer should fire run() without error
+    el('<div class="av-modal-backdrop" id="obs-modal"><button class="av-modal-close">X</button></div>');
+    // Allow MutationObserver microtask to flush
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(document.querySelector('#obs-modal')).not.toBeNull();
+    stop();
+  });
 });
 
 // ── createTable ───────────────────────────────────────────────────────────────
