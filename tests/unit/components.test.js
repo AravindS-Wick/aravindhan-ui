@@ -173,6 +173,32 @@ describe('modal', () => {
     const btn = document.querySelector('[data-av-modal-close]');
     btn.click();
   });
+
+  test('open locks body scroll', () => {
+    el('<div id="msl1" class="av-modal-backdrop"><div class="av-modal"></div></div>');
+    modal.open('#msl1');
+    expect(document.body.style.overflow).toBe('hidden');
+    modal.close('#msl1');
+  });
+
+  test('close restores body scroll', () => {
+    el('<div id="msl2" class="av-modal-backdrop"><div class="av-modal"></div></div>');
+    modal.open('#msl2');
+    modal.close('#msl2');
+    expect(document.body.style.overflow).toBe('');
+  });
+
+  test('nested open/close — body stays locked until last modal closes', () => {
+    el('<div id="msl3" class="av-modal-backdrop"><div class="av-modal"></div></div>');
+    el('<div id="msl4" class="av-modal-backdrop"><div class="av-modal"></div></div>');
+    modal.open('#msl3');
+    modal.open('#msl4');
+    expect(document.body.style.overflow).toBe('hidden');
+    modal.close('#msl3');
+    expect(document.body.style.overflow).toBe('hidden'); // still locked
+    modal.close('#msl4');
+    expect(document.body.style.overflow).toBe('');       // now unlocked
+  });
 });
 
 // ── drawer ─────────────────────────────────────────────────────────────────────
@@ -231,6 +257,32 @@ describe('drawer', () => {
     el('<div id="dr-b" class="av-drawer-backdrop av-drawer-open"><button data-av-drawer-close>Close</button></div>');
     drawer.init();
     document.querySelector('[data-av-drawer-close]').click();
+  });
+
+  test('open locks body scroll', () => {
+    el('<div id="dsl1" class="av-drawer-backdrop"><div class="av-drawer"></div></div>');
+    drawer.open('#dsl1');
+    expect(document.body.style.overflow).toBe('hidden');
+    drawer.close('#dsl1');
+  });
+
+  test('close restores body scroll', () => {
+    el('<div id="dsl2" class="av-drawer-backdrop"><div class="av-drawer"></div></div>');
+    drawer.open('#dsl2');
+    drawer.close('#dsl2');
+    expect(document.body.style.overflow).toBe('');
+  });
+
+  test('modal + drawer open together — body stays locked until both close', () => {
+    el('<div id="dsl3" class="av-modal-backdrop"><div class="av-modal"></div></div>');
+    el('<div id="dsl4" class="av-drawer-backdrop"><div class="av-drawer"></div></div>');
+    modal.open('#dsl3');
+    drawer.open('#dsl4');
+    expect(document.body.style.overflow).toBe('hidden');
+    modal.close('#dsl3');
+    expect(document.body.style.overflow).toBe('hidden'); // drawer still open
+    drawer.close('#dsl4');
+    expect(document.body.style.overflow).toBe('');       // all closed
   });
 });
 
