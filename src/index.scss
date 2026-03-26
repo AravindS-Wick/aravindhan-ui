@@ -16,6 +16,10 @@
 @forward 'utilities/typography';
 @forward 'utilities/colors';
 @forward 'utilities/responsive';
+@forward 'utilities/aspect-ratio';
+@forward 'utilities/scroll';
+@forward 'utilities/animation';
+@forward 'utilities/print';
 
 // ── 4. Components — base ──────────────────────────────────────────────────────
 @forward 'components/button';
