@@ -92,7 +92,16 @@ export interface TableColumn {
   sortable?: boolean;
   width?: string;
   align?: 'left' | 'center' | 'right';
+  /**
+   * Custom renderer — output is inserted as raw HTML.
+   * @warning Ensure output is trusted, or set `sanitize: true` to escape it.
+   */
   render?: (value: unknown, row: Record<string, unknown>) => string;
+  /**
+   * For columns without render: default true (values are HTML-escaped).
+   * For columns with render: default false (raw HTML allowed); set true to escape render output.
+   */
+  sanitize?: boolean;
 }
 
 export interface TablePagination {
