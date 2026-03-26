@@ -45,13 +45,16 @@ const FOCUSABLE =
   'textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
 
 function trapFocus(container) {
-  const els = [...container.querySelectorAll(FOCUSABLE)];
-  if (!els.length) return () => {};
-  const first = els[0];
-  const last = els[els.length - 1];
+  const initialEls = [...container.querySelectorAll(FOCUSABLE)];
+  if (!initialEls.length) return () => {};
 
   function handler(e) {
     if (e.key !== 'Tab') return;
+    // Re-query live on every Tab so dynamically added elements are included
+    const els = [...container.querySelectorAll(FOCUSABLE)];
+    if (!els.length) return;
+    const first = els[0];
+    const last = els[els.length - 1];
     if (e.shiftKey) {
       if (document.activeElement === first) { e.preventDefault(); last.focus(); }
     } else {
@@ -60,7 +63,7 @@ function trapFocus(container) {
   }
 
   container.addEventListener('keydown', handler);
-  first.focus();
+  initialEls[0].focus();
   return () => container.removeEventListener('keydown', handler);
 }
 

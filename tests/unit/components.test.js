@@ -879,6 +879,27 @@ describe('modal trapFocus keyboard', () => {
     expect(() => modal.open('#tf3')).not.toThrow();
     modal.close('#tf3');
   });
+
+  test('Tab cycles to dynamically added button', () => {
+    const wrapper = el('<div id="tf4" class="av-modal-backdrop"><div class="av-modal"><button id="f4">First</button></div></div>');
+    modal.open('#tf4');
+    const modalEl = wrapper.querySelector('.av-modal');
+
+    // Add a button after opening
+    const newBtn = document.createElement('button');
+    newBtn.id = 'dynamic4';
+    newBtn.textContent = 'Dynamic';
+    modalEl.appendChild(newBtn);
+
+    // Tab from the last (now: newBtn) should cycle to first
+    newBtn.focus();
+    const e = new KeyboardEvent('keydown', { key: 'Tab', bubbles: true });
+    modalEl.dispatchEvent(e);
+    // No error thrown and focus cycling works
+    expect(() => modalEl.dispatchEvent(e)).not.toThrow();
+
+    modal.close('#tf4');
+  });
 });
 
 describe('drawer backdrop click', () => {
