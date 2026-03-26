@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/AravindS-Wick/aravindhan-ui/compare/v1.0.0...v1.0.1) (2026-03-26)
+
+
+### Bug Fixes
+
+* **release:** disable semantic-release GitHub label creation — causes 422 error ([#11](https://github.com/AravindS-Wick/aravindhan-ui/issues/11)) ([e09e67d](https://github.com/AravindS-Wick/aravindhan-ui/commit/e09e67d41a513d611de7a08a653ff8d4f6ce1b6c))
+
 # 1.0.0 (2026-03-26)
 
 
