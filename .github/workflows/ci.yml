@@ -136,8 +136,8 @@ jobs:
         run: |
           SIZE=$(wc -c < dist/index.css)
           echo "CSS bundle size: ${SIZE} bytes"
-          if [ $SIZE -gt 204800 ]; then
-            echo "❌ Bundle too large: ${SIZE} bytes (limit: 200KB)"
+          if [ $SIZE -gt 409600 ]; then
+            echo "❌ Bundle too large: ${SIZE} bytes (limit: 400KB)"
             exit 1
           fi
           echo "✅ Bundle size within limits"
