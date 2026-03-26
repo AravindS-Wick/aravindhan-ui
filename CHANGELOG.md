@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/AravindS-Wick/aravindhan-ui/compare/v1.2.0...v1.3.0) (2026-03-26)
+
+
+### Features
+
+* **utilities:** add aspect-ratio, scroll, animation, and print utilities ([#21](https://github.com/AravindS-Wick/aravindhan-ui/issues/21)) ([188f9a1](https://github.com/AravindS-Wick/aravindhan-ui/commit/188f9a1a4c3ba83d8d02161c176f4143cdd6ade3))
+
 # [1.2.0](https://github.com/AravindS-Wick/aravindhan-ui/compare/v1.1.0...v1.2.0) (2026-03-26)
 
 
