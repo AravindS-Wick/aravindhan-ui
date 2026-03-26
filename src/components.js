@@ -276,6 +276,11 @@ function initDropdowns() {
       } else if (e.key === 'End') {
         e.preventDefault();
         items[items.length - 1]?.focus();
+      } else if (e.key.length === 1 && /[a-z0-9]/i.test(e.key)) {
+        // Typeahead: jump to first item whose text starts with the pressed char
+        const char = e.key.toLowerCase();
+        const match = items.find((item) => item.textContent.trim().toLowerCase().startsWith(char));
+        if (match) { e.preventDefault(); match.focus(); }
       }
     });
   });
