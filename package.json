@@ -90,6 +90,9 @@
     "stylelint": "^16.3.1",
     "stylelint-config-standard-scss": "^13.1.0"
   },
+  "overrides": {
+    "picomatch": "^4.0.4"
+  },
   "engines": {
     "node": ">=18.0.0",
     "npm": ">=9.0.0"
