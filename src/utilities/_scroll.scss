@@ -1,0 +1,17 @@
+// @aravi1008/ui — Scroll Utilities
+
+// Overflow
+.av-scroll-auto   { overflow: auto; }
+.av-scroll-hidden { overflow: hidden; }
+.av-scroll-x      { overflow: hidden auto; }
+.av-scroll-y      { overflow: auto hidden; }
+
+// Smooth scrolling
+.av-scroll-smooth { scroll-behavior: smooth; }
+
+// Scroll snap
+.av-snap-x      { scroll-snap-type: x mandatory; }
+.av-snap-y      { scroll-snap-type: y mandatory; }
+.av-snap-start  { scroll-snap-align: start; }
+.av-snap-center { scroll-snap-align: center; }
+.av-snap-end    { scroll-snap-align: end; }
