@@ -369,6 +369,57 @@ describe('dropdown', () => {
     document.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     expect(dd.querySelector('.av-dropdown-menu').classList.contains('av-dropdown-open')).toBe(false);
   });
+
+  test('typeahead: pressing "b" jumps to first item starting with B', () => {
+    const wrap = el(`
+      <div id="ddTA1" class="av-dropdown">
+        <button class="av-dropdown-trigger">Toggle</button>
+        <ul class="av-dropdown-menu">
+          <li class="av-dropdown-item" tabindex="0">Apple</li>
+          <li class="av-dropdown-item" tabindex="0">Banana</li>
+          <li class="av-dropdown-item" tabindex="0">Cherry</li>
+        </ul>
+      </div>
+    `);
+    const dd = wrap.querySelector('#ddTA1');
+    dropdown.init();
+    dropdown.open(dd);
+    const menu = dd.querySelector('.av-dropdown-menu');
+    const items = [...menu.querySelectorAll('.av-dropdown-item')];
+    items[0].focus();
+    menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'b', bubbles: true }));
+    expect(document.activeElement).toBe(items[1]); // Banana
+  });
+
+  test('typeahead: case-insensitive match', () => {
+    const wrap = el(`
+      <div id="ddTA2" class="av-dropdown">
+        <button class="av-dropdown-trigger">Toggle</button>
+        <ul class="av-dropdown-menu">
+          <li class="av-dropdown-item" tabindex="0">Apple</li>
+          <li class="av-dropdown-item" tabindex="0">Cherry</li>
+        </ul>
+      </div>
+    `);
+    const dd = wrap.querySelector('#ddTA2');
+    dropdown.init();
+    dropdown.open(dd);
+    const menu = dd.querySelector('.av-dropdown-menu');
+    const items = [...menu.querySelectorAll('.av-dropdown-item')];
+    items[0].focus();
+    menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'C', bubbles: true }));
+    expect(document.activeElement).toBe(items[1]); // Cherry
+  });
+
+  test('typeahead: no match does not throw', () => {
+    const dd = makeDropdown('ddTA3');
+    dropdown.init();
+    dropdown.open(dd);
+    const menu = dd.querySelector('.av-dropdown-menu');
+    expect(() => {
+      menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'z', bubbles: true }));
+    }).not.toThrow();
+  });
 });
 
 // ── toast ─────────────────────────────────────────────────────────────────────
