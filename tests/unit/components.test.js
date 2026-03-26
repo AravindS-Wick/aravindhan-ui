@@ -15,6 +15,7 @@ import {
   tabs,
   navbar,
   initAll,
+  createTable,
 } from '../../src/components.js';
 
 // ── helpers ───────────────────────────────────────────────────────────────────
@@ -916,5 +917,217 @@ describe('initAll', () => {
     if (orig) Object.defineProperty(document, 'readyState', orig);
     else Object.defineProperty(document, 'readyState', { value: 'complete', configurable: true });
     document.dispatchEvent(new Event('DOMContentLoaded'));
+  });
+});
+
+// ── createTable ───────────────────────────────────────────────────────────────
+
+describe('createTable', () => {
+  const COLS = [
+    { key: 'name', label: 'Name', sortable: true },
+    { key: 'role', label: 'Role', sortable: true },
+    { key: 'age',  label: 'Age',  sortable: true, align: 'right' },
+  ];
+  const ROWS = [
+    { name: 'Alice', role: 'Admin',  age: 30 },
+    { name: 'Bob',   role: 'Editor', age: 25 },
+    { name: 'Carol', role: 'Viewer', age: 35 },
+  ];
+
+  afterEach(cleanup);
+
+  test('createTable export is a function', () => {
+    expect(typeof createTable).toBe('function');
+  });
+
+  test('returns null for non-existent target', () => {
+    expect(createTable('#no-such-el')).toBeNull();
+  });
+
+  test('renders a table into target', () => {
+    const wrap = el('<div id="tbl1"></div>');
+    createTable('#tbl1', { columns: COLS, rows: ROWS });
+    expect(wrap.querySelector('table')).not.toBeNull();
+  });
+
+  test('renders correct number of header columns', () => {
+    const wrap = el('<div id="tbl2"></div>');
+    createTable('#tbl2', { columns: COLS, rows: ROWS });
+    expect(wrap.querySelectorAll('th').length).toBe(3);
+  });
+
+  test('renders correct number of body rows', () => {
+    const wrap = el('<div id="tbl3"></div>');
+    createTable('#tbl3', { columns: COLS, rows: ROWS });
+    expect(wrap.querySelectorAll('tbody tr').length).toBe(3);
+  });
+
+  test('renders empty state message when rows is empty', () => {
+    const wrap = el('<div id="tbl4"></div>');
+    createTable('#tbl4', { columns: COLS, rows: [], emptyMessage: 'Nothing here' });
+    expect(wrap.innerHTML).toContain('Nothing here');
+  });
+
+  test('renders loading skeleton when loading=true', () => {
+    const wrap = el('<div id="tbl5"></div>');
+    createTable('#tbl5', { columns: COLS, rows: ROWS, loading: true });
+    expect(wrap.querySelector('.av-skeleton')).not.toBeNull();
+  });
+
+  test('setRows() updates table data', () => {
+    const wrap = el('<div id="tbl6"></div>');
+    const ctrl = createTable('#tbl6', { columns: COLS, rows: ROWS });
+    ctrl.setRows([{ name: 'Dave', role: 'Dev', age: 28 }]);
+    expect(wrap.querySelectorAll('tbody tr').length).toBe(1);
+  });
+
+  test('setLoading(true) shows skeleton', () => {
+    const wrap = el('<div id="tbl7"></div>');
+    const ctrl = createTable('#tbl7', { columns: COLS, rows: ROWS });
+    ctrl.setLoading(true);
+    expect(wrap.querySelector('.av-skeleton')).not.toBeNull();
+  });
+
+  test('setLoading(false) shows rows', () => {
+    const wrap = el('<div id="tbl8"></div>');
+    const ctrl = createTable('#tbl8', { columns: COLS, rows: ROWS, loading: true });
+    ctrl.setLoading(false);
+    expect(wrap.querySelectorAll('tbody tr').length).toBe(3);
+  });
+
+  test('clicking sortable header sorts rows asc', () => {
+    const wrap = el('<div id="tbl9"></div>');
+    createTable('#tbl9', { columns: COLS, rows: ROWS });
+    const th = [...wrap.querySelectorAll('th')].find(t => t.getAttribute('data-av-sort') === 'name');
+    th.click();
+    const cells = [...wrap.querySelectorAll('tbody tr td:first-child')].map(td => td.textContent);
+    expect(cells).toEqual([...cells].sort());
+  });
+
+  test('clicking same header twice reverses sort to desc', () => {
+    const wrap = el('<div id="tbl10"></div>');
+    createTable('#tbl10', { columns: COLS, rows: ROWS });
+    const th = [...wrap.querySelectorAll('th')].find(t => t.getAttribute('data-av-sort') === 'name');
+    th.click(); th.click();
+    const cells = [...wrap.querySelectorAll('tbody tr td:first-child')].map(td => td.textContent);
+    expect(cells).toEqual([...cells].sort().reverse());
+  });
+
+  test('sort() method sorts programmatically', () => {
+    const wrap = el('<div id="tbl11"></div>');
+    const ctrl = createTable('#tbl11', { columns: COLS, rows: ROWS });
+    ctrl.sort('age', 'asc');
+    const cells = [...wrap.querySelectorAll('tbody tr td:last-child')].map(td => td.textContent);
+    expect(cells[0]).toBe('25');
+  });
+
+  test('striped class applied when striped=true', () => {
+    const wrap = el('<div id="tbl12"></div>');
+    createTable('#tbl12', { columns: COLS, rows: ROWS, striped: true });
+    expect(wrap.querySelector('.av-table-striped')).not.toBeNull();
+  });
+
+  test('bordered class applied when bordered=true', () => {
+    const wrap = el('<div id="tbl13"></div>');
+    createTable('#tbl13', { columns: COLS, rows: ROWS, bordered: true });
+    expect(wrap.querySelector('.av-table-bordered')).not.toBeNull();
+  });
+
+  test('stickyHeader class applied when stickyHeader=true', () => {
+    const wrap = el('<div id="tbl14"></div>');
+    createTable('#tbl14', { columns: COLS, rows: ROWS, stickyHeader: true });
+    expect(wrap.querySelector('.av-table-sticky')).not.toBeNull();
+  });
+
+  test('custom render function used for cell', () => {
+    const wrap = el('<div id="tbl15"></div>');
+    const cols = [{ key: 'name', label: 'Name', render: (v) => `<b>${v}</b>` }];
+    createTable('#tbl15', { columns: cols, rows: [{ name: 'Alice' }] });
+    expect(wrap.querySelector('td b')).not.toBeNull();
+  });
+
+  test('pagination renders when enabled', () => {
+    const manyRows = Array.from({ length: 25 }, (_, i) => ({ name: `User ${i}`, role: 'x', age: i }));
+    const wrap = el('<div id="tbl16"></div>');
+    createTable('#tbl16', { columns: COLS, rows: manyRows, pagination: { enabled: true, rowsPerPage: 10 } });
+    expect(wrap.querySelector('.av-pagination')).not.toBeNull();
+  });
+
+  test('pagination shows only rowsPerPage rows', () => {
+    const manyRows = Array.from({ length: 25 }, (_, i) => ({ name: `User ${i}`, role: 'x', age: i }));
+    const wrap = el('<div id="tbl17"></div>');
+    createTable('#tbl17', { columns: COLS, rows: manyRows, pagination: { enabled: true, rowsPerPage: 10 } });
+    expect(wrap.querySelectorAll('tbody tr').length).toBe(10);
+  });
+
+  test('next page button advances page', () => {
+    const manyRows = Array.from({ length: 25 }, (_, i) => ({ name: `User ${i}`, role: 'x', age: i }));
+    const wrap = el('<div id="tbl18"></div>');
+    createTable('#tbl18', { columns: COLS, rows: manyRows, pagination: { enabled: true, rowsPerPage: 10 } });
+    wrap.querySelector('[data-av-next]').click();
+    expect(wrap.querySelectorAll('tbody tr').length).toBeLessThanOrEqual(10);
+  });
+
+  test('prev page button is disabled on first page', () => {
+    const manyRows = Array.from({ length: 25 }, (_, i) => ({ name: `User ${i}`, role: 'x', age: i }));
+    const wrap = el('<div id="tbl19"></div>');
+    createTable('#tbl19', { columns: COLS, rows: manyRows, pagination: { enabled: true, rowsPerPage: 10 } });
+    expect(wrap.querySelector('[data-av-prev]').disabled).toBe(true);
+  });
+
+  test('setPage() navigates to page', () => {
+    const manyRows = Array.from({ length: 25 }, (_, i) => ({ name: `User ${i}`, role: 'x', age: i }));
+    const wrap = el('<div id="tbl20"></div>');
+    const ctrl = createTable('#tbl20', { columns: COLS, rows: manyRows, pagination: { enabled: true, rowsPerPage: 10 } });
+    ctrl.setPage(3);
+    expect(wrap.querySelector('[data-av-next]').disabled).toBe(true);
+  });
+
+  test('rows-per-page select change re-renders', () => {
+    const manyRows = Array.from({ length: 25 }, (_, i) => ({ name: `User ${i}`, role: 'x', age: i }));
+    const wrap = el('<div id="tbl21"></div>');
+    createTable('#tbl21', { columns: COLS, rows: manyRows, pagination: { enabled: true, rowsPerPage: 10, rowsPerPageOptions: [10, 25] } });
+    const sel = wrap.querySelector('[data-av-rpp]');
+    sel.value = '25';
+    sel.dispatchEvent(new Event('change'));
+    expect(wrap.querySelectorAll('tbody tr').length).toBe(25);
+  });
+
+  test('prev page button navigates back', () => {
+    const manyRows = Array.from({ length: 25 }, (_, i) => ({ name: `User ${i}`, role: 'x', age: i }));
+    const wrap = el('<div id="tbl22"></div>');
+    createTable('#tbl22', { columns: COLS, rows: manyRows, pagination: { enabled: true, rowsPerPage: 10 } });
+    wrap.querySelector('[data-av-next]').click();
+    wrap.querySelector('[data-av-prev]').click();
+    expect(wrap.querySelector('[data-av-prev]').disabled).toBe(true);
+  });
+
+  test('destroy() clears container and removes listeners', () => {
+    const wrap = el('<div id="tbl23"></div>');
+    const ctrl = createTable('#tbl23', { columns: COLS, rows: ROWS });
+    ctrl.destroy();
+    expect(wrap.querySelector('table')).toBeNull();
+  });
+
+  test('no-pagination renders all rows without pagination bar', () => {
+    const wrap = el('<div id="tbl24"></div>');
+    createTable('#tbl24', { columns: COLS, rows: ROWS, pagination: { enabled: false } });
+    expect(wrap.querySelector('.av-pagination')).toBeNull();
+    expect(wrap.querySelectorAll('tbody tr').length).toBe(3);
+  });
+
+  test('accepts element reference instead of selector', () => {
+    const div = document.createElement('div');
+    document.body.appendChild(div);
+    const ctrl = createTable(div, { columns: COLS, rows: ROWS });
+    expect(div.querySelector('table')).not.toBeNull();
+    ctrl.destroy();
+  });
+
+  test('XSS: cell content is escaped', () => {
+    const wrap = el('<div id="tbl25"></div>');
+    createTable('#tbl25', { columns: [{ key: 'x', label: 'X' }], rows: [{ x: '<script>alert(1)</script>' }] });
+    expect(wrap.innerHTML).not.toContain('<script>');
+    expect(wrap.innerHTML).toContain('&lt;script&gt;');
   });
 });

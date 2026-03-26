@@ -480,6 +480,216 @@ export function initAll() {
   }
 }
 
+// ── createTable — data-driven table component ─────────────────────────────────
+
+/**
+ * Create a fully-featured data table inside a target element.
+ *
+ * @param {string|HTMLElement} target  - Selector or element to render into
+ * @param {object} options
+ * @param {Array<{key,label,sortable?,width?,align?,render?}>} options.columns
+ * @param {Array<object>} options.rows
+ * @param {object}  [options.pagination]
+ * @param {boolean} [options.pagination.enabled=false]
+ * @param {number}  [options.pagination.page=1]
+ * @param {number}  [options.pagination.rowsPerPage=10]
+ * @param {Array<number>} [options.pagination.rowsPerPageOptions=[10,25,50]]
+ * @param {boolean} [options.striped=false]
+ * @param {boolean} [options.hoverable=true]
+ * @param {boolean} [options.bordered=false]
+ * @param {boolean} [options.stickyHeader=false]
+ * @param {boolean} [options.loading=false]
+ * @param {string}  [options.emptyMessage='No data']
+ * @returns {{ setRows, setPage, setLoading, destroy } | null}
+ */
+export function createTable(target, options = {}) {
+  if (!isBrowser) return null;
+  const container = typeof target === 'string' ? document.querySelector(target) : target;
+  if (!container) return null;
+
+  const cfg = {
+    columns: [],
+    rows: [],
+    striped: false,
+    hoverable: true,
+    bordered: false,
+    stickyHeader: false,
+    loading: false,
+    emptyMessage: 'No data',
+    ...options,
+    pagination: {
+      enabled: false,
+      page: 1,
+      rowsPerPage: 10,
+      rowsPerPageOptions: [10, 25, 50],
+      ...(options.pagination || {}),
+    },
+  };
+
+  let _rows = [...cfg.rows];
+  let _page = cfg.pagination.page;
+  let _rowsPerPage = cfg.pagination.rowsPerPage;
+  let _loading = cfg.loading;
+  let _sortKey = null;
+  let _sortDir = null;
+  const _listeners = [];
+
+  function _esc(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function _sortedRows() {
+    if (!_sortKey) return _rows;
+    return [..._rows].sort((a, b) => {
+      const av = a[_sortKey] ?? '';
+      const bv = b[_sortKey] ?? '';
+      const cmp = String(av).localeCompare(String(bv), undefined, { numeric: true });
+      return _sortDir === 'asc' ? cmp : -cmp;
+    });
+  }
+
+  function _pageRows(rows) {
+    if (!cfg.pagination.enabled) return rows;
+    const start = (_page - 1) * _rowsPerPage;
+    return rows.slice(start, start + _rowsPerPage);
+  }
+
+  function _renderHead() {
+    return `<thead><tr>${cfg.columns.map((col) => {
+      const sortable = col.sortable !== false;
+      const ariasort = _sortKey === col.key
+        ? (_sortDir === 'asc' ? 'ascending' : 'descending')
+        : 'none';
+      const indicator = _sortKey === col.key
+        ? (_sortDir === 'asc' ? ' ↑' : ' ↓')
+        : (sortable ? ' ↕' : '');
+      const style = col.width ? ` style="width:${col.width}"` : '';
+      const align = col.align ? ` class="av-text-${col.align}"` : '';
+      return `<th scope="col"${style}${align}${sortable ? ` aria-sort="${ariasort}" data-av-sort="${col.key}" style="cursor:pointer"` : ''}>${_esc(col.label)}${indicator}</th>`;
+    }).join('')}</tr></thead>`;
+  }
+
+  function _renderBody(visibleRows) {
+    if (_loading) {
+      return `<tbody>${Array.from({ length: _rowsPerPage }, () =>
+        `<tr>${cfg.columns.map(() => `<td><div class="av-skeleton av-skeleton-sm" style="height:1em;border-radius:4px"></div></td>`).join('')}</tr>`
+      ).join('')}</tbody>`;
+    }
+    if (!visibleRows.length) {
+      return `<tbody><tr><td colspan="${cfg.columns.length}" class="av-text-center av-py-8 av-text-secondary">${_esc(cfg.emptyMessage)}</td></tr></tbody>`;
+    }
+    return `<tbody>${visibleRows.map((row) =>
+      `<tr>${cfg.columns.map((col) => {
+        const val = row[col.key] ?? '';
+        const cell = col.render ? col.render(val, row) : _esc(val);
+        const align = col.align ? ` class="av-text-${col.align}"` : '';
+        return `<td${align}>${cell}</td>`;
+      }).join('')}</tr>`
+    ).join('')}</tbody>`;
+  }
+
+  function _renderPagination(total) {
+    if (!cfg.pagination.enabled) return '';
+    const totalPages = Math.max(1, Math.ceil(total / _rowsPerPage));
+    const opts = cfg.pagination.rowsPerPageOptions
+      .map((n) => `<option value="${n}"${n === _rowsPerPage ? ' selected' : ''}>${n}</option>`)
+      .join('');
+    return `
+      <div class="av-pagination av-d-flex av-items-center av-justify-between av-p-3 av-border-t">
+        <div class="av-d-flex av-items-center av-gap-2">
+          <span class="av-text-sm av-text-secondary">Rows per page:</span>
+          <select class="av-select av-select-sm" data-av-rpp>${opts}</select>
+        </div>
+        <div class="av-d-flex av-items-center av-gap-2">
+          <span class="av-text-sm av-text-secondary">${(_page - 1) * _rowsPerPage + 1}–${Math.min(_page * _rowsPerPage, total)} of ${total}</span>
+          <button class="av-btn av-btn-ghost av-btn-sm" data-av-prev ${_page <= 1 ? 'disabled' : ''} aria-label="Previous page">‹</button>
+          <button class="av-btn av-btn-ghost av-btn-sm" data-av-next ${_page >= totalPages ? 'disabled' : ''} aria-label="Next page">›</button>
+        </div>
+      </div>`;
+  }
+
+  function _render() {
+    const sorted = _sortedRows();
+    const visible = _pageRows(sorted);
+    const tableClass = [
+      'av-table',
+      cfg.striped ? 'av-table-striped' : '',
+      cfg.hoverable ? 'av-table-hover' : '',
+      cfg.bordered ? 'av-table-bordered' : '',
+      cfg.stickyHeader ? 'av-table-sticky' : '',
+    ].filter(Boolean).join(' ');
+
+    container.innerHTML = `
+      <div class="av-table-wrapper">
+        <table class="${tableClass}" role="grid">
+          ${_renderHead()}
+          ${_renderBody(visible)}
+        </table>
+        ${_renderPagination(sorted.length)}
+      </div>`;
+
+    _bindEvents();
+  }
+
+  function _bindEvents() {
+    container.querySelectorAll('[data-av-sort]').forEach((th) => {
+      const handler = () => {
+        const key = th.getAttribute('data-av-sort');
+        if (_sortKey === key) {
+          _sortDir = _sortDir === 'asc' ? 'desc' : 'asc';
+        } else {
+          _sortKey = key;
+          _sortDir = 'asc';
+        }
+        _page = 1;
+        _render();
+      };
+      th.addEventListener('click', handler);
+      _listeners.push({ el: th, type: 'click', handler });
+    });
+
+    const prevBtn = container.querySelector('[data-av-prev]');
+    const nextBtn = container.querySelector('[data-av-next]');
+    const rppSel = container.querySelector('[data-av-rpp]');
+
+    if (prevBtn) {
+      const h = () => { if (_page > 1) { _page--; _render(); } };
+      prevBtn.addEventListener('click', h);
+      _listeners.push({ el: prevBtn, type: 'click', handler: h });
+    }
+    if (nextBtn) {
+      const total = _sortedRows().length;
+      const h = () => {
+        if (_page < Math.ceil(total / _rowsPerPage)) { _page++; _render(); }
+      };
+      nextBtn.addEventListener('click', h);
+      _listeners.push({ el: nextBtn, type: 'click', handler: h });
+    }
+    if (rppSel) {
+      const h = (e) => { _rowsPerPage = Number(e.target.value); _page = 1; _render(); };
+      rppSel.addEventListener('change', h);
+      _listeners.push({ el: rppSel, type: 'change', handler: h });
+    }
+  }
+
+  _render();
+
+  return {
+    setRows(rows) { _rows = [...rows]; _page = 1; _render(); },
+    setPage(page) { _page = page; _render(); },
+    setLoading(val) { _loading = val; _render(); },
+    sort(key, dir) { _sortKey = key; _sortDir = dir; _render(); },
+    destroy() {
+      _listeners.forEach(({ el, type, handler }) => el.removeEventListener(type, handler));
+      container.innerHTML = '';
+    },
+  };
+}
+
 export default {
   modal,
   drawer,
@@ -489,4 +699,5 @@ export default {
   tabs,
   navbar,
   initAll,
+  createTable,
 };
