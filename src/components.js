@@ -16,6 +16,16 @@
 // ── Environment guard ─────────────────────────────────────────────────────────
 const isBrowser = typeof document !== 'undefined';
 
+// ── HTML escape helper ────────────────────────────────────────────────────────
+function _escHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 // ── Focus trap helper ─────────────────────────────────────────────────────────
 const FOCUSABLE =
   'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),' +
@@ -270,6 +280,18 @@ const _toastDefaults = {
   pauseOnHover: true,
 };
 
+let _toastMaxVisible = 5;
+const _toastQueue = [];
+
+function _flushToastQueue() {
+  while (_toastQueue.length > 0) {
+    const visibleCount = document.querySelectorAll('.av-toast:not(.av-toast-exit)').length;
+    if (visibleCount >= _toastMaxVisible) break;
+    const next = _toastQueue.shift();
+    _showToastImmediate(next.options);
+  }
+}
+
 function getOrCreateContainer(placement) {
   const cls = `av-toast-container av-toast-${placement}`;
   let container = document.querySelector(`.av-toast-container.av-toast-${placement}`);
@@ -283,18 +305,8 @@ function getOrCreateContainer(placement) {
   return container;
 }
 
-/**
- * Show a toast notification.
- * @param {object} options
- * @param {string} options.title
- * @param {string} [options.description]
- * @param {'info'|'success'|'warning'|'error'|'light'} [options.type='info']
- * @param {number} [options.duration=4000] ms, 0 = no auto-dismiss
- * @param {string} [options.placement='top-right']
- * @param {boolean} [options.pauseOnHover=true]
- */
-function showToast(options = {}) {
-  if (!isBrowser) return null;
+/** Render a toast immediately (internal — does not check the queue). */
+function _showToastImmediate(options = {}) {
   const cfg = { ..._toastDefaults, ...options };
 
   const container = getOrCreateContainer(cfg.placement);
@@ -302,26 +314,20 @@ function showToast(options = {}) {
   const el = document.createElement('div');
   el.className = `av-toast av-toast-${cfg.type || 'info'}`;
   el.setAttribute('role', 'alert');
-  el.innerHTML = `
-    <div class="av-toast-content">
-      ${cfg.title ? `<div class="av-toast-title">${cfg.title}</div>` : ''}
-      ${cfg.description ? `<div class="av-toast-description">${cfg.description}</div>` : ''}
-    </div>
-    <button class="av-toast-close" aria-label="Dismiss">&times;</button>
-    ${cfg.duration > 0 ? `<div class="av-toast-progress" style="animation-duration:${cfg.duration}ms"></div>` : ''}
-  `;
+  const titleHtml = cfg.title ? `<div class="av-toast-title">${_escHtml(cfg.title)}</div>` : '';
+  const descHtml = cfg.description ? `<div class="av-toast-description">${_escHtml(cfg.description)}</div>` : '';
+  const progressHtml = cfg.duration > 0 ? `<div class="av-toast-progress" style="animation-duration:${cfg.duration}ms"></div>` : '';
+  el.innerHTML = `<div class="av-toast-content">${titleHtml}${descHtml}</div><button class="av-toast-close" aria-label="Dismiss">&times;</button>${progressHtml}`;
 
   container.appendChild(el);
 
-  // Animate in
   requestAnimationFrame(() => el.classList.add('av-toast-visible'));
 
   function dismiss() {
     el.classList.remove('av-toast-visible');
     el.classList.add('av-toast-exit');
-    el.addEventListener('transitionend', () => el.remove(), { once: true });
-    // Fallback removal if transition doesn't fire
-    setTimeout(() => el.remove(), 400);
+    el.addEventListener('transitionend', () => { el.remove(); _flushToastQueue(); }, { once: true });
+    setTimeout(() => { el.remove(); _flushToastQueue(); }, 400);
   }
 
   el.querySelector('.av-toast-close').addEventListener('click', dismiss);
@@ -339,7 +345,39 @@ function showToast(options = {}) {
   return { dismiss, el };
 }
 
-export const toast = { show: showToast };
+/**
+ * Show a toast notification. Queues if maxVisible limit is reached.
+ * @param {object} [options]
+ * @param {string} [options.title]
+ * @param {string} [options.description]
+ * @param {'info'|'success'|'warning'|'error'|'light'} [options.type='info']
+ * @param {number} [options.duration=4000] ms, 0 = no auto-dismiss
+ * @param {string} [options.placement='top-right']
+ * @param {boolean} [options.pauseOnHover=true]
+ * @returns {{ dismiss: () => void, el: HTMLElement } | null}
+ */
+function showToast(options = {}) {
+  if (!isBrowser) return null;
+  const visibleCount = document.querySelectorAll('.av-toast:not(.av-toast-exit)').length;
+  if (visibleCount >= _toastMaxVisible) {
+    _toastQueue.push({ options });
+    return null;
+  }
+  return _showToastImmediate(options);
+}
+
+export const toast = {
+  show: showToast,
+  /** Configure toast behaviour. @param {{ maxVisible?: number }} config */
+  configure(config = {}) {
+    if (typeof config.maxVisible === 'number') _toastMaxVisible = config.maxVisible;
+  },
+  /** @internal Reset state — for testing only */
+  _reset() {
+    _toastMaxVisible = 5;
+    _toastQueue.length = 0;
+  },
+};
 
 // ── Accordion ─────────────────────────────────────────────────────────────────
 
@@ -459,10 +497,12 @@ export const navbar = { init: initNavbars };
 
 /**
  * Initialise all interactive components.
- * Call once after the DOM is ready.
+ * @param {object} [options]
+ * @param {boolean} [options.observe=false] - Watch for dynamically added components via MutationObserver
+ * @returns {() => void} Cleanup function — disconnects the observer (no-op if observe is false)
  */
-export function initAll() {
-  if (!isBrowser) return;
+export function initAll(options = {}) {
+  if (!isBrowser) return () => {};
 
   function run() {
     initModals();
@@ -478,6 +518,12 @@ export function initAll() {
   } else {
     run();
   }
+
+  if (!options.observe) return () => {};
+
+  const observer = new MutationObserver(() => { run(); });
+  observer.observe(document.body, { childList: true, subtree: true });
+  return () => { observer.disconnect(); };
 }
 
 // ── createTable — data-driven table component ─────────────────────────────────

@@ -37,6 +37,57 @@ import '@aravi1008/ui/css';
 
 ---
 
+## Interactive Components
+
+Wire all interactive components (modals, drawers, dropdowns, accordions, tabs) with one call:
+
+```js
+import { initAll } from '@aravi1008/ui/components';
+
+// Basic — call once after DOM is ready
+initAll();
+
+// SPA mode — MutationObserver re-wires dynamically added components
+const cleanup = initAll({ observe: true });
+// In React: return cleanup from useEffect
+// In Vue/Svelte: call cleanup in onUnmounted/onDestroy
+```
+
+### Toast
+
+```js
+import { toast } from '@aravi1008/ui/components';
+
+toast.show({ title: 'Saved!', type: 'success' });
+toast.show({ title: 'Error', description: 'Please try again.', type: 'error', duration: 0 });
+
+// Limit how many toasts show at once — extras are queued
+toast.configure({ maxVisible: 3 });
+```
+
+### Modal
+
+```html
+<button data-av-modal-open="#my-modal">Open</button>
+<div class="av-modal-backdrop" id="my-modal">
+  <div class="av-modal av-modal-md">
+    <div class="av-modal-header">
+      <h2 class="av-modal-title">Title</h2>
+      <button class="av-modal-close" data-av-modal-close aria-label="Close">&times;</button>
+    </div>
+    <div class="av-modal-body"><p>Content</p></div>
+  </div>
+</div>
+```
+
+```js
+import { modal } from '@aravi1008/ui/components';
+modal.open('#my-modal');
+modal.close('#my-modal');
+```
+
+---
+
 ## Themes
 
 Switch via `data-av-theme` on any parent element:
@@ -50,6 +101,40 @@ Switch via `data-av-theme` on any parent element:
 ```
 
 Light is default. Dark auto-applies based on OS preference.
+
+```js
+import { setTheme, initTheme } from '@aravi1008/ui';
+
+initTheme('light');                    // reads localStorage / OS pref on startup
+setTheme('dark');                      // switch at runtime
+setTheme('forest', { persist: true }); // switch + save to localStorage
+```
+
+### Custom Theming
+
+Override tokens at the `:root` level — no `!important` needed. All components pick up the new values automatically:
+
+```css
+:root {
+  --av-theme-color-primary:        #ffffff;
+  --av-theme-color-text-inverse:   #000000;
+  --av-theme-color-surface:        #0a0a0a;
+  --av-theme-color-surface-raised: rgba(255, 255, 255, 0.05);
+  --av-theme-color-border:         rgba(255, 255, 255, 0.1);
+  --av-theme-color-text-primary:   #f5f0ea;
+}
+```
+
+Scope a custom theme to a single section without affecting the rest of the page:
+
+```html
+<div data-av-theme="dark" style="--av-theme-color-primary: #a78bfa;">
+  <!-- purple primary, dark bg, only inside this div -->
+  <button class="av-btn av-btn-primary">Purple Button</button>
+</div>
+```
+
+**Available tokens:** `--av-theme-color-primary`, `--av-theme-color-primary-hover`, `--av-theme-color-primary-active`, `--av-theme-color-primary-subtle`, `--av-theme-color-surface`, `--av-theme-color-surface-raised`, `--av-theme-color-border`, `--av-theme-color-border-strong`, `--av-theme-color-text-primary`, `--av-theme-color-text-secondary`, `--av-theme-color-text-inverse`, `--av-theme-color-success`, `--av-theme-color-warning`, `--av-theme-color-error`, `--av-theme-color-info`, `--av-theme-color-focus-ring`
 
 ---
 
@@ -109,14 +194,29 @@ Light is default. Dark auto-applies based on OS preference.
 
 ## Available Themes
 
-| Theme | Description |
-| --- | --- |
-| `light` | Clean white (default) |
-| `dark` | Deep charcoal |
-| `forest` | Earthy greens |
-| `ocean` | Blue-teal |
-| `professional` | Corporate blue |
-| `corporate` | Navy + gold |
+| Theme | `data-av-theme` | Description |
+| --- | --- | --- |
+| Light | `light` | Clean white (default) |
+| Dark | `dark` | Deep charcoal, auto via OS pref |
+| Forest | `forest` | Earthy greens |
+| Ocean | `ocean` | Blue-teal |
+| Professional | `professional` | Corporate blue |
+| Corporate | `corporate` | Navy + gold |
+
+---
+
+## Ecosystem
+
+| Package | Purpose | Status |
+| --- | --- | --- |
+| `@aravi1008/ui` | Core — CSS, tokens, vanilla JS | ✅ Published |
+| `@aravi1008/ui-react` | React components wrapping `av-` classes | 🚧 In progress |
+| `@aravi1008/ui-vue` | Vue 3 components | 🚧 In progress |
+| `@aravi1008/ui-angular` | Angular standalone components | 🚧 In progress |
+| `@aravi1008/ui-svelte` | Svelte 5 components | 🚧 In progress |
+| Docs site | Full component reference + live demos | 🚧 In progress |
+
+Framework packages are thin wrappers — they map props to `av-` CSS classes. The core CSS package does all real work.
 
 ---
 

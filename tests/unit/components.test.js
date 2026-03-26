@@ -483,6 +483,69 @@ describe('toast', () => {
   test('show() with no options does not throw', () => {
     expect(() => toast.show()).not.toThrow();
   });
+
+  test('configure() sets maxVisible — excess toasts are queued (return null)', () => {
+    toast.configure({ maxVisible: 2 });
+    // show 2 — both should succeed
+    const h1 = toast.show({ title: 'T1' });
+    const h2 = toast.show({ title: 'T2' });
+    expect(h1).not.toBeNull();
+    expect(h2).not.toBeNull();
+    // 3rd exceeds limit — queued, returns null
+    const h3 = toast.show({ title: 'T3' });
+    expect(h3).toBeNull();
+    toast._reset();
+  });
+
+  test('configure() with maxVisible:1 only allows 1 visible', () => {
+    toast.configure({ maxVisible: 1 });
+    const h1 = toast.show({ title: 'A' });
+    const h2 = toast.show({ title: 'B' });
+    expect(h1).not.toBeNull();
+    expect(h2).toBeNull();
+    toast._reset();
+  });
+
+  test('_reset() restores default maxVisible', () => {
+    toast.configure({ maxVisible: 1 });
+    toast._reset();
+    // After reset, 5 toasts should be allowed
+    const handles = Array.from({ length: 5 }, (_, i) => toast.show({ title: `T${i}` }));
+    expect(handles.every(h => h !== null)).toBe(true);
+  });
+
+  test('queued toast is flushed after dismiss via setTimeout fallback', () => {
+    jest.useFakeTimers();
+    toast.configure({ maxVisible: 1 });
+    // duration:0 so queued toast has no auto-dismiss timer
+    const h1 = toast.show({ title: 'First', duration: 0 });
+    const queued = toast.show({ title: 'Queued', duration: 0 });
+    expect(queued).toBeNull();
+    // dismiss: adds av-toast-exit, setTimeout(400) → el.remove() + _flushToastQueue
+    h1.dismiss();
+    // advance only the 400ms fallback — not beyond
+    jest.advanceTimersByTime(400);
+    // h1 removed, queued toast now rendered
+    expect(document.querySelectorAll('.av-toast').length).toBe(1);
+    toast._reset();
+  });
+
+  test('configure() with empty object does not throw', () => {
+    expect(() => toast.configure({})).not.toThrow();
+    toast._reset();
+  });
+
+  test('configure() with no argument does not throw', () => {
+    expect(() => toast.configure()).not.toThrow();
+    toast._reset();
+  });
+
+  test('title and description are escaped to prevent XSS', () => {
+    const handle = toast.show({ title: '<b>bold</b>', description: '<script>bad</script>' });
+    expect(handle.el.innerHTML).not.toContain('<b>');
+    expect(handle.el.innerHTML).not.toContain('<script>');
+    expect(handle.el.innerHTML).toContain('&lt;b&gt;');
+  });
 });
 
 // ── accordion ─────────────────────────────────────────────────────────────────
@@ -917,6 +980,23 @@ describe('initAll', () => {
     if (orig) Object.defineProperty(document, 'readyState', orig);
     else Object.defineProperty(document, 'readyState', { value: 'complete', configurable: true });
     document.dispatchEvent(new Event('DOMContentLoaded'));
+  });
+
+  test('initAll() returns a cleanup function', () => {
+    const cleanup = initAll();
+    expect(typeof cleanup).toBe('function');
+  });
+
+  test('initAll({ observe: false }) cleanup is a no-op', () => {
+    const cleanupFn = initAll({ observe: false });
+    expect(() => cleanupFn()).not.toThrow();
+  });
+
+  test('initAll({ observe: true }) returns a disconnect function', () => {
+    const cleanupFn = initAll({ observe: true });
+    expect(typeof cleanupFn).toBe('function');
+    // Should not throw when called
+    expect(() => cleanupFn()).not.toThrow();
   });
 });
 

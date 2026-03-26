@@ -48,8 +48,16 @@ export interface ToastHandle {
   el: HTMLElement;
 }
 
+export interface ToastConfigOptions {
+  /** Max toasts visible at once. Excess toasts are queued and shown when space clears. Default: 5 */
+  maxVisible?: number;
+}
+
 export declare const toast: {
   show(options?: ToastOptions): ToastHandle | null;
+  configure(config: ToastConfigOptions): void;
+  /** @internal Reset state — for testing only */
+  _reset(): void;
 };
 
 // ── Accordion ─────────────────────────────────────────────────────────────────
@@ -71,11 +79,17 @@ export declare const navbar: {
 };
 
 // ── initAll ───────────────────────────────────────────────────────────────────
+export interface InitAllOptions {
+  /** Watch for dynamically added components via MutationObserver. Default: false */
+  observe?: boolean;
+}
+
 /**
  * Initialise all interactive components.
  * Safe to call after DOMContentLoaded or before if DOM is already ready.
+ * @returns Cleanup function — call to disconnect the MutationObserver (no-op if observe is false)
  */
-export declare function initAll(): void;
+export declare function initAll(options?: InitAllOptions): () => void;
 
 // ── createTable ───────────────────────────────────────────────────────────────
 
