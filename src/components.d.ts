@@ -48,8 +48,15 @@ export interface ToastHandle {
   el: HTMLElement;
 }
 
+export interface ToastConfig {
+  /** Maximum number of toasts visible at once. Default: 5 */
+  maxVisible?: number;
+}
+
 export declare const toast: {
   show(options?: ToastOptions): ToastHandle | null;
+  /** Configure global toast behaviour (e.g. max visible count) */
+  configure(options?: ToastConfig): void;
 };
 
 // ── Accordion ─────────────────────────────────────────────────────────────────
