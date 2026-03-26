@@ -1,8 +1,9 @@
-// @aravi1008/ui — Color Utilities (semantic, theme-aware)
+// @aravi1008/ui — Color Utilities
+// Semantic (theme-aware) + full palette scale (50→900) + dark-mode variants
 
 @use '../tokens/variables' as *;
 
-// Text colors
+// ── Semantic text colors ───────────────────────────────────────────────────────
 .av-text-primary    { color: $av-color-text-primary; }
 .av-text-secondary  { color: $av-color-text-secondary; }
 .av-text-disabled   { color: $av-color-text-disabled; }
@@ -12,55 +13,286 @@
 .av-text-warning    { color: $av-color-warning; }
 .av-text-error      { color: $av-color-error; }
 .av-text-info       { color: $av-color-info; }
+.av-text-white      { color: #fff; }
+.av-text-black      { color: #000; }
+.av-text-inherit    { color: inherit; }
+.av-text-current    { color: currentColor; }
 
-// Background colors
-.av-bg-surface        { background-color: $av-color-surface; }
-.av-bg-surface-raised { background-color: $av-color-surface-raised; }
-.av-bg-primary        { background-color: $av-color-primary; }
-.av-bg-primary-subtle { background-color: $av-color-primary-subtle; }
-.av-bg-success        { background-color: $av-color-success; }
-.av-bg-warning        { background-color: $av-color-warning; }
-.av-bg-error          { background-color: $av-color-error; }
-.av-bg-info           { background-color: $av-color-info; }
-.av-bg-transparent    { background-color: transparent; }
+// ── Semantic background colors ─────────────────────────────────────────────────
+.av-bg-surface          { background-color: $av-color-surface; }
+.av-bg-surface-raised   { background-color: $av-color-surface-raised; }
+.av-bg-surface-overlay  { background-color: var(--av-theme-color-surface-overlay, rgba(0 0 0 / 50%)); }
+.av-bg-primary          { background-color: $av-color-primary; }
+.av-bg-primary-subtle   { background-color: $av-color-primary-subtle; }
+.av-bg-secondary        { background-color: $av-color-secondary; }
+.av-bg-success          { background-color: $av-color-success; }
+.av-bg-success-subtle   { background-color: var(--av-theme-color-success-subtle, #F0FDF4); }
+.av-bg-warning          { background-color: $av-color-warning; }
+.av-bg-warning-subtle   { background-color: var(--av-theme-color-warning-subtle, #FFFBEB); }
+.av-bg-error            { background-color: $av-color-error; }
+.av-bg-error-subtle     { background-color: var(--av-theme-color-error-subtle, #FEF2F2); }
+.av-bg-info             { background-color: $av-color-info; }
+.av-bg-info-subtle      { background-color: var(--av-theme-color-info-subtle, #EFF6FF); }
+.av-bg-transparent      { background-color: transparent; }
+.av-bg-white            { background-color: #fff; }
+.av-bg-black            { background-color: #000; }
 
-// Border colors
-.av-border-default  { border-color: $av-color-border; }
-.av-border-strong   { border-color: $av-color-border-strong; }
-.av-border-primary  { border-color: $av-color-primary; }
-.av-border-error    { border-color: $av-color-error; }
+// ── Semantic border colors ─────────────────────────────────────────────────────
+.av-border-color-default  { border-color: $av-color-border; }
+.av-border-color-strong   { border-color: $av-color-border-strong; }
+.av-border-color-primary  { border-color: $av-color-primary; }
+.av-border-color-success  { border-color: $av-color-success; }
+.av-border-color-warning  { border-color: $av-color-warning; }
+.av-border-color-error    { border-color: $av-color-error; }
+.av-border-color-info     { border-color: $av-color-info; }
 
-// Border width
-.av-border          { border-width: 1px; border-style: solid; }
-.av-border-0        { border-width: 0; }
-.av-border-2        { border-width: 2px; border-style: solid; }
-.av-border-t        { border-top-width: 1px; border-top-style: solid; }
-.av-border-b        { border-bottom-width: 1px; border-bottom-style: solid; }
-.av-border-l        { border-left-width: 1px; border-left-style: solid; }
-.av-border-r        { border-right-width: 1px; border-right-style: solid; }
+// ── Border width ───────────────────────────────────────────────────────────────
+.av-border    { border-width: 1px; border-style: solid; }
+.av-border-0  { border-width: 0; }
+.av-border-2  { border-width: 2px; border-style: solid; }
+.av-border-4  { border-width: 4px; border-style: solid; }
+.av-border-t  { border-top-width: 1px; border-top-style: solid; }
+.av-border-b  { border-bottom-width: 1px; border-bottom-style: solid; }
+.av-border-l  { border-left-width: 1px; border-left-style: solid; }
+.av-border-r  { border-right-width: 1px; border-right-style: solid; }
+.av-border-x  { border-left-width: 1px; border-left-style: solid; border-right-width: 1px; border-right-style: solid; }
+.av-border-y  { border-top-width: 1px; border-top-style: solid; border-bottom-width: 1px; border-bottom-style: solid; }
 
-// Border radius
-.av-rounded-none { border-radius: 0; }
-.av-rounded-sm   { border-radius: 2px; }
-.av-rounded      { border-radius: 4px; }
-.av-rounded-md   { border-radius: 4px; }
-.av-rounded-lg   { border-radius: 8px; }
-.av-rounded-xl   { border-radius: 12px; }
-.av-rounded-2xl  { border-radius: 16px; }
-.av-rounded-full { border-radius: 9999px; }
+// ── Border radius ──────────────────────────────────────────────────────────────
+.av-rounded-none  { border-radius: 0; }
+.av-rounded-sm    { border-radius: $av-radius-sm; }
+.av-rounded       { border-radius: $av-radius-md; }
+.av-rounded-md    { border-radius: $av-radius-md; }
+.av-rounded-lg    { border-radius: $av-radius-lg; }
+.av-rounded-xl    { border-radius: $av-radius-xl; }
+.av-rounded-2xl   { border-radius: $av-radius-2xl; }
+.av-rounded-3xl   { border-radius: 1.5rem; }
+.av-rounded-full  { border-radius: $av-radius-full; }
 
-// Shadows
-.av-shadow-none { box-shadow: none; }
-.av-shadow-xs   { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
-.av-shadow-sm   { box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1); }
-.av-shadow-md   { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
-.av-shadow-lg   { box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1); }
-.av-shadow-xl   { box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); }
+.av-rounded-t-none  { border-top-left-radius: 0; border-top-right-radius: 0; }
+.av-rounded-t-md    { border-top-left-radius: $av-radius-md; border-top-right-radius: $av-radius-md; }
+.av-rounded-t-lg    { border-top-left-radius: $av-radius-lg; border-top-right-radius: $av-radius-lg; }
+.av-rounded-b-none  { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+.av-rounded-b-md    { border-bottom-left-radius: $av-radius-md; border-bottom-right-radius: $av-radius-md; }
+.av-rounded-b-lg    { border-bottom-left-radius: $av-radius-lg; border-bottom-right-radius: $av-radius-lg; }
+
+// ── Shadows ────────────────────────────────────────────────────────────────────
+.av-shadow-none  { box-shadow: none; }
+.av-shadow-xs    { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
+.av-shadow-sm    { box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1); }
+.av-shadow       { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
+.av-shadow-md    { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
+.av-shadow-lg    { box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); }
+.av-shadow-xl    { box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); }
+.av-shadow-2xl   { box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25); }
 .av-shadow-inner { box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05); }
 
-// Opacity
-.av-opacity-0   { opacity: 0; }
-.av-opacity-25  { opacity: 0.25; }
-.av-opacity-50  { opacity: 0.5; }
-.av-opacity-75  { opacity: 0.75; }
-.av-opacity-100 { opacity: 1; }
+// Hover shadow helpers
+.av-hover\:shadow-md:hover    { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
+.av-hover\:shadow-lg:hover    { box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); }
+.av-hover\:shadow-xl:hover    { box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); }
+
+// ── Opacity ────────────────────────────────────────────────────────────────────
+.av-opacity-0    { opacity: 0; }
+.av-opacity-5    { opacity: 0.05; }
+.av-opacity-10   { opacity: 0.1; }
+.av-opacity-20   { opacity: 0.2; }
+.av-opacity-25   { opacity: 0.25; }
+.av-opacity-30   { opacity: 0.3; }
+.av-opacity-40   { opacity: 0.4; }
+.av-opacity-50   { opacity: 0.5; }
+.av-opacity-60   { opacity: 0.6; }
+.av-opacity-70   { opacity: 0.7; }
+.av-opacity-75   { opacity: 0.75; }
+.av-opacity-80   { opacity: 0.8; }
+.av-opacity-90   { opacity: 0.9; }
+.av-opacity-95   { opacity: 0.95; }
+.av-opacity-100  { opacity: 1; }
+
+// ── Full palette scale utilities (50→900) ──────────────────────────────────────
+// Text, background, border for every palette colour.
+// Usage: .av-text-blue-500, .av-bg-green-100, .av-border-red-300
+
+// Gray
+$av-palette-gray: (
+  '50': #F8FAFC, '100': #F1F5F9, '200': #E2E8F0, '300': #CBD5E1,
+  '400': #94A3B8, '500': #64748B, '600': #475569, '700': #334155,
+  '800': #1E293B, '900': #0F172A
+);
+
+// Blue (primary)
+$av-palette-blue: (
+  '50': #EFF6FF, '100': #DBEAFE, '200': #BFDBFE, '300': #93C5FD,
+  '400': #60A5FA, '500': #3B82F6, '600': #2563EB, '700': #1D4ED8,
+  '800': #1E40AF, '900': #1E3A8A
+);
+
+// Green
+$av-palette-green: (
+  '50': #F0FDF4, '100': #DCFCE7, '200': #BBF7D0, '300': #86EFAC,
+  '400': #4ADE80, '500': #22C55E, '600': #16A34A, '700': #15803D,
+  '800': #166534, '900': #14532D
+);
+
+// Amber
+$av-palette-amber: (
+  '50': #FFFBEB, '100': #FEF3C7, '200': #FDE68A, '300': #FCD34D,
+  '400': #FBBF24, '500': #F59E0B, '600': #D97706, '700': #B45309,
+  '800': #92400E, '900': #78350F
+);
+
+// Red
+$av-palette-red: (
+  '50': #FEF2F2, '100': #FEE2E2, '200': #FECACA, '300': #FCA5A5,
+  '400': #F87171, '500': #EF4444, '600': #DC2626, '700': #B91C1C,
+  '800': #991B1B, '900': #7F1D1D
+);
+
+// Cyan
+$av-palette-cyan: (
+  '50': #ECFEFF, '100': #CFFAFE, '200': #A5F3FC, '300': #67E8F9,
+  '400': #22D3EE, '500': #06B6D4, '600': #0891B2, '700': #0E7490,
+  '800': #155E75, '900': #164E63
+);
+
+// Teal
+$av-palette-teal: (
+  '50': #F0FDFA, '100': #CCFBF1, '200': #99F6E4, '300': #5EEAD4,
+  '400': #2DD4BF, '500': #14B8A6, '600': #0D9488, '700': #0F766E,
+  '800': #115E59, '900': #134E4A
+);
+
+// Purple
+$av-palette-purple: (
+  '50': #FAF5FF, '100': #F3E8FF, '200': #E9D5FF, '300': #D8B4FE,
+  '400': #C084FC, '500': #A855F7, '600': #9333EA, '700': #7E22CE,
+  '800': #6B21A8, '900': #581C87
+);
+
+// Pink
+$av-palette-pink: (
+  '50': #FDF2F8, '100': #FCE7F3, '200': #FBCFE8, '300': #F9A8D4,
+  '400': #F472B6, '500': #EC4899, '600': #DB2777, '700': #BE185D,
+  '800': #9D174D, '900': #831843
+);
+
+// Orange
+$av-palette-orange: (
+  '50': #FFF7ED, '100': #FFEDD5, '200': #FED7AA, '300': #FDBA74,
+  '400': #FB923C, '500': #F97316, '600': #EA580C, '700': #C2410C,
+  '800': #9A3412, '900': #7C2D12
+);
+
+// Yellow
+$av-palette-yellow: (
+  '50': #FEFCE8, '100': #FEF9C3, '200': #FEF08A, '300': #FDE047,
+  '400': #FACC15, '500': #EAB308, '600': #CA8A04, '700': #A16207,
+  '800': #854D0E, '900': #713F12
+);
+
+// Indigo
+$av-palette-indigo: (
+  '50': #EEF2FF, '100': #E0E7FF, '200': #C7D2FE, '300': #A5B4FC,
+  '400': #818CF8, '500': #6366F1, '600': #4F46E5, '700': #4338CA,
+  '800': #3730A3, '900': #312E81
+);
+
+// Rose
+$av-palette-rose: (
+  '50': #FFF1F2, '100': #FFE4E6, '200': #FECDD3, '300': #FDA4AF,
+  '400': #FB7185, '500': #F43F5E, '600': #E11D48, '700': #BE123C,
+  '800': #9F1239, '900': #881337
+);
+$av-palettes: (
+  'gray': $av-palette-gray,
+  'blue': $av-palette-blue,
+  'green': $av-palette-green,
+  'amber': $av-palette-amber,
+  'red': $av-palette-red,
+  'cyan': $av-palette-cyan,
+  'teal': $av-palette-teal,
+  'purple': $av-palette-purple,
+  'pink': $av-palette-pink,
+  'orange': $av-palette-orange,
+  'yellow': $av-palette-yellow,
+  'indigo': $av-palette-indigo,
+  'rose': $av-palette-rose
+);
+
+@each $palette-name, $palette in $av-palettes {
+  @each $shade, $value in $palette {
+    .av-text-#{$palette-name}-#{$shade}   { color: $value; }
+    .av-bg-#{$palette-name}-#{$shade}     { background-color: $value; }
+    .av-border-#{$palette-name}-#{$shade} { border-color: $value; }
+
+    // Hover state helpers
+    .av-hover\:text-#{$palette-name}-#{$shade}:hover   { color: $value; }
+    .av-hover\:bg-#{$palette-name}-#{$shade}:hover     { background-color: $value; }
+
+    // Focus-visible state helpers
+    .av-focus\:text-#{$palette-name}-#{$shade}:focus-visible   { color: $value; }
+    .av-focus\:bg-#{$palette-name}-#{$shade}:focus-visible     { background-color: $value; }
+  }
+}
+
+// ── Dark mode variants ─────────────────────────────────────────────────────────
+// Applied when [data-av-theme="dark"] is set on any ancestor.
+
+[data-av-theme='dark'] {
+  // Semantic overrides are handled by CSS vars in the theme tokens.
+  // These utilities let you explicitly force colors in dark mode:
+
+  .av-dark\:text-white      { color: #fff; }
+  .av-dark\:text-black      { color: #000; }
+  .av-dark\:bg-white        { background-color: #fff; }
+  .av-dark\:bg-black        { background-color: #000; }
+  .av-dark\:bg-transparent  { background-color: transparent; }
+  .av-dark\:border-white    { border-color: #fff; }
+  .av-dark\:hidden          { display: none; }
+  .av-dark\:block           { display: block; }
+  .av-dark\:flex            { display: flex; }
+
+  // Dark palette overrides — e.g. .av-dark:bg-gray-800 in dark mode
+  @each $palette-name, $palette in $av-palettes {
+    @each $shade, $value in $palette {
+      .av-dark\:text-#{$palette-name}-#{$shade}   { color: $value; }
+      .av-dark\:bg-#{$palette-name}-#{$shade}     { background-color: $value; }
+      .av-dark\:border-#{$palette-name}-#{$shade} { border-color: $value; }
+    }
+  }
+}
+
+// ── Divide utilities (border between children) ─────────────────────────────────
+.av-divide-y > * + * { border-top: 1px solid $av-color-border; }
+.av-divide-x > * + * { border-left: 1px solid $av-color-border; }
+
+// ── Ring (outline) utilities ───────────────────────────────────────────────────
+.av-ring           { outline: 2px solid $av-color-focus-ring; outline-offset: 2px; }
+.av-ring-0         { outline: none; }
+.av-ring-1         { outline: 1px solid $av-color-focus-ring; outline-offset: 1px; }
+.av-ring-2         { outline: 2px solid $av-color-focus-ring; outline-offset: 2px; }
+.av-ring-4         { outline: 4px solid $av-color-focus-ring; outline-offset: 2px; }
+.av-ring-primary   { outline: 2px solid $av-color-primary; outline-offset: 2px; }
+.av-ring-error     { outline: 2px solid $av-color-error; outline-offset: 2px; }
+.av-ring-success   { outline: 2px solid $av-color-success; outline-offset: 2px; }
+
+// ── Background gradient helpers ────────────────────────────────────────────────
+.av-bg-gradient-primary {
+  background-image: linear-gradient(135deg, var(--av-theme-color-primary, #3B82F6), var(--av-theme-color-secondary, #6366F1));
+}
+
+.av-bg-gradient-success {
+  background-image: linear-gradient(135deg, #22C55E, #16A34A);
+}
+
+.av-bg-gradient-warning {
+  background-image: linear-gradient(135deg, #F59E0B, #D97706);
+}
+
+.av-bg-gradient-error {
+  background-image: linear-gradient(135deg, #EF4444, #DC2626);
+}
+
+.av-bg-gradient-subtle {
+  background-image: linear-gradient(135deg, $av-color-surface, $av-color-surface-raised);
+}

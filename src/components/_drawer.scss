@@ -1,0 +1,134 @@
+// @aravi1008/ui — Drawer / Sidebar Panel
+// JS handles open/close, Escape key, backdrop click
+
+@use '../tokens/variables' as *;
+
+// ── Backdrop ──────────────────────────────────────────────────────────────────
+.av-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgb(0 0 0 / 0.5);
+  z-index: var(--av-zindex-overlay, 1200);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+
+  &.av-drawer-open {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+// ── Drawer panel ──────────────────────────────────────────────────────────────
+.av-drawer {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  background-color: $av-color-surface;
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  z-index: var(--av-zindex-modal, 1300);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  width: 320px;
+  max-width: 90vw;
+
+  // Placement
+  &.av-drawer-left {
+    left: 0;
+    transform: translateX(-100%);
+    &.av-drawer-open { transform: translateX(0); }
+  }
+
+  &.av-drawer-right {
+    right: 0;
+    transform: translateX(100%);
+    &.av-drawer-open { transform: translateX(0); }
+  }
+
+  &.av-drawer-top {
+    inset: 0 0 auto;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: 80vh;
+    transform: translateY(-100%);
+    &.av-drawer-open { transform: translateY(0); }
+  }
+
+  &.av-drawer-bottom {
+    inset: auto 0 0;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: 80vh;
+    transform: translateY(100%);
+    border-radius: $av-radius-xl $av-radius-xl 0 0;
+    &.av-drawer-open { transform: translateY(0); }
+  }
+
+  // Sizes
+  &.av-drawer-sm  { width: 240px; }
+  &.av-drawer-md  { width: 320px; }
+  &.av-drawer-lg  { width: 480px; }
+  &.av-drawer-xl  { width: 640px; }
+}
+
+// ── Sections ──────────────────────────────────────────────────────────────────
+.av-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $av-spacing-4;
+  padding: $av-spacing-4 $av-spacing-5;
+  border-bottom: 1px solid $av-color-border;
+  flex-shrink: 0;
+}
+
+.av-drawer-title {
+  font-size: $av-text-base;
+  font-weight: 600;
+  color: $av-color-text-primary;
+  margin: 0;
+}
+
+.av-drawer-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: $av-spacing-5;
+}
+
+.av-drawer-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: $av-spacing-3;
+  padding: $av-spacing-4 $av-spacing-5;
+  border-top: 1px solid $av-color-border;
+  flex-shrink: 0;
+}
+
+.av-drawer-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: $av-radius-md;
+  color: $av-color-text-secondary;
+  cursor: pointer;
+  background: none;
+  border: none;
+  flex-shrink: 0;
+  transition: background-color 0.15s ease, color 0.15s ease;
+
+  &:hover { background-color: $av-color-surface-raised; color: $av-color-text-primary; }
+  &:focus-visible { outline: 2px solid $av-color-focus-ring; outline-offset: 2px; }
+}
+
+// ── Reduced motion ─────────────────────────────────────────────────────────────
+@media (prefers-reduced-motion: reduce) {
+  .av-drawer-backdrop,
+  .av-drawer { transition: none; }
+}

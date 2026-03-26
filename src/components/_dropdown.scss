@@ -1,0 +1,141 @@
+// @aravi1008/ui — Dropdown Menu
+// JS required for open/close toggling
+
+@use '../tokens/variables' as *;
+
+.av-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+// ── Trigger ───────────────────────────────────────────────────────────────────
+.av-dropdown-trigger {
+  cursor: pointer;
+}
+
+// ── Menu panel ────────────────────────────────────────────────────────────────
+.av-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 12rem;
+  background-color: $av-color-surface;
+  border: 1px solid $av-color-border;
+  border-radius: $av-radius-lg;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  z-index: var(--av-zindex-dropdown, 1000);
+  padding: $av-spacing-1 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px) scale(0.98);
+  transform-origin: top left;
+  transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s ease;
+
+  &.av-dropdown-open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+  }
+
+  // Right-aligned
+  &.av-dropdown-right {
+    left: auto;
+    right: 0;
+    transform-origin: top right;
+  }
+
+  // Up direction
+  &.av-dropdown-up {
+    top: auto;
+    bottom: calc(100% + 4px);
+    transform-origin: bottom left;
+
+    &.av-dropdown-right {
+      transform-origin: bottom right;
+    }
+  }
+}
+
+// ── Items ─────────────────────────────────────────────────────────────────────
+.av-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: $av-spacing-2;
+  width: 100%;
+  padding: $av-spacing-2 $av-spacing-3;
+  font-size: $av-text-sm;
+  color: $av-color-text-primary;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  text-decoration: none;
+  transition: background-color 0.1s ease;
+  white-space: nowrap;
+
+  &:hover { background-color: $av-color-surface-raised; }
+
+  &:focus-visible {
+    outline: none;
+    background-color: $av-color-surface-raised;
+  }
+
+  &.av-active {
+    background-color: $av-color-primary-subtle;
+    color: $av-color-primary;
+    font-weight: 500;
+  }
+
+  &.av-danger {
+    color: $av-color-error;
+    &:hover { background-color: var(--av-theme-color-error-subtle, #FEF2F2); }
+  }
+
+  &:disabled,
+  &[aria-disabled='true'] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+.av-dropdown-item-icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+// ── Divider ───────────────────────────────────────────────────────────────────
+.av-dropdown-divider {
+  height: 1px;
+  background-color: $av-color-border;
+  margin: $av-spacing-1 0;
+}
+
+// ── Section header ─────────────────────────────────────────────────────────────
+.av-dropdown-header {
+  padding: $av-spacing-2 $av-spacing-3 $av-spacing-1;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: $av-color-text-secondary;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+// ── Context menu variant (fixed position) ─────────────────────────────────────
+.av-context-menu {
+  position: fixed;
+  z-index: var(--av-zindex-dropdown, 1000);
+  background-color: $av-color-surface;
+  border: 1px solid $av-color-border;
+  border-radius: $av-radius-lg;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  padding: $av-spacing-1 0;
+  min-width: 12rem;
+}
+
+// ── Reduced motion ─────────────────────────────────────────────────────────────
+@media (prefers-reduced-motion: reduce) {
+  .av-dropdown-menu { transition: none; }
+}

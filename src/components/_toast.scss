@@ -1,0 +1,143 @@
+// @aravi1008/ui — Toast / Snackbar Notifications
+// JS handles: show, auto-dismiss, manual dismiss, pause-on-hover
+
+@use '../tokens/variables' as *;
+
+// ── Container (stacking region) ───────────────────────────────────────────────
+.av-toast-container {
+  position: fixed;
+  z-index: var(--av-zindex-toast, 1600);
+  display: flex;
+  flex-direction: column;
+  gap: $av-spacing-2;
+  pointer-events: none;
+  padding: $av-spacing-4;
+
+  // Placement
+  &.av-toast-top-right     { top: 0; right: 0; align-items: flex-end; }
+  &.av-toast-top-left      { top: 0; left: 0; align-items: flex-start; }
+  &.av-toast-top-center    { top: 0; left: 50%; transform: translateX(-50%); align-items: center; }
+  &.av-toast-bottom-right  { bottom: 0; right: 0; align-items: flex-end; flex-direction: column-reverse; }
+  &.av-toast-bottom-left   { bottom: 0; left: 0; align-items: flex-start; flex-direction: column-reverse; }
+  &.av-toast-bottom-center { bottom: 0; left: 50%; transform: translateX(-50%); align-items: center; flex-direction: column-reverse; }
+}
+
+// ── Toast item ────────────────────────────────────────────────────────────────
+.av-toast {
+  display: flex;
+  align-items: flex-start;
+  gap: $av-spacing-3;
+  min-width: 280px;
+  max-width: 400px;
+  padding: $av-spacing-3 $av-spacing-4;
+  background-color: $av-color-text-primary;
+  color: $av-color-surface;
+  border-radius: $av-radius-lg;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.15), 0 4px 6px -4px rgb(0 0 0 / 0.15);
+  pointer-events: auto;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+
+  &.av-toast-visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  &.av-toast-exit {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+
+  .av-toast-top-left &,
+  .av-toast-bottom-left & {
+    transform: translateX(-100%);
+    &.av-toast-visible { transform: translateX(0); }
+    &.av-toast-exit    { transform: translateX(-100%); }
+  }
+
+  .av-toast-top-center &,
+  .av-toast-bottom-center & {
+    transform: translateY(-8px);
+    &.av-toast-visible { transform: translateY(0); }
+    &.av-toast-exit    { transform: translateY(-8px); opacity: 0; }
+  }
+
+  // Variants
+  &.av-toast-info    { background-color: $av-color-info; }
+  &.av-toast-success { background-color: $av-color-success; }
+  &.av-toast-warning { background-color: $av-color-warning; color: $av-color-text-primary; }
+  &.av-toast-error   { background-color: $av-color-error; }
+  &.av-toast-light   { background-color: $av-color-surface; color: $av-color-text-primary; border: 1px solid $av-color-border; }
+}
+
+.av-toast-icon {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: 1px;
+}
+
+.av-toast-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.av-toast-title {
+  font-size: $av-text-sm;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.av-toast-description {
+  font-size: $av-text-xs;
+  opacity: 0.85;
+  margin-top: $av-spacing-1;
+  line-height: 1.4;
+}
+
+.av-toast-close {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: $av-radius-sm;
+  cursor: pointer;
+  background: none;
+  border: none;
+  opacity: 0.7;
+  color: inherit;
+  transition: opacity 0.1s ease, background-color 0.1s ease;
+
+  &:hover { opacity: 1; background-color: rgb(255 255 255 / 0.15); }
+  &:focus-visible { outline: 2px solid currentColor; outline-offset: 1px; }
+}
+
+// ── Progress bar (auto-dismiss timer) ─────────────────────────────────────────
+.av-toast-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background-color: rgb(255 255 255 / 0.4);
+  border-radius: 0 0 $av-radius-lg $av-radius-lg;
+  animation: av-toast-timer linear forwards;
+
+  .av-toast-warning & { background-color: rgb(0 0 0 / 0.2); }
+  .av-toast-light &   { background-color: $av-color-primary; }
+}
+
+@keyframes av-toast-timer {
+  from { width: 100%; }
+  to   { width: 0; }
+}
+
+// ── Reduced motion ─────────────────────────────────────────────────────────────
+@media (prefers-reduced-motion: reduce) {
+  .av-toast { transition: none; }
+  .av-toast-progress { animation: none; }
+}
