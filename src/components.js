@@ -460,9 +460,17 @@ export const navbar = { init: initNavbars };
 /**
  * Initialise all interactive components.
  * Call once after the DOM is ready.
+ *
+ * @param {object} [options]
+ * @param {boolean} [options.observe=false]
+ *   If true, a MutationObserver watches document.body for newly added nodes
+ *   and re-runs init on every DOM insertion. Useful for SPAs that inject
+ *   component HTML after the initial page load.
+ *   Returns a cleanup function that disconnects the observer.
+ * @returns {(() => void) | void} Cleanup function when observe:true, otherwise void.
  */
-export function initAll() {
-  if (!isBrowser) return;
+export function initAll(options = {}) {
+  if (!isBrowser) return undefined;
 
   function run() {
     initModals();
@@ -478,6 +486,17 @@ export function initAll() {
   } else {
     run();
   }
+
+  if (options.observe) {
+    const observer = new MutationObserver((mutations) => {
+      const hasAddedNodes = mutations.some((m) => m.addedNodes.length > 0);
+      if (hasAddedNodes) { run(); }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+    return () => observer.disconnect();
+  }
+
+  return undefined;
 }
 
 // ── createTable — data-driven table component ─────────────────────────────────

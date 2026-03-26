@@ -71,11 +71,22 @@ export declare const navbar: {
 };
 
 // ── initAll ───────────────────────────────────────────────────────────────────
+export interface InitAllOptions {
+  /**
+   * When true, a MutationObserver watches document.body for new nodes and
+   * re-runs component init automatically. Useful for SPAs.
+   * Returns a cleanup function to disconnect the observer.
+   */
+  observe?: boolean;
+}
+
 /**
  * Initialise all interactive components.
  * Safe to call after DOMContentLoaded or before if DOM is already ready.
+ * @param options.observe - enable MutationObserver for SPA re-init
+ * @returns cleanup function when observe:true, otherwise void
  */
-export declare function initAll(): void;
+export declare function initAll(options?: InitAllOptions): (() => void) | void;
 
 // ── createTable ───────────────────────────────────────────────────────────────
 
