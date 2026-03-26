@@ -293,6 +293,11 @@ const _toastDefaults = {
   pauseOnHover: true,
 };
 
+// Queue state
+let _toastMaxVisible = 5;
+let _toastVisibleCount = 0;
+const _toastQueue = [];
+
 function getOrCreateContainer(placement) {
   const cls = `av-toast-container av-toast-${placement}`;
   let container = document.querySelector(`.av-toast-container.av-toast-${placement}`);
@@ -306,35 +311,22 @@ function getOrCreateContainer(placement) {
   return container;
 }
 
-/**
- * Show a toast notification.
- * @param {object} options
- * @param {string} options.title
- * @param {string} [options.description]
- * @param {'info'|'success'|'warning'|'error'|'light'} [options.type='info']
- * @param {number} [options.duration=4000] ms, 0 = no auto-dismiss
- * @param {string} [options.placement='top-right']
- * @param {boolean} [options.pauseOnHover=true]
- */
-function showToast(options = {}) {
-  if (!isBrowser) return null;
-  const cfg = { ..._toastDefaults, ...options };
+function _buildToastHTML(cfg) {
+  const titlePart = cfg.title ? `<div class="av-toast-title">${cfg.title}</div>` : '';
+  const descPart = cfg.description ? `<div class="av-toast-description">${cfg.description}</div>` : '';
+  const progressPart = cfg.duration > 0 ? `<div class="av-toast-progress" style="animation-duration:${cfg.duration}ms"></div>` : '';
+  return `<div class="av-toast-content">${titlePart}${descPart}</div><button class="av-toast-close" aria-label="Dismiss">&times;</button>${progressPart}`;
+}
 
+function _renderToast(cfg) {
   const container = getOrCreateContainer(cfg.placement);
-
   const el = document.createElement('div');
   el.className = `av-toast av-toast-${cfg.type || 'info'}`;
   el.setAttribute('role', 'alert');
-  el.innerHTML = `
-    <div class="av-toast-content">
-      ${cfg.title ? `<div class="av-toast-title">${cfg.title}</div>` : ''}
-      ${cfg.description ? `<div class="av-toast-description">${cfg.description}</div>` : ''}
-    </div>
-    <button class="av-toast-close" aria-label="Dismiss">&times;</button>
-    ${cfg.duration > 0 ? `<div class="av-toast-progress" style="animation-duration:${cfg.duration}ms"></div>` : ''}
-  `;
+  el.innerHTML = _buildToastHTML(cfg);
 
   container.appendChild(el);
+  _toastVisibleCount++;
 
   // Animate in
   requestAnimationFrame(() => el.classList.add('av-toast-visible'));
@@ -342,9 +334,16 @@ function showToast(options = {}) {
   function dismiss() {
     el.classList.remove('av-toast-visible');
     el.classList.add('av-toast-exit');
-    el.addEventListener('transitionend', () => el.remove(), { once: true });
+    function cleanup() {
+      el.remove();
+      _toastVisibleCount = Math.max(0, _toastVisibleCount - 1);
+      if (_toastQueue.length > 0) {
+        _renderToast(_toastQueue.shift());
+      }
+    }
+    el.addEventListener('transitionend', cleanup, { once: true });
     // Fallback removal if transition doesn't fire
-    setTimeout(() => el.remove(), 400);
+    setTimeout(cleanup, 400);
   }
 
   el.querySelector('.av-toast-close').addEventListener('click', dismiss);
@@ -362,7 +361,45 @@ function showToast(options = {}) {
   return { dismiss, el };
 }
 
-export const toast = { show: showToast };
+/**
+ * Show a toast notification.
+ * @param {object} options
+ * @param {string} options.title
+ * @param {string} [options.description]
+ * @param {'info'|'success'|'warning'|'error'|'light'} [options.type='info']
+ * @param {number} [options.duration=4000] ms, 0 = no auto-dismiss
+ * @param {string} [options.placement='top-right']
+ * @param {boolean} [options.pauseOnHover=true]
+ */
+function showToast(options = {}) {
+  if (!isBrowser) return null;
+  const cfg = { ..._toastDefaults, ...options };
+  if (_toastVisibleCount >= _toastMaxVisible) {
+    _toastQueue.push(cfg);
+    return null;
+  }
+  return _renderToast(cfg);
+}
+
+/**
+ * Configure toast behaviour.
+ * @param {object} options
+ * @param {number} [options.maxVisible=5] Maximum number of toasts shown at once
+ */
+function configureToast(options = {}) {
+  if (typeof options.maxVisible === 'number' && options.maxVisible > 0) {
+    _toastMaxVisible = options.maxVisible;
+  }
+}
+
+/** @internal Reset queue state — for unit tests only */
+function _resetToastState() {
+  _toastMaxVisible = 5;
+  _toastVisibleCount = 0;
+  _toastQueue.length = 0;
+}
+
+export const toast = { show: showToast, configure: configureToast, _reset: _resetToastState };
 
 // ── Accordion ─────────────────────────────────────────────────────────────────
 

@@ -52,8 +52,9 @@ describe('exports', () => {
     expect(typeof dropdown.init).toBe('function');
   });
 
-  test('toast has show', () => {
+  test('toast has show and configure', () => {
     expect(typeof toast.show).toBe('function');
+    expect(typeof toast.configure).toBe('function');
   });
 
   test('accordion has init', () => {
@@ -426,8 +427,13 @@ describe('dropdown', () => {
 // ── toast ─────────────────────────────────────────────────────────────────────
 
 describe('toast', () => {
+  beforeEach(() => {
+    toast._reset();
+  });
+
   afterEach(() => {
     cleanup();
+    toast._reset();
     jest.useRealTimers();
   });
 
@@ -534,6 +540,73 @@ describe('toast', () => {
 
   test('show() with no options does not throw', () => {
     expect(() => toast.show()).not.toThrow();
+  });
+
+  // ── queue / cap tests ──────────────────────────────────────────────────────
+
+  describe('queue and cap', () => {
+    beforeEach(() => {
+      cleanup();
+      toast._reset();
+    });
+
+    afterEach(() => {
+      cleanup();
+      toast._reset();
+    });
+
+    test('configure() sets maxVisible', () => {
+      toast.configure({ maxVisible: 3 });
+      const h1 = toast.show({ title: 'T1' });
+      const h2 = toast.show({ title: 'T2' });
+      const h3 = toast.show({ title: 'T3' });
+      const h4 = toast.show({ title: 'T4' }); // should be queued
+      expect(h1).not.toBeNull();
+      expect(h2).not.toBeNull();
+      expect(h3).not.toBeNull();
+      expect(h4).toBeNull(); // queued, not rendered yet
+      expect(document.querySelectorAll('.av-toast').length).toBe(3);
+    });
+
+    test('queued toast appears after one is dismissed', () => {
+      toast.configure({ maxVisible: 2 });
+      const h1 = toast.show({ title: 'T1', duration: 0 });
+      toast.show({ title: 'T2', duration: 0 });
+      toast.show({ title: 'T3', duration: 0 }); // queued
+
+      expect(document.querySelectorAll('.av-toast').length).toBe(2);
+
+      // Dismiss first toast — cleanup fires via transitionend or setTimeout
+      h1.dismiss();
+      // Simulate transitionend
+      h1.el.dispatchEvent(new Event('transitionend'));
+
+      // T3 should now be rendered
+      expect(document.querySelectorAll('.av-toast').length).toBe(2);
+    });
+
+    test('showing exactly maxVisible toasts all render immediately', () => {
+      toast.configure({ maxVisible: 5 });
+      for (let i = 0; i < 5; i++) toast.show({ title: `T${i}` });
+      expect(document.querySelectorAll('.av-toast').length).toBe(5);
+    });
+
+    test('toast over cap returns null', () => {
+      toast.configure({ maxVisible: 1 });
+      toast.show({ title: 'First' });
+      const result = toast.show({ title: 'Second' });
+      expect(result).toBeNull();
+    });
+
+    test('configure() ignores invalid maxVisible values', () => {
+      toast.configure({ maxVisible: 0 });   // ignored
+      toast.configure({ maxVisible: -1 });  // ignored
+      toast.configure({ maxVisible: 'bad' }); // ignored
+      // default of 5 should still apply
+      for (let i = 0; i < 5; i++) toast.show({ title: `T${i}` });
+      const overflow = toast.show({ title: 'overflow' });
+      expect(overflow).toBeNull();
+    });
   });
 });
 
