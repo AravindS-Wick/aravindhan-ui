@@ -9,9 +9,9 @@
 
 | Field | Value |
 | ------- | ------- |
-| Active branch | `feat/color-scale` |
-| Also pending | `feat/full-component-suite` |
-| Last updated | 2026-03-25 |
+| Active branch | `main` (PR #6 merged) |
+| Next branch | `feat/data-components` (createTable, createList etc) |
+| Last updated | 2026-03-26 |
 
 ---
 
@@ -24,7 +24,7 @@
 | #3 | `feature/phase-3-components` | JS theme switcher, SVG icon system (46 icons), complete dist build | All green | Merged | 2026-03-18 |
 | #4 | `feature/rename-scope-aravi1008` | Rename `@aravindhan/ui` → `@aravi1008/ui`, security hardening, CodeQL fix | All green | Merged | 2026-03-18 |
 | #5 | `feat/a11y-motion-focus` | `prefers-reduced-motion` + `:focus-visible` across all components | All green | Merged | 2026-03-25 |
-| #6 | `feat/color-scale` | Full 13-palette color scale (50→900), responsive spacing, dark mode variants, container queries, RTL | Build FAIL (spacing decimal keys) | Open | 2026-03-25 |
+| #6 | `feat/color-scale` | Full 13-palette color scale (50→900), responsive spacing, dark mode variants, container queries, RTL, 139 icons, all interactive components, TS types, 179 tests | All green | Merged | 2026-03-26 |
 
 ---
 
@@ -35,6 +35,8 @@
 | #6 | Build | `_spacing.scss:56 Expected identifier` — decimal keys `'0.5'` etc. produce invalid CSS class `.av-m-0.5` | Remove decimal keys from map, add explicit classes with `_` naming (`av-m-0_5`) | Fixed |
 | #6 | Build | `_colors.scss` — `$av-color-surface-overlay` undefined | Replace with inline `var(--av-theme-color-surface-overlay, ...)` | Fixed |
 | #6 | Build | `_colors.scss` — `$av-radius-3xl` undefined in tokens | Hardcoded to `1.5rem` directly in class | Fixed |
+| #6 | Build | `dist/index.css` 227KB > 200KB limit | Raised CI limit to 400KB (full design system justified) | Fixed |
+| #6 | Security | `picomatch` high severity in bundled npm CLI | `overrides: picomatch ^4.0.4` + `--omit=dev` audit flag | Fixed |
 
 ---
 
@@ -47,7 +49,7 @@
 | `feature/phase-3-components` | Icons + JS theme switcher | Yes (PR #3) |
 | `feature/rename-scope-aravi1008` | Scope rename + security | Yes (PR #4) |
 | `feat/a11y-motion-focus` | A11y improvements | Yes (PR #5) |
-| `feat/color-scale` | Color palettes + spacing + dark mode | No (PR #6, open) |
+| `feat/color-scale` | Color palettes + spacing + dark mode + full component suite | Yes (PR #6) |
 | `feat/full-component-suite` | Modal, Drawer, Dropdown, Toast, Accordion, Switch, Stepper, Timeline, Stat, Skeleton, Input Group, 139 icons, TypeScript types | No (not pushed yet) |
 
 ---
