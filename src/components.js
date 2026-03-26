@@ -16,6 +16,29 @@
 // ── Environment guard ─────────────────────────────────────────────────────────
 const isBrowser = typeof document !== 'undefined';
 
+// ── Scroll lock ───────────────────────────────────────────────────────────────
+// Shared counter so nested modals/drawers don't prematurely restore scroll.
+let _scrollLockCount = 0;
+let _scrollLockOriginal = '';
+
+function _lockScroll() {
+  if (!isBrowser) return;
+  if (_scrollLockCount === 0) {
+    _scrollLockOriginal = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+  }
+  _scrollLockCount++;
+}
+
+function _unlockScroll() {
+  if (!isBrowser) return;
+  _scrollLockCount = Math.max(0, _scrollLockCount - 1);
+  if (_scrollLockCount === 0) {
+    document.body.style.overflow = _scrollLockOriginal;
+    _scrollLockOriginal = '';
+  }
+}
+
 // ── Focus trap helper ─────────────────────────────────────────────────────────
 const FOCUSABLE =
   'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),' +
@@ -58,7 +81,7 @@ function openModal(target) {
   _modalPreviousFocus = document.activeElement;
   backdrop.classList.add('av-modal-open');
   backdrop.setAttribute('aria-hidden', 'false');
-  document.body.style.overflow = 'hidden';
+  _lockScroll();
 
   const dialog = backdrop.querySelector('.av-modal');
   if (dialog) {
@@ -94,7 +117,7 @@ function closeModal(target) {
 
   backdrop.classList.remove('av-modal-open');
   backdrop.setAttribute('aria-hidden', 'true');
-  document.body.style.overflow = '';
+  _unlockScroll();
 
   if (_modalReleaseFocus) { _modalReleaseFocus(); _modalReleaseFocus = null; }
   if (_modalPreviousFocus) { _modalPreviousFocus.focus(); _modalPreviousFocus = null; }
@@ -132,7 +155,7 @@ function openDrawer(target) {
   _drawerPreviousFocus = document.activeElement;
   backdrop.classList.add('av-drawer-open');
   backdrop.setAttribute('aria-hidden', 'false');
-  document.body.style.overflow = 'hidden';
+  _lockScroll();
 
   const panel = backdrop.querySelector('.av-drawer');
   if (panel) {
@@ -159,7 +182,7 @@ function closeDrawer(target) {
 
   backdrop.classList.remove('av-drawer-open');
   backdrop.setAttribute('aria-hidden', 'true');
-  document.body.style.overflow = '';
+  _unlockScroll();
 
   if (_drawerReleaseFocus) { _drawerReleaseFocus(); _drawerReleaseFocus = null; }
   if (_drawerPreviousFocus) { _drawerPreviousFocus.focus(); _drawerPreviousFocus = null; }
