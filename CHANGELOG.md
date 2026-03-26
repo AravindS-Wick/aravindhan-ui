@@ -1,3 +1,20 @@
+# [1.2.0](https://github.com/AravindS-Wick/aravindhan-ui/compare/v1.1.0...v1.2.0) (2026-03-26)
+
+
+### Bug Fixes
+
+* **accordion:** replace max-height hack with CSS grid-template-rows animation ([#18](https://github.com/AravindS-Wick/aravindhan-ui/issues/18)) ([095351d](https://github.com/AravindS-Wick/aravindhan-ui/commit/095351df84764427ab02b01a2997467ddb46d446))
+* **dropdown:** add single-character typeahead keyboard navigation ([#17](https://github.com/AravindS-Wick/aravindhan-ui/issues/17)) ([9418fb1](https://github.com/AravindS-Wick/aravindhan-ui/commit/9418fb13657c2ac2f0e5973ef1b685c7ff2d1e6e))
+* **focus-trap:** re-query focusable elements live on every Tab press ([#16](https://github.com/AravindS-Wick/aravindhan-ui/issues/16)) ([2f197c0](https://github.com/AravindS-Wick/aravindhan-ui/commit/2f197c0ded228d1ed304f9cc3662bfe617999173))
+* **modal,drawer:** add shared scroll lock counter for nested overlays ([#14](https://github.com/AravindS-Wick/aravindhan-ui/issues/14)) ([5452f6f](https://github.com/AravindS-Wick/aravindhan-ui/commit/5452f6fe3fd0d47bd6f436052c0355d7b42e8f2b))
+* **table:** add sanitize option and close XSS vector in createTable ([#19](https://github.com/AravindS-Wick/aravindhan-ui/issues/19)) ([fd2a814](https://github.com/AravindS-Wick/aravindhan-ui/commit/fd2a814503de0dc3413c82032f69ef2213f35cd0))
+* **toast:** add queue and configurable max-visible cap ([#15](https://github.com/AravindS-Wick/aravindhan-ui/issues/15)) ([720dfdb](https://github.com/AravindS-Wick/aravindhan-ui/commit/720dfdbedad6183935129e29c93c2388dc13e1e6))
+
+
+### Features
+
+* **initAll:** add observe option for SPA MutationObserver re-init ([#20](https://github.com/AravindS-Wick/aravindhan-ui/issues/20)) ([9202d88](https://github.com/AravindS-Wick/aravindhan-ui/commit/9202d885e5339fa12f9970ffa10950c792921492))
+
 # [1.1.0](https://github.com/AravindS-Wick/aravindhan-ui/compare/v1.0.1...v1.1.0) (2026-03-26)
 
 
