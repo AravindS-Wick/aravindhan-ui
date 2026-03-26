@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/AravindS-Wick/aravindhan-ui/compare/v1.0.1...v1.1.0) (2026-03-26)
+
+
+### Features
+
+* **typography:** add 7xl-9xl sizes, fluid clamp() scale, responsive variants, prose, list styles, text colors ([#13](https://github.com/AravindS-Wick/aravindhan-ui/issues/13)) ([51d568c](https://github.com/AravindS-Wick/aravindhan-ui/commit/51d568c176210c4dbe5213717f3d4191ef89cc32))
+
 ## [1.0.1](https://github.com/AravindS-Wick/aravindhan-ui/compare/v1.0.0...v1.0.1) (2026-03-26)
 
 
