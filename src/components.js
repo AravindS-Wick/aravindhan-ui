@@ -16,6 +16,16 @@
 // ── Environment guard ─────────────────────────────────────────────────────────
 const isBrowser = typeof document !== 'undefined';
 
+// ── HTML escape helper ────────────────────────────────────────────────────────
+function _escHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 // ── Scroll lock ───────────────────────────────────────────────────────────────
 // Shared counter so nested modals/drawers don't prematurely restore scroll.
 let _scrollLockCount = 0;
@@ -320,8 +330,8 @@ function getOrCreateContainer(placement) {
 }
 
 function _buildToastHTML(cfg) {
-  const titlePart = cfg.title ? `<div class="av-toast-title">${cfg.title}</div>` : '';
-  const descPart = cfg.description ? `<div class="av-toast-description">${cfg.description}</div>` : '';
+  const titlePart = cfg.title ? `<div class="av-toast-title">${_escHtml(cfg.title)}</div>` : '';
+  const descPart = cfg.description ? `<div class="av-toast-description">${_escHtml(cfg.description)}</div>` : '';
   const progressPart = cfg.duration > 0 ? `<div class="av-toast-progress" style="animation-duration:${cfg.duration}ms"></div>` : '';
   return `<div class="av-toast-content">${titlePart}${descPart}</div><button class="av-toast-close" aria-label="Dismiss">&times;</button>${progressPart}`;
 }
