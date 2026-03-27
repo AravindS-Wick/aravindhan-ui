@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/AravindS-Wick/aravindhan-ui/compare/v1.3.0...v1.3.1) (2026-03-27)
+
+
+### Bug Fixes
+
+* **toast:** escape title and description to prevent XSS ([54ca09e](https://github.com/AravindS-Wick/aravindhan-ui/commit/54ca09e8e803ec35c004717fab2d5ccbadacfc73))
+
 # [1.3.0](https://github.com/AravindS-Wick/aravindhan-ui/compare/v1.2.0...v1.3.0) (2026-03-26)
 
 
