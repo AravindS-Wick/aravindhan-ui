@@ -4,7 +4,6 @@
 @use '../tokens/variables' as *;
 
 @layer aravi1008.components {
-
 // ── CSS-only tooltip via data attribute ───────────────────────────────────────
 [data-av-tooltip] {
   position: relative;

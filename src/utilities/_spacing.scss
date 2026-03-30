@@ -46,30 +46,24 @@ $av-spacing-map: (
   '3xl': 64px,
   '4xl': 80px,
 );
-
 $av-neg-spacing-map: (
   '1':  -4px,  '2':  -8px,  '3': -12px, '4': -16px,
   '5': -20px,  '6': -24px,  '8': -32px, '10': -40px,
   '12': -48px, '16': -64px,
   'xs': -4px, 'sm': -8px, 'md': -16px, 'lg': -24px, 'xl': -32px
 );
-
 $av-gap-map: (
   '0': 0, 'px': 1px, '1': 4px, '2': 8px, '3': 12px, '4': 16px,
   '5': 20px, '6': 24px, '8': 32px, '10': 40px, '12': 48px, '16': 64px,
   'xs': 4px, 'sm': 8px, 'md': 16px, 'lg': 24px, 'xl': 32px, '2xl': 48px
 );
-
 $av-space-map: ('1': 4px, '2': 8px, '3': 12px, '4': 16px, '6': 24px, '8': 32px, 'sm': 8px, 'md': 16px, 'lg': 24px);
-
 $av-responsive-spacing-map: (
   '0': 0, '1': 4px, '2': 8px, '3': 12px, '4': 16px, '5': 20px,
   '6': 24px, '8': 32px, '10': 40px, '12': 48px, '16': 64px, '20': 80px,
   'auto': auto, 'xs': 4px, 'sm': 8px, 'md': 16px, 'lg': 24px, 'xl': 32px, '2xl': 48px
 );
-
 $av-breakpoints-responsive: ('sm': 480px, 'md': 768px, 'lg': 1024px, 'xl': 1280px);
-
 $av-size-map: (
   '0': 0, 'px': 1px, '1': 4px, '2': 8px, '3': 12px, '4': 16px,
   '5': 20px, '6': 24px, '8': 32px, '10': 40px, '12': 48px, '14': 56px,

@@ -94,6 +94,9 @@ jobs:
       - name: Build icons (required by icons.test.js)
         run: npm run build:icons
 
+      - name: Build CSS (required by layers.test.js)
+        run: npm run build:css
+
       - name: Run tests with coverage
         run: npm test -- --ci --coverage --coverageReporters=text --coverageReporters=lcov
 
