@@ -3,97 +3,99 @@
 
 @use '../tokens/variables' as *;
 
-.av-accordion {
-  border: 1px solid $av-color-border;
-  border-radius: $av-radius-lg;
-  overflow: hidden;
+@layer aravi1008.components {
+  .av-accordion {
+    border: 1px solid $av-color-border;
+    border-radius: $av-radius-lg;
+    overflow: hidden;
 
-  &.av-accordion-flush {
+    &.av-accordion-flush {
+      border: none;
+      border-radius: 0;
+
+      .av-accordion-item { border-left: none; border-right: none; }
+      .av-accordion-item:first-child { border-top: none; }
+      .av-accordion-item:last-child  { border-bottom: none; }
+    }
+  }
+
+  // ── Item ────────────────────────────────────────────────────────────────────
+  .av-accordion-item {
+    border-bottom: 1px solid $av-color-border;
+
+    &:last-child { border-bottom: none; }
+  }
+
+  // ── Trigger button ──────────────────────────────────────────────────────────
+  .av-accordion-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: $av-spacing-4 $av-spacing-5;
+    font-size: $av-text-sm;
+    font-weight: 500;
+    color: $av-color-text-primary;
+    background: none;
     border: none;
-    border-radius: 0;
+    cursor: pointer;
+    text-align: left;
+    transition: background-color 0.15s ease;
+    gap: $av-spacing-4;
 
-    .av-accordion-item { border-left: none; border-right: none; }
-    .av-accordion-item:first-child { border-top: none; }
-    .av-accordion-item:last-child  { border-bottom: none; }
-  }
-}
+    &:hover { background-color: $av-color-surface-raised; }
+    &:focus-visible { outline: 2px solid $av-color-focus-ring; outline-offset: -2px; }
 
-// ── Item ──────────────────────────────────────────────────────────────────────
-.av-accordion-item {
-  border-bottom: 1px solid $av-color-border;
+    &[aria-expanded='true'] {
+      .av-accordion-icon { transform: rotate(180deg); }
 
-  &:last-child { border-bottom: none; }
-}
-
-// ── Trigger button ────────────────────────────────────────────────────────────
-.av-accordion-trigger {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: $av-spacing-4 $av-spacing-5;
-  font-size: $av-text-sm;
-  font-weight: 500;
-  color: $av-color-text-primary;
-  background: none;
-  border: none;
-  cursor: pointer;
-  text-align: left;
-  transition: background-color 0.15s ease;
-  gap: $av-spacing-4;
-
-  &:hover { background-color: $av-color-surface-raised; }
-  &:focus-visible { outline: 2px solid $av-color-focus-ring; outline-offset: -2px; }
-
-  &[aria-expanded='true'] {
-    .av-accordion-icon { transform: rotate(180deg); }
-
-    background-color: $av-color-surface-raised;
-  }
-}
-
-.av-accordion-icon {
-  flex-shrink: 0;
-  width: 1rem;
-  height: 1rem;
-  transition: transform 0.2s ease;
-  color: $av-color-text-secondary;
-}
-
-// ── Content panel ─────────────────────────────────────────────────────────────
-// Uses CSS grid technique for smooth height animation without a fixed max-height cap.
-// HTML: <div class="av-accordion-content"><div class="av-accordion-body">…</div></div>
-.av-accordion-content {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 0.25s ease;
-
-  &.av-accordion-open {
-    grid-template-rows: 1fr;
-  }
-}
-
-.av-accordion-body {
-  overflow: hidden;
-  min-height: 0;
-  padding: $av-spacing-1 $av-spacing-5 $av-spacing-4;
-  font-size: $av-text-sm;
-  color: $av-color-text-secondary;
-  line-height: 1.6;
-}
-
-// ── Variants ──────────────────────────────────────────────────────────────────
-.av-accordion-filled {
-  .av-accordion-trigger[aria-expanded='true'] {
-    background-color: $av-color-primary-subtle;
-    color: $av-color-primary;
+      background-color: $av-color-surface-raised;
+    }
   }
 
-  .av-accordion-icon { color: $av-color-primary; }
-}
+  .av-accordion-icon {
+    flex-shrink: 0;
+    width: 1rem;
+    height: 1rem;
+    transition: transform 0.2s ease;
+    color: $av-color-text-secondary;
+  }
 
-// ── Reduced motion ─────────────────────────────────────────────────────────────
-@media (prefers-reduced-motion: reduce) {
-  .av-accordion-content,
-  .av-accordion-icon { transition: none; }
+  // ── Content panel ────────────────────────────────────────────────────────────
+  // Uses CSS grid technique for smooth height animation without a fixed max-height cap.
+  // HTML: <div class="av-accordion-content"><div class="av-accordion-body">…</div></div>
+  .av-accordion-content {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.25s ease;
+
+    &.av-accordion-open {
+      grid-template-rows: 1fr;
+    }
+  }
+
+  .av-accordion-body {
+    overflow: hidden;
+    min-height: 0;
+    padding: $av-spacing-1 $av-spacing-5 $av-spacing-4;
+    font-size: $av-text-sm;
+    color: $av-color-text-secondary;
+    line-height: 1.6;
+  }
+
+  // ── Variants ─────────────────────────────────────────────────────────────────
+  .av-accordion-filled {
+    .av-accordion-trigger[aria-expanded='true'] {
+      background-color: $av-color-primary-subtle;
+      color: $av-color-primary;
+    }
+
+    .av-accordion-icon { color: $av-color-primary; }
+  }
+
+  // ── Reduced motion ───────────────────────────────────────────────────────────
+  @media (prefers-reduced-motion: reduce) {
+    .av-accordion-content,
+    .av-accordion-icon { transition: none; }
+  }
 }

@@ -2,6 +2,7 @@
 
 @use '../tokens/variables' as *;
 
+@layer aravi1008.components {
 .av-table-wrapper {
   width: 100%;
   overflow-x: auto;
@@ -126,3 +127,5 @@
     }
   }
 }
+
+} // end @layer aravi1008.components

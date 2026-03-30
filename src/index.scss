@@ -1,7 +1,11 @@
 // @aravi1008/ui — Main Entry Point
 // Import this file to get full design system: tokens, reset, utilities, components
 
+// ── 0. Layer order declaration (must come first) ─────────────────────────────
+@forward 'base/layers';
+
 // ── 1. Tokens (CSS Custom Properties) ───────────────────────────────────────
+@forward 'tokens/layer-tokens';
 @forward 'tokens/variables';
 
 // ── 2. Base Reset & Typography ───────────────────────────────────────────────

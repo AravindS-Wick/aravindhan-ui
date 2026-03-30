@@ -1,10 +1,12 @@
 // @aravi1008/ui — Print Utilities
 
-@media print {
-  /* stylelint-disable declaration-no-important */
-  .av-print\:hidden { display: none !important; }
-  .av-print\:block  { display: block !important; }
-  .av-print\:inline { display: inline !important; }
-  .av-print\:flex   { display: flex !important; }
-  /* stylelint-enable declaration-no-important */
+@layer aravi1008.utilities {
+  @media print {
+    /* stylelint-disable declaration-no-important */
+    .av-print\:hidden { display: none !important; }
+    .av-print\:block  { display: block !important; }
+    .av-print\:inline { display: inline !important; }
+    .av-print\:flex   { display: flex !important; }
+    /* stylelint-enable declaration-no-important */
+  }
 }
