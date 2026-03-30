@@ -1,3 +1,16 @@
+# [1.4.0](https://github.com/AravindS-Wick/aravindhan-ui/compare/v1.3.1...v1.4.0) (2026-03-30)
+
+
+### Bug Fixes
+
+* **ci:** add build:css step before tests; fix stylelint errors ([9f5c7cb](https://github.com/AravindS-Wick/aravindhan-ui/commit/9f5c7cb997faeaf0f9bcdb5fbb9bd18b2cc6f532))
+
+
+### Features
+
+* **css:** add CSS Cascade Layers ([@layer](https://github.com/layer)) across all stylesheets ([16aa3f5](https://github.com/AravindS-Wick/aravindhan-ui/commit/16aa3f5c2184f1a0ea238f9853b7326fe09ce7a7))
+* **css:** add CSS Cascade Layers ([@layer](https://github.com/layer)) across all stylesheets ([3eb968e](https://github.com/AravindS-Wick/aravindhan-ui/commit/3eb968e9a2fe8c3fd463de69f238aa6cbdd7694e))
+
 ## [1.3.1](https://github.com/AravindS-Wick/aravindhan-ui/compare/v1.3.0...v1.3.1) (2026-03-27)
 
 
