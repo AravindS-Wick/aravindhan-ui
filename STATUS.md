@@ -9,9 +9,9 @@
 
 | Field | Value |
 | ------- | ------- |
-| Active branch | All Wave 1-3 branches open as PRs (#14-21) |
+| Active branch | All Wave 1-3 branches open as PRs (#14-21); `feat/css-cascade-layers` merged |
 | Next branch | `feat/combobox` (Wave 4) |
-| Last updated | 2026-03-26 |
+| Last updated | 2026-03-30 |
 
 ---
 
@@ -40,6 +40,7 @@
 | #19 | `fix/table-render-xss` | sanitize option on TableColumn — explicit XSS protection | CI pending | OPEN | 2026-03-26 |
 | #20 | `feat/spa-mutation-observer` | initAll({ observe: true }) — MutationObserver for SPA re-init | CI pending | OPEN | 2026-03-26 |
 | #21 | `feat/missing-utilities` | New utilities: aspect-ratio, scroll-snap, animation keyframes, print | CI pending | OPEN | 2026-03-26 |
+| #24 | `feat/css-cascade-layers` | CSS Cascade Layers (@layer) across all 25 components, 11 utilities, 2 base partials + tokens; 8 new tests (237 total) | All green | Merged | 2026-03-30 |
 
 ---
 
@@ -81,6 +82,7 @@
 | `fix/table-render-xss` | sanitize option, XSS fix | No (PR #19 open) |
 | `feat/spa-mutation-observer` | MutationObserver SPA support | No (PR #20 open) |
 | `feat/missing-utilities` | 4 new utility groups | No (PR #21 open) |
+| `feat/css-cascade-layers` | CSS Cascade Layers across all stylesheets | Yes (PR #24) |
 
 ---
 
@@ -90,8 +92,8 @@
 | ------ | -------- |
 | npm package | `@aravi1008/ui@1.1.0` |
 | Current version on npm | `1.1.0` (published 2026-03-26 via semantic-release — PR #13) |
-| Tests | 207 passing (main); branches have 208-211 each |
-| Coverage | Statements 95.53% / Branches 85.29% / Functions 94.28% / Lines 99.22% |
+| Tests | 237 passing |
+| Coverage | Statements 95.81% / Branches 85.29% / Functions 96.52% / Lines 99.31% |
 | Icons | 150 SVGs |
 | Themes | 6 (light, dark, forest, ocean, professional, corporate) |
 | Components (CSS) | Button, Card, Badge, Alert, Spinner, Form, Input, Navbar, Table, Modal, Drawer, Dropdown, Toast, Accordion, Switch, Stepper, Timeline, Stat/KPI, Skeleton, Input Group, Tooltip, Progress, Breadcrumb, Avatar, Pagination, Tabs |
