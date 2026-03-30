@@ -1,49 +1,51 @@
 // @aravi1008/ui — Display & Visibility Utilities
 
-.av-block         { display: block; }
-.av-inline-block  { display: inline-block; }
-.av-inline        { display: inline; }
-.av-flex          { display: flex; }
-.av-inline-flex   { display: inline-flex; }
-.av-grid          { display: grid; }
-.av-inline-grid   { display: inline-grid; }
-.av-hidden        { display: none; }
-.av-contents      { display: contents; }
+@layer aravi1008.utilities {
+  .av-block         { display: block; }
+  .av-inline-block  { display: inline-block; }
+  .av-inline        { display: inline; }
+  .av-flex          { display: flex; }
+  .av-inline-flex   { display: inline-flex; }
+  .av-grid          { display: grid; }
+  .av-inline-grid   { display: inline-grid; }
+  .av-hidden        { display: none; }
+  .av-contents      { display: contents; }
 
-// Visibility (keeps space)
-.av-visible   { visibility: visible; }
-.av-invisible { visibility: hidden; }
+  // Visibility (keeps space)
+  .av-visible   { visibility: visible; }
+  .av-invisible { visibility: hidden; }
 
-// Overflow
-.av-overflow-auto    { overflow: auto; }
-.av-overflow-hidden  { overflow: hidden; }
-.av-overflow-visible { overflow: visible; }
-.av-overflow-scroll  { overflow: scroll; }
-.av-overflow-x-auto  { overflow-x: auto; }
-.av-overflow-y-auto  { overflow-y: auto; }
+  // Overflow
+  .av-overflow-auto    { overflow: auto; }
+  .av-overflow-hidden  { overflow: hidden; }
+  .av-overflow-visible { overflow: visible; }
+  .av-overflow-scroll  { overflow: scroll; }
+  .av-overflow-x-auto  { overflow-x: auto; }
+  .av-overflow-y-auto  { overflow-y: auto; }
 
-// Position
-.av-relative { position: relative; }
-.av-absolute { position: absolute; }
-.av-fixed    { position: fixed; }
-.av-sticky   { position: sticky; }
-.av-static   { position: static; }
+  // Position
+  .av-relative { position: relative; }
+  .av-absolute { position: absolute; }
+  .av-fixed    { position: fixed; }
+  .av-sticky   { position: sticky; }
+  .av-static   { position: static; }
 
-// Width / Height
-.av-w-full  { width: 100%; }
-.av-w-auto  { width: auto; }
-.av-h-full  { height: 100%; }
-.av-h-auto  { height: auto; }
-.av-h-screen { height: 100vh; }
-.av-w-screen { width: 100vw; }
+  // Width / Height
+  .av-w-full  { width: 100%; }
+  .av-w-auto  { width: auto; }
+  .av-h-full  { height: 100%; }
+  .av-h-auto  { height: auto; }
+  .av-h-screen { height: 100vh; }
+  .av-w-screen { width: 100vw; }
 
-// Cursor
-.av-cursor-pointer  { cursor: pointer; }
-.av-cursor-default  { cursor: default; }
-.av-cursor-disabled { cursor: not-allowed; }
+  // Cursor
+  .av-cursor-pointer  { cursor: pointer; }
+  .av-cursor-default  { cursor: default; }
+  .av-cursor-disabled { cursor: not-allowed; }
 
-// Float
-.av-float-left  { float: left; }
-.av-float-right { float: right; }
-.av-float-none  { float: none; }
-.av-clearfix::after { content: ''; display: table; clear: both; }
+  // Float
+  .av-float-left  { float: left; }
+  .av-float-right { float: right; }
+  .av-float-none  { float: none; }
+  .av-clearfix::after { content: ''; display: table; clear: both; }
+}

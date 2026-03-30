@@ -2,7 +2,7 @@
 
 @use '../tokens/variables' as *;
 
-// ── Shared input base ─────────────────────────────────────────────────────────
+// ── Shared input base (SCSS placeholder — must stay outside @layer) ───────────
 %av-input-base {
   display: block;
   width: 100%;
@@ -39,90 +39,92 @@
   }
 }
 
-// ── Input ─────────────────────────────────────────────────────────────────────
-.av-input {
-  @extend %av-input-base;
+@layer aravi1008.components {
+  // ── Input ─────────────────────────────────────────────────────────────────
+  .av-input {
+    @extend %av-input-base;
 
-  &.av-input-sm { font-size: $av-text-xs; padding: $av-spacing-1 $av-spacing-2; }
-  &.av-input-lg { font-size: $av-text-base; padding: $av-spacing-3 $av-spacing-4; }
+    &.av-input-sm { font-size: $av-text-xs; padding: $av-spacing-1 $av-spacing-2; }
+    &.av-input-lg { font-size: $av-text-base; padding: $av-spacing-3 $av-spacing-4; }
 
-  &.av-input-error {
-    border-color: $av-color-error;
-    &:focus-visible { box-shadow: 0 0 0 3px var(--av-theme-color-error-subtle, #FEF2F2); }
+    &.av-input-error {
+      border-color: $av-color-error;
+      &:focus-visible { box-shadow: 0 0 0 3px var(--av-theme-color-error-subtle, #FEF2F2); }
+    }
+
+    &.av-input-success {
+      border-color: $av-color-success;
+      &:focus-visible { box-shadow: 0 0 0 3px var(--av-theme-color-success-subtle, #F0FDF4); }
+    }
   }
 
-  &.av-input-success {
-    border-color: $av-color-success;
-    &:focus-visible { box-shadow: 0 0 0 3px var(--av-theme-color-success-subtle, #F0FDF4); }
+  // ── Textarea ─────────────────────────────────────────────────────────────
+  .av-textarea {
+    @extend %av-input-base;
+
+    min-height: 100px;
+    resize: vertical;
   }
-}
 
-// ── Textarea ──────────────────────────────────────────────────────────────────
-.av-textarea {
-  @extend %av-input-base;
+  // ── Select ───────────────────────────────────────────────────────────────
+  .av-select {
+    @extend %av-input-base;
 
-  min-height: 100px;
-  resize: vertical;
-}
-
-// ── Select ────────────────────────────────────────────────────────────────────
-.av-select {
-  @extend %av-input-base;
-
-  cursor: pointer;
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-  background-position: right $av-spacing-3 center;
-  background-repeat: no-repeat;
-  background-size: 1.25rem;
-  padding-right: $av-spacing-8;
-}
-
-// ── Checkbox & Radio ──────────────────────────────────────────────────────────
-.av-checkbox,
-.av-radio {
-  display: inline-flex;
-  align-items: center;
-  gap: $av-spacing-2;
-  cursor: pointer;
-  font-size: $av-text-sm;
-  color: $av-color-text-primary;
-  user-select: none;
-
-  input[type='checkbox'],
-  input[type='radio'] {
-    width: 1rem;
-    height: 1rem;
     cursor: pointer;
-    accent-color: $av-color-primary;
-    flex-shrink: 0;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right $av-spacing-3 center;
+    background-repeat: no-repeat;
+    background-size: 1.25rem;
+    padding-right: $av-spacing-8;
   }
 
-  &:has(input:disabled) {
-    cursor: not-allowed;
-    opacity: 0.6;
+  // ── Checkbox & Radio ─────────────────────────────────────────────────────
+  .av-checkbox,
+  .av-radio {
+    display: inline-flex;
+    align-items: center;
+    gap: $av-spacing-2;
+    cursor: pointer;
+    font-size: $av-text-sm;
+    color: $av-color-text-primary;
+    user-select: none;
+
+    input[type='checkbox'],
+    input[type='radio'] {
+      width: 1rem;
+      height: 1rem;
+      cursor: pointer;
+      accent-color: $av-color-primary;
+      flex-shrink: 0;
+    }
+
+    &:has(input:disabled) {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
   }
-}
 
-// ── Form Group ────────────────────────────────────────────────────────────────
-.av-form-group {
-  display: flex;
-  flex-direction: column;
-  gap: $av-spacing-1;
-  margin-bottom: $av-spacing-md;
-}
+  // ── Form Group ───────────────────────────────────────────────────────────
+  .av-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: $av-spacing-1;
+    margin-bottom: $av-spacing-md;
+  }
 
-.av-label {
-  font-size: $av-text-sm;
-  font-weight: 500;
-  color: $av-color-text-primary;
-}
+  .av-label {
+    font-size: $av-text-sm;
+    font-weight: 500;
+    color: $av-color-text-primary;
+  }
 
-.av-form-hint {
-  font-size: $av-text-xs;
-  color: $av-color-text-secondary;
-}
+  .av-form-hint {
+    font-size: $av-text-xs;
+    color: $av-color-text-secondary;
+  }
 
-.av-form-error {
-  font-size: $av-text-xs;
-  color: $av-color-error;
+  .av-form-error {
+    font-size: $av-text-xs;
+    color: $av-color-error;
+  }
 }

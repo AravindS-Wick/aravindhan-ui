@@ -1,0 +1,80 @@
+// @aravi1008/ui — Default (light) theme CSS custom properties
+// Emitted inside @layer aravi1008.tokens so consumer styles always win.
+// Theme overrides (dist/themes/*.css) use [data-av-theme] selectors which
+// live outside any @layer and therefore cascade above this layer automatically.
+
+@layer aravi1008.tokens {
+  :root {
+    // ── Light theme defaults ────────────────────────────────────────────────
+    --av-theme-color-primary:          #3b82f6;
+    --av-theme-color-primary-hover:    #2563eb;
+    --av-theme-color-primary-active:   #1d4ed8;
+    --av-theme-color-primary-subtle:   #eff6ff;
+    --av-theme-color-secondary:        #64748b;
+    --av-theme-color-secondary-hover:  #475569;
+    --av-theme-color-surface:          #ffffff;
+    --av-theme-color-surface-raised:   #f8fafc;
+    --av-theme-color-surface-overlay:  #ffffff;
+    --av-theme-color-border:           #e2e8f0;
+    --av-theme-color-border-strong:    #cbd5e1;
+    --av-theme-color-text-primary:     #0f172a;
+    --av-theme-color-text-secondary:   #64748b;
+    --av-theme-color-text-disabled:    #cbd5e1;
+    --av-theme-color-text-inverse:     #ffffff;
+    --av-theme-color-success:          #22c55e;
+    --av-theme-color-success-subtle:   #f0fdf4;
+    --av-theme-color-warning:          #f59e0b;
+    --av-theme-color-warning-subtle:   #fffbeb;
+    --av-theme-color-error:            #ef4444;
+    --av-theme-color-error-subtle:     #fef2f2;
+    --av-theme-color-info:             #06b6d4;
+    --av-theme-color-info-subtle:      #ecfeff;
+    --av-theme-color-focus-ring:       #3b82f6;
+
+    // ── Typography defaults ──────────────────────────────────────────────────
+    --av-font-sans:  system-ui, -apple-system, "Segoe UI", roboto, sans-serif;
+    --av-font-mono:  ui-monospace, "SFMono-Regular", menlo, monospace;
+    --av-font-serif: ui-serif, georgia, "Times New Roman", serif;
+
+    // ── Spacing defaults ─────────────────────────────────────────────────────
+    --av-spacing-0:   0;
+    --av-spacing-1:   4px;
+    --av-spacing-2:   8px;
+    --av-spacing-3:   12px;
+    --av-spacing-4:   16px;
+    --av-spacing-5:   20px;
+    --av-spacing-6:   24px;
+    --av-spacing-8:   32px;
+    --av-spacing-10:  40px;
+    --av-spacing-12:  48px;
+    --av-spacing-16:  64px;
+    --av-spacing-xs:  4px;
+    --av-spacing-sm:  8px;
+    --av-spacing-md:  16px;
+    --av-spacing-lg:  24px;
+    --av-spacing-xl:  32px;
+    --av-spacing-2xl: 48px;
+    --av-spacing-3xl: 64px;
+
+    // ── Border radius defaults ───────────────────────────────────────────────
+    --av-radius-none: 0;
+    --av-radius-sm:   2px;
+    --av-radius-md:   4px;
+    --av-radius-lg:   8px;
+    --av-radius-xl:   12px;
+    --av-radius-2xl:  16px;
+    --av-radius-full: 9999px;
+
+    // ── Typography scale defaults ────────────────────────────────────────────
+    --av-text-xs:   0.75rem;
+    --av-text-sm:   0.875rem;
+    --av-text-base: 1rem;
+    --av-text-lg:   1.125rem;
+    --av-text-xl:   1.25rem;
+    --av-text-2xl:  1.5rem;
+    --av-text-3xl:  1.875rem;
+    --av-text-4xl:  2.25rem;
+    --av-text-5xl:  3rem;
+    --av-text-6xl:  3.75rem;
+  }
+}

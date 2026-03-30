@@ -2,6 +2,8 @@
 
 @use '../tokens/variables' as *;
 
+@layer aravi1008.components {
+
 .av-tabs {
   display: flex;
   flex-direction: column;
@@ -74,3 +76,5 @@
     }
   }
 }
+
+} // end @layer aravi1008.components
