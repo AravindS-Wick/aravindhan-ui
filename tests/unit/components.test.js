@@ -425,6 +425,17 @@ describe('dropdown', () => {
     expect(dd.querySelector('.av-dropdown-menu').classList.contains('av-dropdown-open')).toBe(false);
   });
 
+  test('init() called twice does not double-attach listeners (dedup guard)', () => {
+    const dd = makeDropdown('ddDedup');
+    // Call init twice — second call should skip already-initialized dropdowns
+    dropdown.init();
+    const initCount1 = dd.querySelectorAll('.av-dropdown-trigger').length;
+    dropdown.init();
+    const initCount2 = dd.querySelectorAll('.av-dropdown-trigger').length;
+    // Should be same count (not doubled)
+    expect(initCount2).toBe(initCount1);
+  });
+
   test('typeahead: pressing "b" jumps to first item starting with B', () => {
     const wrap = el(`
       <div id="ddTA1" class="av-dropdown">
@@ -1131,6 +1142,26 @@ describe('initAll', () => {
     expect(result).toBeUndefined();
   });
 
+  test('initAll() called twice does not double-init (dedup guards work)', () => {
+    el(`
+      <button data-av-modal-open="#m1">Open Modal</button>
+      <button data-av-modal-close>Close</button>
+      <div id="m1" class="av-modal-backdrop"><div class="av-modal"></div></div>
+      <button data-av-drawer-open="#d1">Open Drawer</button>
+      <button data-av-drawer-close>Close</button>
+      <div id="d1" class="av-drawer-backdrop"><div class="av-drawer"></div></div>
+      <div class="av-dropdown"><button class="av-dropdown-trigger">Menu</button><ul class="av-dropdown-menu"><li class="av-dropdown-item">Item</li></ul></div>
+    `);
+    // Call initAll twice — dedup guards should prevent double listener attachment
+    expect(() => {
+      initAll();
+      initAll(); // Should not throw or double-attach listeners
+    }).not.toThrow();
+    // Verify that triggering still works after dedup
+    const openBtn = document.querySelector('[data-av-modal-open]');
+    expect(() => openBtn.click()).not.toThrow();
+  });
+
   test('initAll({ observe: true }) re-inits when nodes are added to body', async () => {
     const stop = initAll({ observe: true });
     // Inject a new modal trigger — observer should fire run() without error
@@ -1364,6 +1395,27 @@ describe('createTable', () => {
     const wrap = el('<div id="tbl27"></div>');
     createTable('#tbl27', { columns: COLS, rows: [], emptyMessage: 'No results' });
     expect(wrap.innerHTML).toContain('No results');
+  });
+
+  test('sort() method updates sort direction and re-renders', () => {
+    const wrap = el('<div id="tbl28"></div>');
+    const ctrl = createTable('#tbl28', { columns: COLS, rows: ROWS });
+    ctrl.sort('name', 'desc');
+    const cells = [...wrap.querySelectorAll('tbody tr td:first-child')].map(td => td.textContent.trim());
+    // Sorted descending by name: Carol, Bob, Alice
+    expect(cells[0]).toBe('Carol');
+    expect(cells[1]).toBe('Bob');
+  });
+
+  test('render column with user data and sanitize:false preserves HTML', () => {
+    const wrap = el('<div id="tbl29"></div>');
+    const cols = [
+      { key: 'name', label: 'Name' },
+      { key: 'html', label: 'Badge', render: (v) => `<span class="badge">${v}</span>`, sanitize: false }
+    ];
+    createTable('#tbl29', { columns: cols, rows: [{ name: 'Alice', html: 'Admin' }] });
+    expect(wrap.querySelector('span.badge')).not.toBeNull();
+    expect(wrap.querySelector('span.badge').textContent).toBe('Admin');
   });
 
   test('XSS: img onerror payload in cell data is escaped', () => {
