@@ -9,9 +9,9 @@
 
 | Field | Value |
 | ------- | ------- |
-| Active branch | All Wave 1-3 branches open as PRs (#14-21); `feat/css-cascade-layers` merged |
-| Next branch | `feat/combobox` (Wave 4) |
-| Last updated | 2026-03-30 |
+| Active branch | `fix/p0-p1-security-bugs` (PR #25 open); Wave 1-3 branches still OPEN as PRs (#14-21) |
+| Next branch | Complete fix/p0-p1 PR, then resume Wave 4 (feat/combobox) |
+| Last updated | 2026-04-06 |
 
 ---
 
@@ -41,6 +41,7 @@
 | #20 | `feat/spa-mutation-observer` | initAll({ observe: true }) — MutationObserver for SPA re-init | CI pending | OPEN | 2026-03-26 |
 | #21 | `feat/missing-utilities` | New utilities: aspect-ratio, scroll-snap, animation keyframes, print | CI pending | OPEN | 2026-03-26 |
 | #24 | `feat/css-cascade-layers` | CSS Cascade Layers (@layer) across all 25 components, 11 utilities, 2 base partials + tokens; 8 new tests (237 total) | All green | Merged | 2026-03-30 |
+| #25 | `fix/p0-p1-security-bugs` | **P0 CRITICAL**: Fix broken ESM entry, remove dead exports, consolidate CSS builds. **P1 HIGH**: Fix modal focus trap singletons, initAll listener stacking, createTable XSS, toast double-cleanup, dropdown/navbar click listener accumulation | All green | OPEN | 2026-04-06 |
 
 ---
 
@@ -83,6 +84,7 @@
 | `feat/spa-mutation-observer` | MutationObserver SPA support | No (PR #20 open) |
 | `feat/missing-utilities` | 4 new utility groups | No (PR #21 open) |
 | `feat/css-cascade-layers` | CSS Cascade Layers across all stylesheets | Yes (PR #24) |
+| `fix/p0-p1-security-bugs` | Security hardening: P0 critical fixes (ESM, exports, minification) + P1 high fixes (focus trap, listeners, XSS) | No (PR #25 open) |
 
 ---
 
@@ -90,10 +92,10 @@
 
 | Item | Status |
 | ------ | -------- |
-| npm package | `@aravi1008/ui@1.1.0` |
-| Current version on npm | `1.1.0` (published 2026-03-26 via semantic-release — PR #13) |
-| Tests | 237 passing |
-| Coverage | Statements 95.81% / Branches 85.29% / Functions 96.52% / Lines 99.31% |
+| npm package | `@aravi1008/ui@1.4.0` |
+| Current version on npm | `1.4.0` (published via semantic-release — PR #24) |
+| Tests | 239 passing |
+| Coverage | Statements 80.21% / Branches 70.27% / Functions 82.43% / Lines 86.41% (below 85% due to dedup guards) |
 | Icons | 150 SVGs |
 | Themes | 6 (light, dark, forest, ocean, professional, corporate) |
 | Components (CSS) | Button, Card, Badge, Alert, Spinner, Form, Input, Navbar, Table, Modal, Drawer, Dropdown, Toast, Accordion, Switch, Stepper, Timeline, Stat/KPI, Skeleton, Input Group, Tooltip, Progress, Breadcrumb, Avatar, Pagination, Tabs |
