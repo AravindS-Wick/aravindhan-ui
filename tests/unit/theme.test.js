@@ -229,6 +229,17 @@ describe('toggleDarkMode', () => {
       expect(getTheme(el)).toBe('dark');
     });
   });
+
+  test('non-dark themes round-trip: theme → dark → theme', () => {
+    const el = makeMockEl();
+    setTheme('forest', { persist: false, target: el });
+    _rateLimiter.reset();
+    toggleDarkMode({ persist: false, target: el });
+    expect(getTheme(el)).toBe('dark');
+    _rateLimiter.reset();
+    toggleDarkMode({ persist: false, target: el });
+    expect(getTheme(el)).toBe('forest');
+  });
 });
 
 // ── initTheme ─────────────────────────────────────────────────────────────────
