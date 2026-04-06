@@ -1,3 +1,11 @@
+## [1.4.1](https://github.com/AravindS-Wick/aravindhan-ui/compare/v1.4.0...v1.4.1) (2026-04-06)
+
+
+### Bug Fixes
+
+* **p2,p3:** toggleDarkMode round-trip for non-light/dark themes ([50a2309](https://github.com/AravindS-Wick/aravindhan-ui/commit/50a2309057a65891bc189bddd2bac14246918c48))
+* **security:** resolve P0 and P1 critical bugs ([d2b18ad](https://github.com/AravindS-Wick/aravindhan-ui/commit/d2b18ad57ffcfc6ea7d5f96b6b2fc8f21409e859))
+
 # [1.4.0](https://github.com/AravindS-Wick/aravindhan-ui/compare/v1.3.1...v1.4.0) (2026-03-30)
 
 
