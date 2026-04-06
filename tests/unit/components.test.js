@@ -16,6 +16,7 @@ import {
   navbar,
   initAll,
   createTable,
+  _resetScrollLock,
 } from '../../src/components.js';
 
 // ── helpers ───────────────────────────────────────────────────────────────────
@@ -29,6 +30,7 @@ function el(html) {
 
 function cleanup() {
   document.body.innerHTML = '';
+  _resetScrollLock();
 }
 
 // ── exports shape ─────────────────────────────────────────────────────────────
@@ -979,15 +981,13 @@ describe('modal: open/close with no dialog child', () => {
     modal.close('#mb1');
   });
 
-  test('close calls _avCleanup when present', () => {
-    el('<div id="mb2" class="av-modal-backdrop"></div>');
+  test('close removes _avModalState after cleanup', () => {
+    el('<div id="mb2" class="av-modal-backdrop"><div class="av-modal"></div></div>');
     modal.open('#mb2');
-    // Manually attach _avCleanup to verify it gets called
     const backdrop = document.getElementById('mb2');
-    let cleaned = false;
-    backdrop._avCleanup = () => { cleaned = true; };
+    expect(backdrop._avModalState).toBeDefined();
     modal.close('#mb2');
-    expect(cleaned).toBe(true);
+    expect(backdrop._avModalState).toBeUndefined();
   });
 });
 
@@ -1000,14 +1000,13 @@ describe('drawer: open/close with no .av-drawer child', () => {
     drawer.close('#db1');
   });
 
-  test('close calls _avCleanup when present', () => {
-    el('<div id="db2" class="av-drawer-backdrop"></div>');
+  test('close removes _avDrawerState after cleanup', () => {
+    el('<div id="db2" class="av-drawer-backdrop"><div class="av-drawer"></div></div>');
     drawer.open('#db2');
     const backdrop = document.getElementById('db2');
-    let cleaned = false;
-    backdrop._avCleanup = () => { cleaned = true; };
+    expect(backdrop._avDrawerState).toBeDefined();
     drawer.close('#db2');
-    expect(cleaned).toBe(true);
+    expect(backdrop._avDrawerState).toBeUndefined();
   });
 });
 
@@ -1264,7 +1263,7 @@ describe('createTable', () => {
 
   test('custom render function used for cell', () => {
     const wrap = el('<div id="tbl15"></div>');
-    const cols = [{ key: 'name', label: 'Name', render: (v) => `<b>${v}</b>` }];
+    const cols = [{ key: 'name', label: 'Name', render: (v) => `<b>${v}</b>`, sanitize: false }];
     createTable('#tbl15', { columns: cols, rows: [{ name: 'Alice' }] });
     expect(wrap.querySelector('td b')).not.toBeNull();
   });
@@ -1352,6 +1351,19 @@ describe('createTable', () => {
     createTable('#tbl25', { columns: [{ key: 'x', label: 'X' }], rows: [{ x: '<script>alert(1)</script>' }] });
     expect(wrap.innerHTML).not.toContain('<script>');
     expect(wrap.innerHTML).toContain('&lt;script&gt;');
+  });
+
+  test('setLoading(true) renders skeleton loaders', () => {
+    const wrap = el('<div id="tbl26"></div>');
+    const ctrl = createTable('#tbl26', { columns: COLS, rows: ROWS });
+    ctrl.setLoading(true);
+    expect(wrap.querySelector('.av-skeleton')).not.toBeNull();
+  });
+
+  test('empty rows renders emptyMessage', () => {
+    const wrap = el('<div id="tbl27"></div>');
+    createTable('#tbl27', { columns: COLS, rows: [], emptyMessage: 'No results' });
+    expect(wrap.innerHTML).toContain('No results');
   });
 
   test('XSS: img onerror payload in cell data is escaped', () => {
