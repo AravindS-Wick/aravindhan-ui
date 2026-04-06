@@ -14,9 +14,6 @@
       "require": "./dist/index.cjs"
     },
     "./css": "./dist/index.css",
-    "./css/min": "./dist/index.min.css",
-    "./scss": "./src/index.scss",
-    "./less": "./src/index.less",
     "./tokens": "./dist/tokens/tokens.js",
     "./tokens/css": "./dist/tokens/variables.css",
     "./tokens/scss": "./dist/tokens/variables.scss",

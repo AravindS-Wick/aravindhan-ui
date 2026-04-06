@@ -49,6 +49,13 @@ function _unlockScroll() {
   }
 }
 
+/** @internal Reset scroll lock state — for unit tests only */
+function _resetScrollLock() {
+  _scrollLockCount = 0;
+  _scrollLockOriginal = '';
+  if (isBrowser) document.body.style.overflow = '';
+}
+
 // ── Focus trap helper ─────────────────────────────────────────────────────────
 const FOCUSABLE =
   'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),' +
@@ -79,9 +86,6 @@ function trapFocus(container) {
 
 // ── Modal ─────────────────────────────────────────────────────────────────────
 
-let _modalReleaseFocus = null;
-let _modalPreviousFocus = null;
-
 /**
  * Open a modal.
  * @param {string|HTMLElement} target - Modal backdrop selector or element
@@ -91,7 +95,14 @@ function openModal(target) {
   const backdrop = typeof target === 'string' ? document.querySelector(target) : target;
   if (!backdrop) return;
 
-  _modalPreviousFocus = document.activeElement;
+  const state = {
+    backdrop,
+    previousFocus: document.activeElement,
+    releaseFocus: null,
+    onBackdropClick: null,
+    onKeyDown: null,
+  };
+
   backdrop.classList.add('av-modal-open');
   backdrop.setAttribute('aria-hidden', 'false');
   _lockScroll();
@@ -100,23 +111,20 @@ function openModal(target) {
   if (dialog) {
     dialog.setAttribute('role', 'dialog');
     dialog.setAttribute('aria-modal', 'true');
-    _modalReleaseFocus = trapFocus(dialog);
+    state.releaseFocus = trapFocus(dialog);
   }
 
-  function onBackdropClick(e) {
+  state.onBackdropClick = (e) => {
     if (e.target === backdrop) closeModal(backdrop);
-  }
-
-  function onKeyDown(e) {
-    if (e.key === 'Escape') closeModal(backdrop);
-  }
-
-  backdrop.addEventListener('click', onBackdropClick, { once: false });
-  backdrop._avCleanup = () => {
-    backdrop.removeEventListener('click', onBackdropClick);
-    document.removeEventListener('keydown', onKeyDown);
   };
-  document.addEventListener('keydown', onKeyDown);
+
+  state.onKeyDown = (e) => {
+    if (e.key === 'Escape') closeModal(backdrop);
+  };
+
+  backdrop.addEventListener('click', state.onBackdropClick, { once: false });
+  backdrop.addEventListener('keydown', state.onKeyDown);
+  backdrop._avModalState = state;
 }
 
 /**
@@ -130,26 +138,35 @@ function closeModal(target) {
 
   backdrop.classList.remove('av-modal-open');
   backdrop.setAttribute('aria-hidden', 'true');
-  _unlockScroll();
 
-  if (_modalReleaseFocus) { _modalReleaseFocus(); _modalReleaseFocus = null; }
-  if (_modalPreviousFocus) { _modalPreviousFocus.focus(); _modalPreviousFocus = null; }
-  if (backdrop._avCleanup) { backdrop._avCleanup(); delete backdrop._avCleanup; }
+  const state = backdrop._avModalState;
+  if (!state) return;
+
+  _unlockScroll();
+  if (state.releaseFocus) { state.releaseFocus(); }
+  if (state.previousFocus) { state.previousFocus.focus(); }
+
+  backdrop.removeEventListener('click', state.onBackdropClick);
+  backdrop.removeEventListener('keydown', state.onKeyDown);
+  delete backdrop._avModalState;
 }
 
 function initModals() {
+  // Deprecated: use initAll() or runModalsDedup() instead
   if (!isBrowser) return;
-  document.querySelectorAll('[data-av-modal-open]').forEach((trigger) => {
+  document.querySelectorAll('[data-av-modal-open]:not([_av-modal-init])').forEach((trigger) => {
     trigger.addEventListener('click', () => {
       const target = trigger.getAttribute('data-av-modal-open');
       openModal(target);
     });
+    trigger.setAttribute('_av-modal-init', 'true');
   });
-  document.querySelectorAll('[data-av-modal-close]').forEach((trigger) => {
+  document.querySelectorAll('[data-av-modal-close]:not([_av-modal-close-init])').forEach((trigger) => {
     trigger.addEventListener('click', () => {
       const backdrop = trigger.closest('.av-modal-backdrop');
       if (backdrop) closeModal(backdrop);
     });
+    trigger.setAttribute('_av-modal-close-init', 'true');
   });
 }
 
@@ -157,15 +174,19 @@ export const modal = { open: openModal, close: closeModal, init: initModals };
 
 // ── Drawer ────────────────────────────────────────────────────────────────────
 
-let _drawerReleaseFocus = null;
-let _drawerPreviousFocus = null;
-
 function openDrawer(target) {
   if (!isBrowser) return;
   const backdrop = typeof target === 'string' ? document.querySelector(target) : target;
   if (!backdrop) return;
 
-  _drawerPreviousFocus = document.activeElement;
+  const state = {
+    backdrop,
+    previousFocus: document.activeElement,
+    releaseFocus: null,
+    onBackdropClick: null,
+    onKeyDown: null,
+  };
+
   backdrop.classList.add('av-drawer-open');
   backdrop.setAttribute('aria-hidden', 'false');
   _lockScroll();
@@ -174,18 +195,15 @@ function openDrawer(target) {
   if (panel) {
     panel.setAttribute('role', 'dialog');
     panel.setAttribute('aria-modal', 'true');
-    _drawerReleaseFocus = trapFocus(panel);
+    state.releaseFocus = trapFocus(panel);
   }
 
-  function onBackdropClick(e) { if (e.target === backdrop) closeDrawer(backdrop); }
-  function onKeyDown(e) { if (e.key === 'Escape') closeDrawer(backdrop); }
+  state.onBackdropClick = (e) => { if (e.target === backdrop) closeDrawer(backdrop); };
+  state.onKeyDown = (e) => { if (e.key === 'Escape') closeDrawer(backdrop); };
 
-  backdrop.addEventListener('click', onBackdropClick);
-  backdrop._avCleanup = () => {
-    backdrop.removeEventListener('click', onBackdropClick);
-    document.removeEventListener('keydown', onKeyDown);
-  };
-  document.addEventListener('keydown', onKeyDown);
+  backdrop.addEventListener('click', state.onBackdropClick);
+  backdrop.addEventListener('keydown', state.onKeyDown);
+  backdrop._avDrawerState = state;
 }
 
 function closeDrawer(target) {
@@ -195,23 +213,32 @@ function closeDrawer(target) {
 
   backdrop.classList.remove('av-drawer-open');
   backdrop.setAttribute('aria-hidden', 'true');
-  _unlockScroll();
 
-  if (_drawerReleaseFocus) { _drawerReleaseFocus(); _drawerReleaseFocus = null; }
-  if (_drawerPreviousFocus) { _drawerPreviousFocus.focus(); _drawerPreviousFocus = null; }
-  if (backdrop._avCleanup) { backdrop._avCleanup(); delete backdrop._avCleanup; }
+  const state = backdrop._avDrawerState;
+  if (!state) return;
+
+  _unlockScroll();
+  if (state.releaseFocus) { state.releaseFocus(); }
+  if (state.previousFocus) { state.previousFocus.focus(); }
+
+  backdrop.removeEventListener('click', state.onBackdropClick);
+  backdrop.removeEventListener('keydown', state.onKeyDown);
+  delete backdrop._avDrawerState;
 }
 
 function initDrawers() {
+  // Deprecated: use initAll() or runDrawersDedup() instead
   if (!isBrowser) return;
-  document.querySelectorAll('[data-av-drawer-open]').forEach((trigger) => {
+  document.querySelectorAll('[data-av-drawer-open]:not([_av-drawer-init])').forEach((trigger) => {
     trigger.addEventListener('click', () => openDrawer(trigger.getAttribute('data-av-drawer-open')));
+    trigger.setAttribute('_av-drawer-init', 'true');
   });
-  document.querySelectorAll('[data-av-drawer-close]').forEach((trigger) => {
+  document.querySelectorAll('[data-av-drawer-close]:not([_av-drawer-close-init])').forEach((trigger) => {
     trigger.addEventListener('click', () => {
       const backdrop = trigger.closest('.av-drawer-backdrop');
       if (backdrop) closeDrawer(backdrop);
     });
+    trigger.setAttribute('_av-drawer-close-init', 'true');
   });
 }
 
@@ -249,9 +276,10 @@ function closeDropdown(dropdown) {
 }
 
 function initDropdowns() {
+  // Deprecated: use initAll() or runDropdownsDedup() instead
   if (!isBrowser) return;
 
-  document.querySelectorAll('.av-dropdown').forEach((dropdown) => {
+  document.querySelectorAll('.av-dropdown:not([_av-dropdown-init])').forEach((dropdown) => {
     const trigger = dropdown.querySelector('.av-dropdown-trigger');
     const menu = dropdown.querySelector('.av-dropdown-menu');
     if (!trigger || !menu) return;
@@ -265,7 +293,6 @@ function initDropdowns() {
       isOpen ? closeDropdown(dropdown) : openDropdown(dropdown);
     });
 
-    // Keyboard navigation
     menu.addEventListener('keydown', (e) => {
       const items = [...menu.querySelectorAll('.av-dropdown-item:not([disabled]):not([aria-disabled="true"])')];
       const idx = items.indexOf(document.activeElement);
@@ -287,18 +314,21 @@ function initDropdowns() {
         e.preventDefault();
         items[items.length - 1]?.focus();
       } else if (e.key.length === 1 && /[a-z0-9]/i.test(e.key)) {
-        // Typeahead: jump to first item whose text starts with the pressed char
         const char = e.key.toLowerCase();
         const match = items.find((item) => item.textContent.trim().toLowerCase().startsWith(char));
         if (match) { e.preventDefault(); match.focus(); }
       }
     });
+
+    dropdown.setAttribute('_av-dropdown-init', 'true');
   });
 
-  // Close on outside click
-  document.addEventListener('click', () => {
-    _openDropdowns.forEach((d) => closeDropdown(d));
-  });
+  if (!document._avDropdownClickHandlerAttached) {
+    document.addEventListener('click', () => {
+      _openDropdowns.forEach((d) => closeDropdown(d));
+    });
+    document._avDropdownClickHandlerAttached = true;
+  }
 }
 
 export const dropdown = { open: openDropdown, close: closeDropdown, init: initDropdowns };
@@ -352,7 +382,10 @@ function _renderToast(cfg) {
   function dismiss() {
     el.classList.remove('av-toast-visible');
     el.classList.add('av-toast-exit');
+    let cleaned = false;
     function cleanup() {
+      if (cleaned) return;
+      cleaned = true;
       el.remove();
       _toastVisibleCount = Math.max(0, _toastVisibleCount - 1);
       if (_toastQueue.length > 0) {
@@ -507,9 +540,10 @@ export const tabs = { init: initTabs };
 // ── Navbar mobile toggle ──────────────────────────────────────────────────────
 
 function initNavbars() {
+  // Deprecated: use initAll() or runNavbarsDedup() instead
   if (!isBrowser) return;
 
-  document.querySelectorAll('.av-navbar-toggle').forEach((toggle) => {
+  document.querySelectorAll('.av-navbar-toggle:not([_av-navbar-toggle-init])').forEach((toggle) => {
     const navbar = toggle.closest('.av-navbar');
     if (!navbar) return;
     const collapse = navbar.querySelector('.av-navbar-collapse');
@@ -521,13 +555,17 @@ function initNavbars() {
       collapse.classList.toggle('av-navbar-collapse-open', !isOpen);
     });
 
-    // Close on outside click
-    document.addEventListener('click', (e) => {
-      if (!navbar.contains(e.target)) {
-        toggle.setAttribute('aria-expanded', 'false');
-        collapse.classList.remove('av-navbar-collapse-open');
-      }
-    });
+    if (!navbar._avNavbarClickHandlerAttached) {
+      document.addEventListener('click', (e) => {
+        if (!navbar.contains(e.target)) {
+          toggle.setAttribute('aria-expanded', 'false');
+          collapse.classList.remove('av-navbar-collapse-open');
+        }
+      });
+      navbar._avNavbarClickHandlerAttached = true;
+    }
+
+    toggle.setAttribute('_av-navbar-toggle-init', 'true');
   });
 }
 
@@ -550,13 +588,202 @@ export const navbar = { init: initNavbars };
 export function initAll(options = {}) {
   if (!isBrowser) return undefined;
 
+  const _initializedSelectors = {
+    modals: new Set(),
+    drawers: new Set(),
+    dropdowns: new Set(),
+    accordions: new Set(),
+    tabs: new Set(),
+    navbars: new Set(),
+  };
+
+  function runModalsDedup() {
+    if (!isBrowser) return;
+    document.querySelectorAll('[data-av-modal-open]').forEach((trigger) => {
+      const key = trigger.getAttribute('data-av-modal-open');
+      if (_initializedSelectors.modals.has(key)) return;
+      trigger.addEventListener('click', () => openModal(key));
+      _initializedSelectors.modals.add(key);
+    });
+    document.querySelectorAll('[data-av-modal-close]').forEach((trigger) => {
+      if (trigger._avModalCloseInit) return;
+      trigger.addEventListener('click', () => {
+        const backdrop = trigger.closest('.av-modal-backdrop');
+        if (backdrop) closeModal(backdrop);
+      });
+      trigger._avModalCloseInit = true;
+    });
+  }
+
+  function runDrawersDedup() {
+    if (!isBrowser) return;
+    document.querySelectorAll('[data-av-drawer-open]').forEach((trigger) => {
+      const key = trigger.getAttribute('data-av-drawer-open');
+      if (_initializedSelectors.drawers.has(key)) return;
+      trigger.addEventListener('click', () => openDrawer(key));
+      _initializedSelectors.drawers.add(key);
+    });
+    document.querySelectorAll('[data-av-drawer-close]').forEach((trigger) => {
+      if (trigger._avDrawerCloseInit) return;
+      trigger.addEventListener('click', () => {
+        const backdrop = trigger.closest('.av-drawer-backdrop');
+        if (backdrop) closeDrawer(backdrop);
+      });
+      trigger._avDrawerCloseInit = true;
+    });
+  }
+
+  function runDropdownsDedup() {
+    if (!isBrowser) return;
+    document.querySelectorAll('.av-dropdown').forEach((dropdown) => {
+      if (dropdown._avDropdownInit) return;
+      const trigger = dropdown.querySelector('.av-dropdown-trigger');
+      const menu = dropdown.querySelector('.av-dropdown-menu');
+      if (!trigger || !menu) return;
+
+      trigger.setAttribute('aria-haspopup', 'true');
+      trigger.setAttribute('aria-expanded', 'false');
+
+      trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = menu.classList.contains('av-dropdown-open');
+        isOpen ? closeDropdown(dropdown) : openDropdown(dropdown);
+      });
+
+      menu.addEventListener('keydown', (e) => {
+        const items = [...menu.querySelectorAll('.av-dropdown-item:not([disabled]):not([aria-disabled="true"])')];
+        const idx = items.indexOf(document.activeElement);
+
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          items[Math.min(idx + 1, items.length - 1)]?.focus();
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          if (idx === 0) { trigger.focus(); closeDropdown(dropdown); }
+          else items[Math.max(idx - 1, 0)]?.focus();
+        } else if (e.key === 'Escape') {
+          closeDropdown(dropdown);
+          trigger.focus();
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          items[0]?.focus();
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          items[items.length - 1]?.focus();
+        } else if (e.key.length === 1 && /[a-z0-9]/i.test(e.key)) {
+          const char = e.key.toLowerCase();
+          const match = items.find((item) => item.textContent.trim().toLowerCase().startsWith(char));
+          if (match) { e.preventDefault(); match.focus(); }
+        }
+      });
+
+      dropdown._avDropdownInit = true;
+    });
+
+    if (!document._avDropdownClickHandlerAttached) {
+      document.addEventListener('click', () => {
+        _openDropdowns.forEach((d) => closeDropdown(d));
+      });
+      document._avDropdownClickHandlerAttached = true;
+    }
+  }
+
+  function runAccordionsDedup() {
+    if (!isBrowser) return;
+    document.querySelectorAll('.av-accordion').forEach((accordion) => {
+      if (accordion._avAccordionInit) return;
+      const allowMultiple = accordion.hasAttribute('data-av-multiple');
+
+      accordion.querySelectorAll('.av-accordion-trigger').forEach((trigger) => {
+        trigger.addEventListener('click', () => toggleAccordionItem(trigger, accordion, allowMultiple));
+        trigger.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            toggleAccordionItem(trigger, accordion, allowMultiple);
+          }
+        });
+      });
+
+      accordion._avAccordionInit = true;
+    });
+  }
+
+  function runTabsDedup() {
+    if (!isBrowser) return;
+    document.querySelectorAll('.av-tabs[data-av-tabs]').forEach((tabsEl) => {
+      if (tabsEl._avTabsInit) return;
+      const tabs = [...tabsEl.querySelectorAll('.av-tab')];
+      const panels = [...tabsEl.querySelectorAll('.av-tab-panel')];
+
+      function activate(tab) {
+        tabs.forEach((t) => { t.classList.remove('av-active'); t.setAttribute('aria-selected', 'false'); });
+        panels.forEach((p) => p.classList.remove('av-active'));
+
+        tab.classList.add('av-active');
+        tab.setAttribute('aria-selected', 'true');
+        const panelId = tab.getAttribute('aria-controls');
+        if (panelId) {
+          const panel = document.getElementById(panelId);
+          if (panel) panel.classList.add('av-active');
+        }
+      }
+
+      tabs.forEach((tab, i) => {
+        tab.setAttribute('role', 'tab');
+        tab.setAttribute('tabindex', tab.classList.contains('av-active') ? '0' : '-1');
+
+        tab.addEventListener('click', () => { activate(tab); tab.setAttribute('tabindex', '0'); });
+
+        tab.addEventListener('keydown', (e) => {
+          let next = null;
+          if (e.key === 'ArrowRight') next = tabs[(i + 1) % tabs.length];
+          else if (e.key === 'ArrowLeft') next = tabs[(i - 1 + tabs.length) % tabs.length];
+          else if (e.key === 'Home') next = tabs[0];
+          else if (e.key === 'End')  next = tabs[tabs.length - 1];
+          if (next) { e.preventDefault(); activate(next); next.focus(); next.setAttribute('tabindex', '0'); tab.setAttribute('tabindex', '-1'); }
+        });
+      });
+
+      tabsEl._avTabsInit = true;
+    });
+  }
+
+  function runNavbarsDedup() {
+    if (!isBrowser) return;
+    document.querySelectorAll('.av-navbar-toggle').forEach((toggle) => {
+      if (toggle._avNavbarToggleInit) return;
+      const navbar = toggle.closest('.av-navbar');
+      if (!navbar) return;
+      const collapse = navbar.querySelector('.av-navbar-collapse');
+      if (!collapse) return;
+
+      toggle.addEventListener('click', () => {
+        const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!isOpen));
+        collapse.classList.toggle('av-navbar-collapse-open', !isOpen);
+      });
+
+      if (!navbar._avNavbarClickHandlerAttached) {
+        document.addEventListener('click', (e) => {
+          if (!navbar.contains(e.target)) {
+            toggle.setAttribute('aria-expanded', 'false');
+            collapse.classList.remove('av-navbar-collapse-open');
+          }
+        });
+        navbar._avNavbarClickHandlerAttached = true;
+      }
+
+      toggle._avNavbarToggleInit = true;
+    });
+  }
+
   function run() {
-    initModals();
-    initDrawers();
-    initDropdowns();
-    initAccordions();
-    initTabs();
-    initNavbars();
+    runModalsDedup();
+    runDrawersDedup();
+    runDropdownsDedup();
+    runAccordionsDedup();
+    runTabsDedup();
+    runNavbarsDedup();
   }
 
   if (document.readyState === 'loading') {
@@ -685,8 +912,8 @@ export function createTable(target, options = {}) {
         let cell;
         if (col.render) {
           const rendered = col.render(val, row);
-          // render() output is raw HTML by default; set sanitize:true to strip tags
-          cell = col.sanitize ? _esc(rendered) : rendered;
+          // render() output is escaped by default; set sanitize:false to allow raw HTML
+          cell = col.sanitize === false ? rendered : _esc(rendered);
         } else {
           // Raw data values are always escaped unless sanitize is explicitly false
           cell = col.sanitize === false ? String(val) : _esc(val);
@@ -794,6 +1021,12 @@ export function createTable(target, options = {}) {
     },
   };
 }
+
+// ── Internals (exported for testing only) ─────────────────────────────────────
+
+export { _resetScrollLock };
+
+// ── Default export ────────────────────────────────────────────────────────────
 
 export default {
   modal,
