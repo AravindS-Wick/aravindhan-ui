@@ -9,7 +9,7 @@
 [![Accessibility](https://img.shields.io/badge/a11y-axe--core%20audited-brightgreen)](https://github.com/AravindS-Wick/aravindhan-ui)
 [![Bundle size](https://img.shields.io/badge/CSS%20gzipped-35KB-blue)](https://www.npmjs.com/package/@aravi1008/ui)
 [![RSC safe](https://img.shields.io/badge/RSC-safe-brightgreen)](https://github.com/AravindS-Wick/aravindhan-ui#server-components)
-[![Docs](https://img.shields.io/badge/docs-live-blue)](https://aravi-design-system.vercel.app)
+[![Docs](https://img.shields.io/badge/docs-coming%20soon-orange)](https://github.com/AravindS-Wick/aravindhan-ui)
 
 ---
 
@@ -633,19 +633,13 @@ Tokens (`@aravi1008/ui/tokens`) are plain JSON — safe to import in any Server 
 
 ---
 
-## Docs & Live Previews
-
-**[aravi-design-system.vercel.app](https://aravi-design-system.vercel.app)** — Full component reference with live, interactive previews for every component, theme switcher, and copy-paste code snippets.
-
----
-
 ## Ecosystem
 
 | Package | Purpose | Status |
 |---------|---------|--------|
 | `@aravi1008/ui` | Core — CSS, tokens, vanilla JS | ✅ Published |
 | `@aravi1008/ui-mat` | JSX components for React/Vue/Angular/Svelte | 🚧 In development |
-| Docs site | Full component reference + live demos | ✅ Live |
+| Docs site | Full component reference + live demos | 🚧 In development |
 | `npx @aravi1008/ui add` | CLI — eject & own individual components | 🗺️ Roadmap |
 | VS Code extension | `av-` class autocomplete + snippets | 🗺️ Roadmap |
 
