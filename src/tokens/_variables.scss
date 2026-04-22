@@ -1,5 +1,5 @@
 // @aravi1008/ui — Token Variables
-// Auto-generated via Style Dictionary. Manual edits here will be overwritten.
+// Generated from Style Dictionary + extended with full token surface.
 // Edit source: tokens/base/*.json and tokens/themes/*.json
 
 // ── Spacing ──────────────────────────────────────────────────────────────────
@@ -77,3 +77,52 @@ $av-color-warning: var(--av-theme-color-warning,        #F59E0B);
 $av-color-error: var(--av-theme-color-error,          #EF4444);
 $av-color-info: var(--av-theme-color-info,           #06B6D4);
 $av-color-focus-ring: var(--av-theme-color-focus-ring,     #3B82F6);
+$av-color-overlay: var(--av-theme-color-overlay,        rgb(0 0 0 / 0.4));
+$av-color-white: #fff;
+$av-color-black: #000;
+
+// ── Shadows ───────────────────────────────────────────────────────────────────
+$av-shadow-none: var(--av-shadow-none,  none);
+$av-shadow-xs: var(--av-shadow-xs,    0 1px 2px 0 rgb(0 0 0 / 0.05));
+$av-shadow-sm: var(--av-shadow-sm,    0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1));
+$av-shadow-md: var(--av-shadow-md,    0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1));
+$av-shadow-lg: var(--av-shadow-lg,    0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1));
+$av-shadow-xl: var(--av-shadow-xl,    0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1));
+$av-shadow-2xl: var(--av-shadow-2xl,   0 25px 50px -12px rgb(0 0 0 / 0.25));
+$av-shadow-inner: var(--av-shadow-inner, inset 0 2px 4px 0 rgb(0 0 0 / 0.05));
+
+// ── Font Weights ──────────────────────────────────────────────────────────────
+$av-font-weight-thin: var(--av-font-weight-thin,      100);
+$av-font-weight-light: var(--av-font-weight-light,     300);
+$av-font-weight-normal: var(--av-font-weight-normal,    400);
+$av-font-weight-medium: var(--av-font-weight-medium,    500);
+$av-font-weight-semibold: var(--av-font-weight-semibold,  600);
+$av-font-weight-bold: var(--av-font-weight-bold,      700);
+$av-font-weight-extrabold: var(--av-font-weight-extrabold, 800);
+$av-font-weight-black: var(--av-font-weight-black,     900);
+
+// ── Line Heights ──────────────────────────────────────────────────────────────
+$av-leading-none: var(--av-leading-none,    1);
+$av-leading-tight: var(--av-leading-tight,   1.25);
+$av-leading-snug: var(--av-leading-snug,    1.375);
+$av-leading-normal: var(--av-leading-normal,  1.5);
+$av-leading-relaxed: var(--av-leading-relaxed, 1.625);
+$av-leading-loose: var(--av-leading-loose,   2);
+
+// ── Z-index ───────────────────────────────────────────────────────────────────
+$av-zindex-dropdown: var(--av-zindex-dropdown, 1000);
+$av-zindex-sticky: var(--av-zindex-sticky,   1100);
+$av-zindex-overlay: var(--av-zindex-overlay,  1200);
+$av-zindex-modal: var(--av-zindex-modal,    1300);
+$av-zindex-popover: var(--av-zindex-popover,  1400);
+$av-zindex-tooltip: var(--av-zindex-tooltip,  1500);
+$av-zindex-toast: var(--av-zindex-toast,    1600);
+
+// ── Transitions ───────────────────────────────────────────────────────────────
+$av-duration-fast: var(--av-duration-fast,   0.1s);
+$av-duration-base: var(--av-duration-base,   0.2s);
+$av-duration-slow: var(--av-duration-slow,   0.3s);
+$av-ease-default: var(--av-ease-default,    ease);
+$av-ease-in: var(--av-ease-in,         ease-in);
+$av-ease-out: var(--av-ease-out,        ease-out);
+$av-ease-in-out: var(--av-ease-in-out,     ease-in-out);

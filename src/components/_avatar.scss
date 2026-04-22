@@ -12,7 +12,7 @@
     flex-shrink: 0;
     background-color: $av-color-primary-subtle;
     color: $av-color-primary;
-    font-weight: 600;
+    font-weight: $av-font-weight-semibold;
     font-size: $av-text-sm;
     width: 2.5rem;
     height: 2.5rem;
@@ -23,7 +23,7 @@
       object-fit: cover;
     }
 
-    &.av-avatar-xs  { width: 1.5rem;  height: 1.5rem;  font-size: 0.625rem; }
+    &.av-avatar-xs  { width: 1.5rem;  height: 1.5rem;  font-size: $av-text-xs; }
     &.av-avatar-sm  { width: 2rem;    height: 2rem;    font-size: $av-text-xs; }
     &.av-avatar-md  { /* default */ }
     &.av-avatar-lg  { width: 3rem;    height: 3rem;    font-size: $av-text-base; }
@@ -41,9 +41,9 @@
 
     .av-avatar {
       border: 2px solid $av-color-surface;
-      margin-left: -0.5rem;
+      margin-inline-start: -0.5rem;
 
-      &:last-child { margin-left: 0; }
+      &:last-child { margin-inline-start: 0; }
     }
   }
 }
