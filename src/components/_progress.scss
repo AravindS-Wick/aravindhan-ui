@@ -20,7 +20,7 @@
     height: 100%;
     border-radius: $av-radius-full;
     background-color: $av-color-primary;
-    transition: width 0.4s ease;
+    transition: width $av-duration-slow $av-ease-default;
 
     &.av-progress-success { background-color: $av-color-success; }
     &.av-progress-warning { background-color: $av-color-warning; }
@@ -29,11 +29,11 @@
     &.av-progress-striped {
       background-image: linear-gradient(
         45deg,
-        rgba(255, 255, 255, 0.15) 25%,
+        rgb(from $av-color-white r g b / 0.15) 25%,
         transparent 25%,
         transparent 50%,
-        rgba(255, 255, 255, 0.15) 50%,
-        rgba(255, 255, 255, 0.15) 75%,
+        rgb(from $av-color-white r g b / 0.15) 50%,
+        rgb(from $av-color-white r g b / 0.15) 75%,
         transparent 75%,
         transparent
       );

@@ -277,6 +277,34 @@ $av-palettes: (
   .av-ring-error     { outline: 2px solid $av-color-error; outline-offset: 2px; }
   .av-ring-success   { outline: 2px solid $av-color-success; outline-offset: 2px; }
 
+  // ── SVG fill / stroke utilities ───────────────────────────────────────────
+  .av-fill-current   { fill: currentColor; }
+  .av-fill-none      { fill: none; }
+  .av-stroke-current { stroke: currentColor; }
+  .av-stroke-none    { stroke: none; }
+  .av-stroke-0       { stroke-width: 0; }
+  .av-stroke-1       { stroke-width: 1; }
+  .av-stroke-2       { stroke-width: 2; }
+
+  @each $palette-name, $palette in $av-palettes {
+    @each $shade, $value in $palette {
+      .av-fill-#{$palette-name}-#{$shade}   { fill: $value; }
+      .av-stroke-#{$palette-name}-#{$shade} { stroke: $value; }
+    }
+  }
+
+  // ── Ring (outline) per palette ─────────────────────────────────────────────
+  @each $palette-name, $palette in $av-palettes {
+    @each $shade, $value in $palette {
+      .av-ring-#{$palette-name}-#{$shade} { outline: 2px solid $value; outline-offset: 2px; }
+    }
+  }
+
+  // ── Caret / placeholder / accent ──────────────────────────────────────────
+  .av-caret-primary   { caret-color: $av-color-primary; }
+  .av-caret-error     { caret-color: $av-color-error; }
+  .av-accent-primary  { accent-color: $av-color-primary; }
+
   // ── Background gradient helpers ───────────────────────────────────────────
   .av-bg-gradient-primary {
     background-image: linear-gradient(135deg, var(--av-theme-color-primary, #3B82F6), var(--av-theme-color-secondary, #6366F1));

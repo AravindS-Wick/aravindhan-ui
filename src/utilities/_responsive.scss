@@ -13,6 +13,13 @@
     .av-sm\:inline       { display: inline; }
     .av-sm\:inline-block { display: inline-block; }
     .av-sm\:inline-flex  { display: inline-flex; }
+    .av-sm\:flex-row     { flex-direction: row; }
+    .av-sm\:flex-col     { flex-direction: column; }
+
+    @for $i from 1 through 12 {
+      .av-sm\:grid-cols-#{$i} { grid-template-columns: repeat(#{$i}, minmax(0, 1fr)); }
+      .av-sm\:col-span-#{$i}  { grid-column: span #{$i} / span #{$i}; }
+    }
   }
 
   @include av-breakpoint(md) {
@@ -47,25 +54,31 @@
   }
 
   @include av-breakpoint(xl) {
-    .av-xl\:block   { display: block; }
-    .av-xl\:hidden  { display: none; }
-    .av-xl\:flex    { display: flex; }
-    .av-xl\:grid    { display: grid; }
+    .av-xl\:block        { display: block; }
+    .av-xl\:hidden       { display: none; }
+    .av-xl\:flex         { display: flex; }
+    .av-xl\:grid         { display: grid; }
+    .av-xl\:flex-row     { flex-direction: row; }
+    .av-xl\:flex-col     { flex-direction: column; }
 
     @for $i from 1 through 12 {
       .av-xl\:grid-cols-#{$i} { grid-template-columns: repeat(#{$i}, minmax(0, 1fr)); }
+      .av-xl\:col-span-#{$i}  { grid-column: span #{$i} / span #{$i}; }
     }
   }
 
   // ── 2xl breakpoint ─────────────────────────────────────────────────────────
   @media (min-width: 1536px) {
-    .av-2xl\:block   { display: block; }
-    .av-2xl\:hidden  { display: none; }
-    .av-2xl\:flex    { display: flex; }
-    .av-2xl\:grid    { display: grid; }
+    .av-2xl\:block        { display: block; }
+    .av-2xl\:hidden       { display: none; }
+    .av-2xl\:flex         { display: flex; }
+    .av-2xl\:grid         { display: grid; }
+    .av-2xl\:flex-row     { flex-direction: row; }
+    .av-2xl\:flex-col     { flex-direction: column; }
 
     @for $i from 1 through 12 {
       .av-2xl\:grid-cols-#{$i} { grid-template-columns: repeat(#{$i}, minmax(0, 1fr)); }
+      .av-2xl\:col-span-#{$i}  { grid-column: span #{$i} / span #{$i}; }
     }
   }
 

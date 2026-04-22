@@ -19,7 +19,11 @@
     &.av-spinner-xl  { width: 3rem;    height: 3rem;    border-width: 3px; }
 
     &.av-spinner-primary { border-top-color: $av-color-primary; }
-    &.av-spinner-white   { border-color: rgba(255,255,255,0.3); border-top-color: #fff; }
+
+    &.av-spinner-white {
+      border-color: rgb(from $av-color-white r g b / 0.3);
+      border-top-color: $av-color-white;
+    }
   }
 
   @keyframes av-spin {
@@ -28,7 +32,7 @@
 
   @media (prefers-reduced-motion: reduce) {
     .av-spinner {
-      animation: av-spinner-pulse 1.2s ease-in-out infinite;
+      animation: av-spinner-pulse 1.2s $av-ease-in-out infinite;
       border-color: $av-color-primary;
     }
 
@@ -45,7 +49,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgba(0, 0, 0, 0.4);
-    z-index: var(--av-zindex-overlay, 1200);
+    background-color: $av-color-overlay;
+    z-index: $av-zindex-overlay;
   }
 }

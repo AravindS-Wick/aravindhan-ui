@@ -1452,3 +1452,318 @@ describe('createTable', () => {
     expect(wrap.querySelector('strong')).not.toBeNull();
   });
 });
+
+// ── runModalsDedup branch coverage (via initAll) ──────────────────────────────
+
+describe('runModalsDedup via initAll', () => {
+  afterEach(() => { document.body.innerHTML = ''; _resetScrollLock(); });
+
+  test('data-av-modal-close click inside backdrop closes modal (line 611-612)', () => {
+    document.body.innerHTML = `
+      <div id="rdm1" class="av-modal-backdrop av-modal-open">
+        <button data-av-modal-close>Close</button>
+      </div>`;
+    initAll();
+    const btn = document.querySelector('[data-av-modal-close]');
+    btn.click();
+    expect(document.querySelector('#rdm1').classList.contains('av-modal-open')).toBe(false);
+  });
+
+  test('data-av-modal-close with no backdrop ancestor does not throw', () => {
+    document.body.innerHTML = `<button data-av-modal-close>Close</button>`;
+    initAll();
+    expect(() => document.querySelector('[data-av-modal-close]').click()).not.toThrow();
+  });
+
+  test('data-av-modal-open click via initAll opens modal', () => {
+    document.body.innerHTML = `
+      <button data-av-modal-open="#rdm2">Open</button>
+      <div id="rdm2" class="av-modal-backdrop"></div>`;
+    initAll();
+    document.querySelector('[data-av-modal-open]').click();
+    expect(document.querySelector('#rdm2').classList.contains('av-modal-open')).toBe(true);
+  });
+});
+
+// ── runDrawersDedup branch coverage (via initAll) ─────────────────────────────
+
+describe('runDrawersDedup via initAll', () => {
+  afterEach(() => { document.body.innerHTML = ''; _resetScrollLock(); });
+
+  test('data-av-drawer-close click inside backdrop closes drawer (line 629-630)', () => {
+    document.body.innerHTML = `
+      <div id="rdd1" class="av-drawer-backdrop av-drawer-open">
+        <button data-av-drawer-close>Close</button>
+      </div>`;
+    initAll();
+    document.querySelector('[data-av-drawer-close]').click();
+    expect(document.querySelector('#rdd1').classList.contains('av-drawer-open')).toBe(false);
+  });
+
+  test('data-av-drawer-close with no backdrop ancestor does not throw', () => {
+    document.body.innerHTML = `<button data-av-drawer-close>Close</button>`;
+    initAll();
+    expect(() => document.querySelector('[data-av-drawer-close]').click()).not.toThrow();
+  });
+});
+
+// ── runDropdownsDedup branch coverage (via initAll) ───────────────────────────
+
+describe('runDropdownsDedup via initAll keyboard nav', () => {
+  afterEach(() => {
+    document.body.innerHTML = '';
+    _resetScrollLock();
+    // Reset dedup guard so the global click handler branch runs fresh each test
+    delete document._avDropdownClickHandlerAttached;
+  });
+
+  function makeDropdown() {
+    document.body.innerHTML = `
+      <div class="av-dropdown">
+        <button class="av-dropdown-trigger">Menu</button>
+        <ul class="av-dropdown-menu av-dropdown-open">
+          <li class="av-dropdown-item">Alpha</li>
+          <li class="av-dropdown-item">Beta</li>
+          <li class="av-dropdown-item">Gamma</li>
+        </ul>
+      </div>`;
+    initAll();
+    return {
+      dropdown: document.querySelector('.av-dropdown'),
+      trigger: document.querySelector('.av-dropdown-trigger'),
+      menu: document.querySelector('.av-dropdown-menu'),
+      items: [...document.querySelectorAll('.av-dropdown-item')],
+    };
+  }
+
+  test('trigger click opens dropdown (line 648-650)', () => {
+    const { trigger, menu } = makeDropdown();
+    menu.classList.remove('av-dropdown-open');
+    trigger.click();
+    expect(menu.classList.contains('av-dropdown-open')).toBe(true);
+  });
+
+  test('trigger click when open closes dropdown', () => {
+    const { trigger, menu } = makeDropdown();
+    trigger.click();
+    expect(menu.classList.contains('av-dropdown-open')).toBe(false);
+  });
+
+  test('ArrowDown focuses next item (line 657-659)', () => {
+    const { menu, items } = makeDropdown();
+    items[0].focus();
+    menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+  });
+
+  test('ArrowUp on first item focuses trigger and closes (line 662)', () => {
+    const { menu, items } = makeDropdown();
+    items[0].focus();
+    menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }));
+  });
+
+  test('ArrowUp on second item focuses previous item (line 663)', () => {
+    const { menu, items } = makeDropdown();
+    items[1].focus();
+    menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }));
+  });
+
+  test('Escape closes dropdown and focuses trigger (line 664-666)', () => {
+    const { menu } = makeDropdown();
+    menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    expect(menu.classList.contains('av-dropdown-open')).toBe(false);
+  });
+
+  test('Home key focuses first item (line 667-669)', () => {
+    const { menu, items } = makeDropdown();
+    items[2].focus();
+    menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', bubbles: true }));
+  });
+
+  test('End key focuses last item (line 670-672)', () => {
+    const { menu, items } = makeDropdown();
+    items[0].focus();
+    menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true }));
+  });
+
+  test('typeahead char key focuses matching item (line 673-676)', () => {
+    const { menu, items } = makeDropdown();
+    items[0].focus();
+    menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'b', bubbles: true }));
+  });
+
+  test('typeahead char with no match does not throw', () => {
+    const { menu } = makeDropdown();
+    expect(() => menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'z', bubbles: true }))).not.toThrow();
+  });
+
+  test('global click outside closes open dropdowns (line 684-687)', () => {
+    const { trigger, menu } = makeDropdown();
+    // First open via trigger click (registers in _openDropdowns)
+    menu.classList.remove('av-dropdown-open');
+    trigger.click(); // opens it via JS
+    expect(menu.classList.contains('av-dropdown-open')).toBe(true);
+    // Now a click outside should close it
+    document.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    expect(menu.classList.contains('av-dropdown-open')).toBe(false);
+  });
+});
+
+// ── runAccordionsDedup branch coverage (via initAll) ──────────────────────────
+
+describe('runAccordionsDedup via initAll', () => {
+  afterEach(() => { document.body.innerHTML = ''; _resetScrollLock(); });
+
+  function makeAccordionDOM(attr = '') {
+    document.body.innerHTML = `
+      <div class="av-accordion" ${attr}>
+        <button class="av-accordion-trigger" aria-expanded="false" aria-controls="ra1">Q1</button>
+        <div id="ra1" class="av-accordion-content">A1</div>
+        <button class="av-accordion-trigger" aria-expanded="false" aria-controls="ra2">Q2</button>
+        <div id="ra2" class="av-accordion-content">A2</div>
+      </div>`;
+    initAll();
+    return {
+      triggers: [...document.querySelectorAll('.av-accordion-trigger')],
+    };
+  }
+
+  test('Enter key via initAll triggers toggle (line 700-702)', () => {
+    const { triggers } = makeAccordionDOM();
+    triggers[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    expect(triggers[0].getAttribute('aria-expanded')).toBe('true');
+  });
+
+  test('Space key via initAll triggers toggle', () => {
+    const { triggers } = makeAccordionDOM();
+    triggers[0].dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true }));
+    expect(triggers[0].getAttribute('aria-expanded')).toBe('true');
+  });
+
+  test('non-Enter/Space key does not toggle', () => {
+    const { triggers } = makeAccordionDOM();
+    triggers[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true }));
+    expect(triggers[0].getAttribute('aria-expanded')).toBe('false');
+  });
+
+  test('data-av-multiple allows multiple open via initAll', () => {
+    const { triggers } = makeAccordionDOM('data-av-multiple');
+    triggers[0].click();
+    triggers[1].click();
+    expect(triggers[0].getAttribute('aria-expanded')).toBe('true');
+    expect(triggers[1].getAttribute('aria-expanded')).toBe('true');
+  });
+});
+
+// ── runTabsDedup branch coverage (via initAll) ────────────────────────────────
+
+describe('runTabsDedup via initAll', () => {
+  afterEach(() => { document.body.innerHTML = ''; _resetScrollLock(); });
+
+  function makeTabsDOM() {
+    document.body.innerHTML = `
+      <div class="av-tabs" data-av-tabs>
+        <button class="av-tab av-active" aria-controls="rtp1">Tab A</button>
+        <button class="av-tab" aria-controls="rtp2">Tab B</button>
+        <button class="av-tab" aria-controls="rtp3">Tab C</button>
+        <div id="rtp1" class="av-tab-panel av-active">Panel A</div>
+        <div id="rtp2" class="av-tab-panel">Panel B</div>
+        <div id="rtp3" class="av-tab-panel">Panel C</div>
+      </div>`;
+    initAll();
+    return [...document.querySelectorAll('.av-tab')];
+  }
+
+  test('clicking tab via initAll activates it and panel (lines 719-727)', () => {
+    const tabEls = makeTabsDOM();
+    tabEls[1].click();
+    expect(tabEls[1].classList.contains('av-active')).toBe(true);
+    expect(tabEls[1].getAttribute('aria-selected')).toBe('true');
+    expect(document.getElementById('rtp2').classList.contains('av-active')).toBe(true);
+  });
+
+  test('clicking tab deactivates others', () => {
+    const tabEls = makeTabsDOM();
+    tabEls[1].click();
+    expect(tabEls[0].classList.contains('av-active')).toBe(false);
+    expect(tabEls[0].getAttribute('aria-selected')).toBe('false');
+  });
+
+  test('ArrowRight key via initAll moves to next tab (lines 738-743)', () => {
+    const tabEls = makeTabsDOM();
+    tabEls[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+    expect(tabEls[1].classList.contains('av-active')).toBe(true);
+  });
+
+  test('ArrowLeft key via initAll moves to previous tab', () => {
+    const tabEls = makeTabsDOM();
+    tabEls[1].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
+    expect(tabEls[0].classList.contains('av-active')).toBe(true);
+  });
+
+  test('Home key via initAll moves to first tab', () => {
+    const tabEls = makeTabsDOM();
+    tabEls[2].dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', bubbles: true }));
+    expect(tabEls[0].classList.contains('av-active')).toBe(true);
+  });
+
+  test('End key via initAll moves to last tab', () => {
+    const tabEls = makeTabsDOM();
+    tabEls[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true }));
+    expect(tabEls[2].classList.contains('av-active')).toBe(true);
+  });
+
+  test('ArrowRight wraps from last to first', () => {
+    const tabEls = makeTabsDOM();
+    tabEls[2].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+    expect(tabEls[0].classList.contains('av-active')).toBe(true);
+  });
+
+  test('unrelated key does not change active tab', () => {
+    const tabEls = makeTabsDOM();
+    tabEls[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true }));
+    expect(tabEls[0].classList.contains('av-active')).toBe(true);
+  });
+});
+
+// ── runNavbarsDedup branch coverage (via initAll) ─────────────────────────────
+
+describe('runNavbarsDedup via initAll', () => {
+  afterEach(() => { document.body.innerHTML = ''; _resetScrollLock(); });
+
+  function makeNavbarDOM() {
+    document.body.innerHTML = `
+      <nav class="av-navbar">
+        <button class="av-navbar-toggle" aria-expanded="false">☰</button>
+        <div class="av-navbar-collapse">
+          <a href="#">Link</a>
+        </div>
+      </nav>`;
+    initAll();
+    return {
+      toggle: document.querySelector('.av-navbar-toggle'),
+      collapse: document.querySelector('.av-navbar-collapse'),
+    };
+  }
+
+  test('toggle click via initAll opens collapse (lines 761-763)', () => {
+    const { toggle, collapse } = makeNavbarDOM();
+    toggle.click();
+    expect(toggle.getAttribute('aria-expanded')).toBe('true');
+    expect(collapse.classList.contains('av-navbar-collapse-open')).toBe(true);
+  });
+
+  test('toggle click twice closes collapse', () => {
+    const { toggle, collapse } = makeNavbarDOM();
+    toggle.click();
+    toggle.click();
+    expect(toggle.getAttribute('aria-expanded')).toBe('false');
+    expect(collapse.classList.contains('av-navbar-collapse-open')).toBe(false);
+  });
+
+  test('outside click closes navbar collapse', () => {
+    const { toggle, collapse } = makeNavbarDOM();
+    toggle.click();
+    document.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    expect(collapse.classList.contains('av-navbar-collapse-open')).toBe(false);
+  });
+});
