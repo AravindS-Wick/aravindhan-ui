@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/AravindS-Wick/aravindhan-ui/compare/v1.4.1...v1.5.0) (2026-04-22)
+
+
+### Features
+
+* **utilities:** add fill/stroke/ring palette utilities + fix responsive gaps ([fa00eb1](https://github.com/AravindS-Wick/aravindhan-ui/commit/fa00eb1573db8b85fb314a7aa97d29469f40f56b))
+
 ## [1.4.1](https://github.com/AravindS-Wick/aravindhan-ui/compare/v1.4.0...v1.4.1) (2026-04-06)
 
 
