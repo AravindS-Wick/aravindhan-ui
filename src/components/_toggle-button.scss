@@ -1,0 +1,13 @@
+@use '../tokens/variables' as *;
+
+.av-toggle-button {
+  /* Auto-generated */
+  display: flex;
+  gap: var(--av-spacing-sm, 0.5rem);
+}
+
+.av-toggle-button-group {
+  /* Auto-generated */
+  display: flex;
+  gap: var(--av-spacing-sm, 0.5rem);
+}
