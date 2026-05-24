@@ -1,0 +1,19 @@
+@use '../tokens/variables' as *;
+
+.av-slider {
+  /* Auto-generated */
+  display: flex;
+  gap: var(--av-spacing-sm, 0.5rem);
+}
+
+.av-slider-track {
+  /* Auto-generated */
+  display: flex;
+  gap: var(--av-spacing-sm, 0.5rem);
+}
+
+.av-slider-thumb {
+  /* Auto-generated */
+  display: flex;
+  gap: var(--av-spacing-sm, 0.5rem);
+}
