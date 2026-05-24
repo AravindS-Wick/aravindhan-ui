@@ -1,0 +1,13 @@
+@use '../tokens/variables' as *;
+
+.av-rating {
+  /* Auto-generated */
+  display: flex;
+  gap: var(--av-spacing-sm, 0.5rem);
+}
+
+.av-rating-star {
+  /* Auto-generated */
+  display: flex;
+  gap: var(--av-spacing-sm, 0.5rem);
+}
