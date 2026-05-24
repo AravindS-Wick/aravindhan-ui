@@ -1,0 +1,336 @@
+// @aravi1008/ui — DataGrid Component (spreadsheet-like inline editing)
+
+@use '../tokens/variables' as *;
+
+@layer aravi1008.components {
+// ── Container ──────────────────────────────────────────────────────────────────
+.av-datagrid {
+  width: 100%;
+  background-color: $av-color-surface;
+  border-radius: $av-radius-lg;
+  border: 1px solid $av-color-border;
+  overflow: hidden;
+  outline: none;
+  font-family: $av-theme-font-sans;
+
+  &:focus-visible {
+    outline: 2px solid $av-color-focus-ring;
+    outline-offset: 2px;
+  }
+}
+
+// ── Toolbar ────────────────────────────────────────────────────────────────────
+.av-datagrid-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $av-spacing-3 $av-spacing-4;
+  border-bottom: 1px solid $av-color-border;
+  background-color: $av-color-surface;
+  gap: $av-spacing-3;
+  flex-wrap: wrap;
+  min-height: 48px;
+}
+
+.av-datagrid-toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: $av-spacing-2;
+  margin-inline-start: auto;
+}
+
+.av-datagrid-selection-count {
+  font-size: $av-text-sm;
+  color: $av-color-text-secondary;
+  font-weight: 500;
+}
+
+// ── Scroll container ───────────────────────────────────────────────────────────
+.av-datagrid-scroll {
+  overflow: auto;
+  position: relative;
+
+  // Custom scrollbar for webkit
+  &::-webkit-scrollbar { width: 8px; height: 8px; }
+  &::-webkit-scrollbar-track { background: $av-color-surface-sunken; }
+
+  &::-webkit-scrollbar-thumb {
+    background: $av-color-border-strong;
+    border-radius: $av-radius-full;
+    &:hover { background: $av-color-text-disabled; }
+  }
+}
+
+// ── Table overrides ────────────────────────────────────────────────────────────
+.av-datagrid-table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+  min-width: max-content;
+}
+
+// ── Column headers ─────────────────────────────────────────────────────────────
+.av-datagrid-th {
+  position: relative;
+  padding: $av-spacing-2 $av-spacing-3;
+  background-color: $av-color-surface-raised;
+  border-bottom: 2px solid $av-color-border;
+  border-right: 1px solid $av-color-border;
+  text-align: left;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: $av-color-text-secondary;
+  white-space: nowrap;
+  overflow: hidden;
+  user-select: none;
+
+  &:last-child { border-right: none; }
+
+  &-sortable {
+    cursor: pointer;
+    &:hover { background-color: $av-color-surface-interactive; }
+  }
+
+  &-drag { width: 36px; padding: 0; }
+
+  // Pinned columns
+  &-pinned-left {
+    position: sticky;
+    inset-inline-start: 0;
+    z-index: 2;
+    background-color: $av-color-surface-raised;
+    box-shadow: 2px 0 4px -1px $av-color-border;
+  }
+
+  &-pinned-right {
+    position: sticky;
+    inset-inline-end: 0;
+    z-index: 2;
+    background-color: $av-color-surface-raised;
+    box-shadow: -2px 0 4px -1px $av-color-border;
+  }
+}
+
+.av-datagrid-th-content {
+  display: flex;
+  align-items: center;
+  gap: $av-spacing-1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// Editable column indicator dot
+.av-datagrid-editable-indicator {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: $av-color-primary;
+  opacity: 0.5;
+  flex-shrink: 0;
+  margin-inline-start: auto;
+}
+
+// ── Resize handle ──────────────────────────────────────────────────────────────
+.av-datagrid-resize-handle {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  width: 5px;
+  height: 100%;
+  cursor: col-resize;
+  background: transparent;
+  z-index: 3;
+
+  &:hover,
+  &:active {
+    background-color: $av-color-primary;
+    opacity: 0.6;
+  }
+}
+
+// ── Cells ──────────────────────────────────────────────────────────────────────
+.av-datagrid-cell {
+  position: relative;
+  padding: 0;
+  border-bottom: 1px solid $av-color-border;
+  border-right: 1px solid $av-color-border;
+  vertical-align: middle;
+  height: 36px;
+  max-height: 36px;
+  overflow: hidden;
+
+  &:last-child { border-right: none; }
+
+  // Editable cells get a subtle cursor hint
+  &-editable {
+    cursor: cell;
+  }
+
+  // Active cell — blue border outline (like Excel/Sheets)
+  &-active {
+    outline: 2px solid $av-color-primary;
+    outline-offset: -2px;
+    z-index: 1;
+  }
+
+  // Selection range highlight
+  &-selected {
+    background-color: $av-color-primary-subtle;
+  }
+
+  // Currently being edited
+  &-editing {
+    padding: 0;
+    outline: 2px solid $av-color-primary;
+    outline-offset: -2px;
+    z-index: 2;
+    overflow: visible;
+  }
+
+  // Validation error
+  &-error {
+    background-color: $av-color-error-subtle;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset-block-start: 2px;
+      inset-inline-end: 2px;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 6px 6px 0;
+      border-color: transparent $av-color-error transparent transparent;
+    }
+  }
+
+  // Pinned columns
+  &-pinned-left {
+    position: sticky;
+    inset-inline-start: 0;
+    z-index: 1;
+    background-color: $av-color-surface;
+    box-shadow: 2px 0 4px -1px $av-color-border;
+  }
+
+  &-pinned-right {
+    position: sticky;
+    inset-inline-end: 0;
+    z-index: 1;
+    background-color: $av-color-surface;
+    box-shadow: -2px 0 4px -1px $av-color-border;
+  }
+}
+
+// Cell value display
+.av-datagrid-cell-value {
+  display: block;
+  padding: $av-spacing-2 $av-spacing-3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: $av-text-sm;
+  line-height: 1.4;
+  color: $av-color-text-primary;
+}
+
+// ── Cell editor ────────────────────────────────────────────────────────────────
+.av-dg-cell-editor {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: $av-spacing-1 $av-spacing-2;
+  font-size: $av-text-sm;
+  font-family: inherit;
+  background-color: $av-color-surface-overlay;
+  border: none;
+  border-radius: 0;
+  box-shadow: $av-theme-shadow-md;
+  z-index: 10;
+  color: $av-color-text-primary;
+  outline: none;
+
+  // Select editor
+  &.av-select {
+    padding-inline-end: $av-spacing-6;
+    cursor: pointer;
+  }
+
+  // Checkbox editor
+  &[type='checkbox'] {
+    width: auto;
+    height: auto;
+    position: relative;
+    inset: unset;
+    margin: auto;
+  }
+}
+
+// ── Row states ─────────────────────────────────────────────────────────────────
+.av-datagrid-table tbody tr {
+  &:hover .av-datagrid-cell {
+    background-color: $av-color-hover-overlay;
+  }
+
+  &.av-table-row-selected .av-datagrid-cell {
+    background-color: $av-color-primary-subtle;
+  }
+
+  &.av-datagrid-row-dragging {
+    opacity: 0.5;
+    background-color: $av-color-surface-interactive;
+  }
+}
+
+// ── Drag handle ────────────────────────────────────────────────────────────────
+.av-datagrid-drag-handle {
+  width: 36px;
+  text-align: center;
+  cursor: grab;
+  color: $av-color-text-disabled;
+  font-size: 1rem;
+  padding: 0 $av-spacing-2;
+
+  &:active { cursor: grabbing; }
+
+  &:hover { color: $av-color-text-secondary; }
+}
+
+// ── Compact density ────────────────────────────────────────────────────────────
+.av-datagrid-table.av-table-compact {
+  .av-datagrid-cell {
+    height: 28px;
+    max-height: 28px;
+  }
+
+  .av-datagrid-cell-value {
+    padding: $av-spacing-1 $av-spacing-2;
+    font-size: $av-text-xs;
+  }
+
+  .av-datagrid-th {
+    padding: $av-spacing-1 $av-spacing-2;
+  }
+}
+
+// ── Reduced motion ─────────────────────────────────────────────────────────────
+@media (prefers-reduced-motion: reduce) {
+  .av-datagrid-cell,
+  .av-datagrid-drag-handle {
+    transition: none;
+  }
+}
+
+// ── Dark mode ─────────────────────────────────────────────────────────────────
+[data-av-theme='dark'] {
+  .av-datagrid-cell-editing,
+  .av-dg-cell-editor {
+    background-color: $av-color-surface-overlay;
+  }
+}
+
+} // end @layer aravi1008.components
