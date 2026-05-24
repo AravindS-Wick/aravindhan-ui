@@ -104,6 +104,233 @@
     }
   }
 
+  // ── Text field wrapper (label + input + helper) ───────────────────────────
+  .av-text-field {
+    display: flex;
+    flex-direction: column;
+    gap: $av-spacing-1;
+
+    &.av-text-field-full { width: 100%; }
+
+    &.av-text-field-error .av-input {
+      border-color: $av-color-error;
+      &:focus-visible { box-shadow: 0 0 0 3px var(--av-theme-color-error-subtle, #FEF2F2); }
+    }
+  }
+
+  .av-form-label {
+    font-size: $av-text-sm;
+    font-weight: 500;
+    color: $av-color-text-primary;
+  }
+
+  .av-form-required { color: $av-color-error; margin-inline-start: 2px; }
+
+  .av-form-helper {
+    font-size: $av-text-xs;
+    color: $av-color-text-secondary;
+    margin-block-start: $av-spacing-1;
+
+    &.av-form-helper-error { color: $av-color-error; }
+  }
+
+  // ── Input wrapper (for adornments) ────────────────────────────────────────
+  .av-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    .av-input {
+      flex: 1;
+      min-width: 0;
+    }
+
+    &.av-input-wrapper-start .av-input { padding-inline-start: $av-spacing-8; }
+    &.av-input-wrapper-end   .av-input { padding-inline-end: $av-spacing-8; }
+
+    &.av-input-wrapper-both  .av-input {
+      padding-inline: $av-spacing-8 $av-spacing-8;
+    }
+  }
+
+  .av-input-adornment {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    color: $av-color-text-secondary;
+    font-size: $av-text-sm;
+    pointer-events: none;
+    z-index: 1;
+
+    &.av-input-adornment-start { inset-inline-start: $av-spacing-3; }
+    &.av-input-adornment-end   { inset-inline-end: $av-spacing-3; pointer-events: auto; }
+  }
+
+  // ── Password field ────────────────────────────────────────────────────────
+  .av-password-field {
+    display: flex;
+    flex-direction: column;
+    gap: $av-spacing-1;
+
+    .av-text-field { gap: 0; }
+  }
+
+  .av-password-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    background: transparent;
+    border: none;
+    border-radius: $av-radius-sm;
+    cursor: pointer;
+    color: $av-color-text-secondary;
+    font-size: 1rem;
+    line-height: 1;
+    padding: 0;
+    transition: color 0.15s ease;
+
+    &:hover { color: $av-color-text-primary; }
+
+    &:focus-visible {
+      outline: 2px solid $av-color-focus-ring;
+      outline-offset: 2px;
+    }
+  }
+
+  // ── Password strength meter ───────────────────────────────────────────────
+  .av-password-strength {
+    display: flex;
+    align-items: center;
+    gap: $av-spacing-2;
+    margin-block-start: $av-spacing-1;
+  }
+
+  .av-password-strength-bars {
+    display: flex;
+    gap: $av-spacing-1;
+    flex: 1;
+  }
+
+  .av-password-strength-bar {
+    flex: 1;
+    height: 4px;
+    border-radius: $av-radius-full;
+    background-color: $av-color-border;
+    transition: background-color 0.2s ease;
+
+    &.av-password-strength-weak   { background-color: $av-color-error; }
+    &.av-password-strength-fair   { background-color: $av-color-warning; }
+    &.av-password-strength-good   { background-color: $av-color-info; }
+    &.av-password-strength-strong { background-color: $av-color-success; }
+  }
+
+  .av-password-strength-label {
+    font-size: $av-text-xs;
+    font-weight: 500;
+    min-width: 3rem;
+    text-align: end;
+    color: $av-color-text-secondary;
+  }
+
+  // ── Number input ──────────────────────────────────────────────────────────
+  .av-number-input {
+    display: flex;
+    flex-direction: column;
+    gap: $av-spacing-1;
+
+    &.av-number-input-full { width: 100%; }
+  }
+
+  .av-number-input-control {
+    display: flex;
+    align-items: stretch;
+    border: 1px solid $av-color-border;
+    border-radius: $av-radius-md;
+    overflow: hidden;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+    &:focus-within {
+      border-color: $av-color-primary;
+      box-shadow: 0 0 0 3px var(--av-theme-color-primary-subtle, #EFF6FF);
+    }
+
+    .av-number-input-field {
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      flex: 1;
+      min-width: 0;
+      text-align: center;
+
+      // Hide browser native spin arrows
+      appearance: textfield;
+      -moz-appearance: textfield;
+
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+      &:focus-visible {
+        outline: none;
+        border-color: transparent;
+        box-shadow: none;
+      }
+    }
+  }
+
+  .av-number-input-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 $av-spacing-3;
+    background-color: $av-color-surface-raised;
+    border: none;
+    color: $av-color-text-primary;
+    font-size: $av-text-base;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+    min-width: 2.25rem;
+
+    &:hover:not(:disabled) { background-color: $av-color-border; }
+    &:disabled { opacity: 0.4; cursor: not-allowed; }
+    &:focus-visible { outline: 2px solid $av-color-focus-ring; outline-offset: -2px; }
+
+    &:first-child { border-inline-end: 1px solid $av-color-border; }
+    &:last-child  { border-inline-start: 1px solid $av-color-border; }
+  }
+
+  // Inline stepper (▲/▼ stacked on the right)
+  .av-number-input-stepper {
+    display: flex;
+    flex-direction: column;
+    border-inline-start: 1px solid $av-color-border;
+  }
+
+  .av-number-input-step-up,
+  .av-number-input-step-down {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    padding: 0 $av-spacing-2;
+    background: $av-color-surface-raised;
+    border: none;
+    cursor: pointer;
+    font-size: 0.5rem;
+    color: $av-color-text-secondary;
+    transition: background-color 0.1s ease;
+
+    &:hover:not(:disabled) { background-color: $av-color-border; }
+    &:disabled { opacity: 0.4; cursor: not-allowed; }
+    &:focus-visible { outline: 2px solid $av-color-focus-ring; outline-offset: -2px; }
+  }
+
+  .av-number-input-step-up { border-block-end: 1px solid $av-color-border; }
+
   // ── Form Group ───────────────────────────────────────────────────────────
   .av-form-group {
     display: flex;
