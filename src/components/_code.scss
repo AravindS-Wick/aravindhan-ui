@@ -1,0 +1,13 @@
+@use '../tokens/variables' as *;
+
+.av-code {
+  /* Auto-generated */
+  display: flex;
+  gap: var(--av-spacing-sm, 0.5rem);
+}
+
+.av-code-block {
+  /* Auto-generated */
+  display: flex;
+  gap: var(--av-spacing-sm, 0.5rem);
+}

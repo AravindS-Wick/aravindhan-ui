@@ -13,7 +13,12 @@
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
-    "./css": "./dist/index.css",
+    "./css": {
+      "import": "./dist/css-entry.mjs",
+      "require": "./dist/css-entry.cjs",
+      "style": "./dist/index.css"
+    },
+    "./dist/index.css": "./dist/index.css",
     "./tokens": "./dist/tokens/tokens.js",
     "./tokens/css": "./dist/tokens/variables.css",
     "./tokens/scss": "./dist/tokens/variables.scss",

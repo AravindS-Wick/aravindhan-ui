@@ -1,0 +1,184 @@
+@use '../tokens/variables' as *;
+
+@layer aravi1008.components {
+.av-combobox {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: $av-spacing-1;
+
+  &.av-combobox-disabled { opacity: 0.6; pointer-events: none; }
+
+  &.av-combobox-error .av-combobox-control {
+    border-color: $av-color-error;
+    &:focus-within { box-shadow: 0 0 0 3px var(--av-theme-color-error-subtle, #FEF2F2); }
+  }
+}
+
+.av-combobox-control {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: $av-spacing-1;
+  border: 1px solid $av-color-border;
+  border-radius: $av-radius-md;
+  background-color: $av-color-surface;
+  padding: $av-spacing-1 $av-spacing-8 $av-spacing-1 $av-spacing-2;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  min-height: 2.375rem;
+  cursor: text;
+
+  &:focus-within {
+    border-color: $av-color-primary;
+    box-shadow: 0 0 0 3px var(--av-theme-color-primary-subtle, #EFF6FF);
+  }
+}
+
+.av-combobox-input {
+  flex: 1;
+  min-width: 8rem;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: $av-spacing-1 0;
+  font-size: $av-text-sm;
+  color: $av-color-text-primary;
+  box-shadow: none;
+
+  &::placeholder { color: $av-color-text-secondary; }
+  &:focus-visible { outline: none; box-shadow: none; border: none; }
+}
+
+// Caret arrow
+.av-combobox-arrow {
+  position: absolute;
+  inset-inline-end: $av-spacing-3;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-inline-start: 5px solid transparent;
+  border-inline-end: 5px solid transparent;
+  border-block-start: 6px solid $av-color-text-secondary;
+  pointer-events: none;
+}
+
+// Clear button
+.av-combobox-clear {
+  position: absolute;
+  inset-inline-end: 1.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  background: $av-color-surface-raised;
+  border: none;
+  border-radius: $av-radius-full;
+  cursor: pointer;
+  color: $av-color-text-secondary;
+  font-size: 0.75rem;
+  line-height: 1;
+  padding: 0;
+
+  &:hover { background-color: $av-color-border; color: $av-color-text-primary; }
+  &:focus-visible { outline: 2px solid $av-color-focus-ring; outline-offset: 2px; }
+}
+
+// Multi-select tags
+.av-combobox-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $av-spacing-1;
+}
+
+.av-combobox-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: $av-spacing-1;
+  background-color: $av-color-primary-subtle;
+  color: $av-color-primary;
+  border-radius: $av-radius-sm;
+  padding: 0 $av-spacing-2;
+  font-size: $av-text-xs;
+  font-weight: 500;
+  line-height: 1.75rem;
+}
+
+.av-combobox-tag-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0;
+  opacity: 0.6;
+
+  &:hover { opacity: 1; }
+}
+
+// Dropdown list
+.av-combobox-menu {
+  position: absolute;
+  inset-block-start: calc(100% + 4px);
+  inset-inline: 0;
+  background-color: $av-color-surface;
+  border: 1px solid $av-color-border;
+  border-radius: $av-radius-md;
+  box-shadow: $av-shadow-md;
+  list-style: none;
+  margin: 0;
+  padding: $av-spacing-1 0;
+  max-height: 16rem;
+  overflow-y: auto;
+  z-index: $av-zindex-dropdown;
+}
+
+.av-combobox-option {
+  display: flex;
+  align-items: center;
+  gap: $av-spacing-2;
+  padding: $av-spacing-2 $av-spacing-3;
+  font-size: $av-text-sm;
+  color: $av-color-text-primary;
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+
+  &:hover,
+  &.av-combobox-option-focused { background-color: $av-color-surface-raised; }
+
+  &.av-combobox-option-selected {
+    background-color: $av-color-primary-subtle;
+    color: $av-color-primary;
+    font-weight: 500;
+  }
+
+  &.av-combobox-option-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    &:hover { background-color: transparent; }
+  }
+}
+
+.av-combobox-option-check {
+  width: 1rem;
+  font-size: $av-text-sm;
+  color: $av-color-primary;
+  flex-shrink: 0;
+}
+
+.av-combobox-empty {
+  padding: $av-spacing-3;
+  text-align: center;
+  font-size: $av-text-sm;
+  color: $av-color-text-secondary;
+}
+
+} // end @layer
