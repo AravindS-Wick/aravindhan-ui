@@ -33,6 +33,7 @@
 @forward 'components/badge';
 @forward 'components/alert';
 @forward 'components/table';
+@forward 'components/datagrid';
 @forward 'components/navbar';
 @forward 'components/tabs';
 @forward 'components/spinner';
@@ -55,6 +56,26 @@
 @forward 'components/stepper';
 @forward 'components/timeline';
 @forward 'components/stat';
+@forward 'components/clock';
+@forward 'components/countdown';
 
 // ── 7. Icons ──────────────────────────────────────────────────────────────────
 @forward 'icons/icons';
+@forward 'components/chip';
+@forward 'components/file-upload';
+@forward 'components/treeview';
+@forward 'components/color-picker';
+@forward 'components/popover';
+@forward 'components/menu';
+@forward 'components/sidenav';
+@forward 'components/list';
+@forward 'components/paper';
+@forward 'components/empty-state';
+@forward 'components/kbd';
+@forward 'components/code';
+@forward 'components/toggle-button';
+@forward 'components/otp';
+@forward 'components/slider';
+@forward 'components/rating';
+@forward 'components/combobox';
+@forward 'components/image';
