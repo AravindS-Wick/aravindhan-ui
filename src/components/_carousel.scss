@@ -1,0 +1,77 @@
+@use '../tokens/variables' as *;
+
+.av-carousel {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+
+  &__viewport {
+    display: flex;
+    transition: transform var(--av-transition-normal) ease-in-out;
+    width: 100%;
+  }
+
+  &__slide {
+    flex: 0 0 100%;
+    min-width: 0;
+  }
+
+  &__control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: var(--av-radius-full);
+    background: var(--av-surface);
+    border: 1px solid var(--av-border);
+    color: var(--av-text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--av-shadow-sm);
+    z-index: 2;
+    transition: all var(--av-transition-fast);
+
+    &:hover {
+      background: var(--av-surface-hover);
+      box-shadow: var(--av-shadow-md);
+    }
+
+    &--prev {
+      left: var(--av-space-4);
+    }
+
+    &--next {
+      right: var(--av-space-4);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  &__dots {
+    display: flex;
+    justify-content: center;
+    gap: var(--av-space-2);
+    margin-top: var(--av-space-4);
+  }
+
+  &__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: var(--av-radius-full);
+    background: var(--av-border);
+    border: none;
+    cursor: pointer;
+    transition: all var(--av-transition-fast);
+
+    &[data-active="true"] {
+      background: var(--av-primary);
+      transform: scale(1.2);
+    }
+  }
+}
