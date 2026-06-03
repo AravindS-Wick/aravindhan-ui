@@ -1,68 +1,110 @@
 // @aravi1008/ui — Alert Component
-
+@use 'sass:map';
 @use '../tokens/variables' as *;
 
-.av-alert {
-  display: flex;
-  align-items: flex-start;
-  gap: $av-spacing-3;
-  padding: $av-spacing-3 $av-spacing-4;
-  border-radius: $av-radius-lg;
-  border: 1px solid transparent;
-  font-size: $av-text-sm;
+@layer aravi1008.components {
+  .av-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: $av-spacing-3;
+    padding: $av-spacing-3 $av-spacing-4;
+    border-radius: $av-radius-lg;
+    border: 1px solid transparent;
+    font-size: $av-text-sm;
+    transition: all 0.2s ease;
 
-  &.av-alert-info {
-    background-color: var(--av-theme-color-info-subtle, #ECFEFF);
-    border-color: $av-color-info;
-    color: var(--av-theme-color-text-primary, #0C4A6E);
-    .av-alert-icon { color: $av-color-info; }
+    // Base Styles
+    &.av-alert-appearance-soft {
+      border: 1px solid transparent;
+    }
+    
+    &.av-alert-appearance-solid {
+      border: 1px solid transparent;
+      color: #fff;
+    }
+    
+    &.av-alert-appearance-outline {
+      background-color: transparent;
+    }
+
+    &.av-alert-appearance-left-accent {
+      border-radius: 0 $av-radius-lg $av-radius-lg 0;
+      border-left-width: 4px;
+      border-left-style: solid;
+    }
+
   }
 
-  &.av-alert-success {
-    background-color: var(--av-theme-color-success-subtle, #F0FDF4);
-    border-color: $av-color-success;
-    color: var(--av-color-green-800, #166534);
-    .av-alert-icon { color: $av-color-success; }
+  // Dynamic Colors
+  @each $name, $palette in $av-colors {
+    @if map.has-key($palette, 100) and map.has-key($palette, 900) {
+      .av-alert.av-alert-color-#{$name} {
+        &.av-alert-appearance-soft {
+          background-color: map.get($palette, 100);
+          color: map.get($palette, 900);
+          .av-alert-icon { color: map.get($palette, 600); }
+        }
+        
+        &.av-alert-appearance-solid {
+          background-color: map.get($palette, 600);
+          color: #fff;
+          .av-alert-icon { color: #fff; }
+        }
+        
+        &.av-alert-appearance-outline {
+          border-color: map.get($palette, 500);
+          color: map.get($palette, 900);
+          .av-alert-icon { color: map.get($palette, 600); }
+        }
+
+        &.av-alert-appearance-left-accent {
+          background-color: map.get($palette, 50);
+          border-color: map.get($palette, 200) map.get($palette, 200) map.get($palette, 200) map.get($palette, 600);
+          color: map.get($palette, 900);
+          .av-alert-icon { color: map.get($palette, 600); }
+        }
+      }
+    }
   }
 
-  &.av-alert-warning {
-    background-color: var(--av-theme-color-warning-subtle, #FFFBEB);
-    border-color: $av-color-warning;
-    color: var(--av-color-amber-800, #92400E);
-    .av-alert-icon { color: $av-color-warning; }
+  .av-alert-icon {
+    flex-shrink: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  &.av-alert-error {
-    background-color: var(--av-theme-color-error-subtle, #FEF2F2);
-    border-color: $av-color-error;
-    color: var(--av-color-red-800, #991B1B);
-    .av-alert-icon { color: $av-color-error; }
+  .av-alert-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: $av-spacing-1;
   }
-}
 
-.av-alert-icon {
-  flex-shrink: 0;
-  width: 1.25rem;
-  height: 1.25rem;
-}
+  .av-alert-title {
+    font-weight: 600;
+  }
 
-.av-alert-content {
-  flex: 1;
-}
+  .av-alert-message {
+    opacity: 0.9;
+  }
 
-.av-alert-title {
-  font-weight: 600;
-  margin-bottom: $av-spacing-1;
-}
+  .av-alert-dismiss {
+    flex-shrink: 0;
+    cursor: pointer;
+    opacity: 0.6;
+    background: none;
+    border: none;
+    padding: 0;
+    line-height: 1;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
 
-.av-alert-close {
-  flex-shrink: 0;
-  cursor: pointer;
-  opacity: 0.6;
-  background: none;
-  border: none;
-  padding: 0;
-  line-height: 1;
-
-  &:hover { opacity: 1; }
+    &:hover { opacity: 1; }
+  }
 }

@@ -2,123 +2,125 @@
 
 @use '../tokens/variables' as *;
 
-.av-stepper {
-  display: flex;
-  align-items: flex-start;
-
-  &.av-stepper-vertical {
-    flex-direction: column;
-  }
-}
-
-// ── Step ──────────────────────────────────────────────────────────────────────
-.av-step {
-  display: flex;
-  align-items: center;
-  flex: 1;
-
-  .av-stepper-vertical & {
-    flex: none;
-    flex-direction: column;
+@layer aravi1008.components {
+  .av-stepper {
+    display: flex;
     align-items: flex-start;
-    width: 100%;
+
+    &.av-stepper-vertical {
+      flex-direction: column;
+    }
   }
-}
 
-// ── Step indicator (circle) ────────────────────────────────────────────────────
-.av-step-indicator {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2rem;
-  height: 2rem;
-  border-radius: $av-radius-full;
-  border: 2px solid $av-color-border-strong;
-  background-color: $av-color-surface;
-  color: $av-color-text-secondary;
-  font-size: $av-text-sm;
-  font-weight: 600;
-  flex-shrink: 0;
-  transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
-  position: relative;
-  z-index: 1;
-}
+  // ── Step ────────────────────────────────────────────────────────────────────
+  .av-step {
+    display: flex;
+    align-items: center;
+    flex: 1;
 
-// ── Connector line ─────────────────────────────────────────────────────────────
-.av-step-connector {
-  flex: 1;
-  height: 2px;
-  background-color: $av-color-border;
-  margin: 0 $av-spacing-2;
-  transition: background-color 0.2s ease;
+    .av-stepper-vertical & {
+      flex: none;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+    }
+  }
 
-  .av-stepper-vertical & {
-    flex: none;
-    width: 2px;
+  // ── Step indicator (circle) ────────────────────────────────────────────────
+  .av-step-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
     height: 2rem;
-    margin: $av-spacing-1 0;
-    margin-left: calc(1rem - 1px);
-  }
-}
-
-// ── Step content ──────────────────────────────────────────────────────────────
-.av-step-content {
-  padding: $av-spacing-2 $av-spacing-3;
-
-  .av-stepper-vertical & {
-    padding: 0 0 $av-spacing-4 $av-spacing-3;
-    margin-left: calc(2rem + $av-spacing-2);
-    margin-top: calc(-2rem - $av-spacing-2);
-  }
-}
-
-.av-step-title {
-  font-size: $av-text-sm;
-  font-weight: 600;
-  color: $av-color-text-secondary;
-  white-space: nowrap;
-}
-
-.av-step-description {
-  font-size: $av-text-xs;
-  color: $av-color-text-disabled;
-  margin-top: $av-spacing-1;
-}
-
-// ── States ────────────────────────────────────────────────────────────────────
-.av-step.av-step-active {
-  .av-step-indicator {
-    border-color: $av-color-primary;
-    background-color: $av-color-primary;
-    color: #fff;
+    border-radius: $av-radius-full;
+    border: 2px solid $av-color-border-strong;
+    background-color: $av-color-surface;
+    color: $av-color-text-secondary;
+    font-size: $av-text-sm;
+    font-weight: 600;
+    flex-shrink: 0;
+    transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+    position: relative;
+    z-index: 1;
   }
 
-  .av-step-title { color: $av-color-primary; }
-}
+  // ── Connector line ─────────────────────────────────────────────────────────
+  .av-step-connector {
+    flex: 1;
+    height: 2px;
+    background-color: $av-color-border;
+    margin: 0 $av-spacing-2;
+    transition: background-color 0.2s ease;
 
-.av-step.av-step-completed {
-  .av-step-indicator {
-    border-color: $av-color-success;
-    background-color: $av-color-success;
-    color: #fff;
+    .av-stepper-vertical & {
+      flex: none;
+      width: 2px;
+      height: 2rem;
+      margin: $av-spacing-1 0;
+      margin-left: calc(1rem - 1px);
+    }
   }
 
-  .av-step-connector { background-color: $av-color-success; }
-  .av-step-title { color: $av-color-text-primary; }
-}
+  // ── Step content ────────────────────────────────────────────────────────────
+  .av-step-content {
+    padding: $av-spacing-2 $av-spacing-3;
 
-.av-step.av-step-error {
-  .av-step-indicator {
-    border-color: $av-color-error;
-    background-color: $av-color-error;
-    color: #fff;
+    .av-stepper-vertical & {
+      padding: 0 0 $av-spacing-4 $av-spacing-3;
+      margin-left: calc(2rem + $av-spacing-2);
+      margin-top: calc(-2rem - $av-spacing-2);
+    }
   }
 
-  .av-step-title { color: $av-color-error; }
-}
+  .av-step-title {
+    font-size: $av-text-sm;
+    font-weight: 600;
+    color: $av-color-text-secondary;
+    white-space: nowrap;
+  }
 
-// ── Reduced motion ─────────────────────────────────────────────────────────────
-@media (prefers-reduced-motion: reduce) {
-  .av-step-indicator,
-  .av-step-connector { transition: none; }
+  .av-step-description {
+    font-size: $av-text-xs;
+    color: $av-color-text-disabled;
+    margin-top: $av-spacing-1;
+  }
+
+  // ── States ─────────────────────────────────────────────────────────────────
+  .av-step.av-step-active {
+    .av-step-indicator {
+      border-color: $av-color-primary;
+      background-color: $av-color-primary;
+      color: #fff;
+    }
+
+    .av-step-title { color: $av-color-primary; }
+  }
+
+  .av-step.av-step-completed {
+    .av-step-indicator {
+      border-color: $av-color-success;
+      background-color: $av-color-success;
+      color: #fff;
+    }
+
+    .av-step-connector { background-color: $av-color-success; }
+    .av-step-title { color: $av-color-text-primary; }
+  }
+
+  .av-step.av-step-error {
+    .av-step-indicator {
+      border-color: $av-color-error;
+      background-color: $av-color-error;
+      color: #fff;
+    }
+
+    .av-step-title { color: $av-color-error; }
+  }
+
+  // ── Reduced motion ──────────────────────────────────────────────────────────
+  @media (prefers-reduced-motion: reduce) {
+    .av-step-indicator,
+    .av-step-connector { transition: none; }
+  }
 }

@@ -2,128 +2,130 @@
 
 @use '../tokens/variables' as *;
 
-// ── Stat card ─────────────────────────────────────────────────────────────────
-.av-stat {
-  display: flex;
-  flex-direction: column;
-  gap: $av-spacing-2;
-  padding: $av-spacing-5;
-  background-color: $av-color-surface;
-  border: 1px solid $av-color-border;
-  border-radius: $av-radius-xl;
+@layer aravi1008.components {
+  // ── Stat card ─────────────────────────────────────────────────────────────────
+  .av-stat {
+    display: flex;
+    flex-direction: column;
+    gap: $av-spacing-2;
+    padding: $av-spacing-5;
+    background-color: $av-color-surface;
+    border: 1px solid $av-color-border;
+    border-radius: $av-radius-xl;
 
-  &.av-stat-shadow { box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1); }
-}
-
-.av-stat-label {
-  font-size: $av-text-xs;
-  font-weight: 600;
-  color: $av-color-text-secondary;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.av-stat-value {
-  font-size: $av-text-3xl;
-  font-weight: 700;
-  color: $av-color-text-primary;
-  line-height: 1.1;
-}
-
-.av-stat-delta {
-  display: inline-flex;
-  align-items: center;
-  gap: $av-spacing-1;
-  font-size: $av-text-xs;
-  font-weight: 500;
-  padding: 2px $av-spacing-2;
-  border-radius: $av-radius-full;
-
-  &.av-stat-delta-up {
-    color: $av-color-success;
-    background-color: var(--av-theme-color-success-subtle, #F0FDF4);
+    &.av-stat-shadow { box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1); }
   }
 
-  &.av-stat-delta-down {
-    color: $av-color-error;
-    background-color: var(--av-theme-color-error-subtle, #FEF2F2);
-  }
-
-  &.av-stat-delta-neutral {
+  .av-stat-label {
+    font-size: $av-text-xs;
+    font-weight: 600;
     color: $av-color-text-secondary;
-    background-color: $av-color-surface-raised;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
-}
 
-.av-stat-description {
-  font-size: $av-text-xs;
-  color: $av-color-text-secondary;
-  margin-top: $av-spacing-1;
-}
+  .av-stat-value {
+    font-size: $av-text-3xl;
+    font-weight: 700;
+    color: $av-color-text-primary;
+    line-height: 1.1;
+  }
 
-.av-stat-icon {
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: $av-radius-lg;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  background-color: $av-color-primary-subtle;
-  color: $av-color-primary;
-}
+  .av-stat-delta {
+    display: inline-flex;
+    align-items: center;
+    gap: $av-spacing-1;
+    font-size: $av-text-xs;
+    font-weight: 500;
+    padding: 2px $av-spacing-2;
+    border-radius: $av-radius-full;
 
-// Horizontal stat with icon
-.av-stat-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+    &.av-stat-delta-up {
+      color: $av-color-success;
+      background-color: var(--av-theme-color-success-subtle, #F0FDF4);
+    }
 
-  .av-stat-text { flex: 1; }
-}
+    &.av-stat-delta-down {
+      color: $av-color-error;
+      background-color: var(--av-theme-color-error-subtle, #FEF2F2);
+    }
 
-// ── Stat group ────────────────────────────────────────────────────────────────
-.av-stat-group {
-  display: grid;
-  gap: $av-spacing-4;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-}
+    &.av-stat-delta-neutral {
+      color: $av-color-text-secondary;
+      background-color: $av-color-surface-raised;
+    }
+  }
 
-// ── Empty state ───────────────────────────────────────────────────────────────
-.av-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: $av-spacing-10 $av-spacing-6;
-  gap: $av-spacing-3;
+  .av-stat-description {
+    font-size: $av-text-xs;
+    color: $av-color-text-secondary;
+    margin-top: $av-spacing-1;
+  }
 
-  &.av-empty-sm { padding: $av-spacing-6 $av-spacing-4; }
-  &.av-empty-lg { padding: $av-spacing-16 $av-spacing-8; }
-}
+  .av-stat-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: $av-radius-lg;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background-color: $av-color-primary-subtle;
+    color: $av-color-primary;
+  }
 
-.av-empty-icon {
-  width: 3rem;
-  height: 3rem;
-  color: $av-color-text-disabled;
-}
+  // Horizontal stat with icon
+  .av-stat-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-.av-empty-title {
-  font-size: $av-text-base;
-  font-weight: 600;
-  color: $av-color-text-primary;
-  margin: 0;
-}
+    .av-stat-text { flex: 1; }
+  }
 
-.av-empty-description {
-  font-size: $av-text-sm;
-  color: $av-color-text-secondary;
-  max-width: 360px;
-  line-height: 1.6;
-  margin: 0;
-}
+  // ── Stat group ────────────────────────────────────────────────────────────────
+  .av-stat-group {
+    display: grid;
+    gap: $av-spacing-4;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
 
-.av-empty-action {
-  margin-top: $av-spacing-2;
+  // ── Empty state ───────────────────────────────────────────────────────────────
+  .av-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: $av-spacing-10 $av-spacing-6;
+    gap: $av-spacing-3;
+
+    &.av-empty-sm { padding: $av-spacing-6 $av-spacing-4; }
+    &.av-empty-lg { padding: $av-spacing-16 $av-spacing-8; }
+  }
+
+  .av-empty-icon {
+    width: 3rem;
+    height: 3rem;
+    color: $av-color-text-disabled;
+  }
+
+  .av-empty-title {
+    font-size: $av-text-base;
+    font-weight: 600;
+    color: $av-color-text-primary;
+    margin: 0;
+  }
+
+  .av-empty-description {
+    font-size: $av-text-sm;
+    color: $av-color-text-secondary;
+    max-width: 360px;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .av-empty-action {
+    margin-top: $av-spacing-2;
+  }
 }

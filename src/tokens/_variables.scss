@@ -1,5 +1,5 @@
 // @aravi1008/ui — Token Variables
-// Auto-generated via Style Dictionary. Manual edits here will be overwritten.
+// Generated from Style Dictionary + extended with full token surface.
 // Edit source: tokens/base/*.json and tokens/themes/*.json
 
 // ── Spacing ──────────────────────────────────────────────────────────────────
@@ -58,22 +58,191 @@ $av-bp-2xl: 1536px;
   @if $bp == sm  { @media (min-width: 480px)  { @content; } } @else if $bp == md  { @media (min-width: 768px)  { @content; } } @else if $bp == lg  { @media (min-width: 1024px) { @content; } } @else if $bp == xl  { @media (min-width: 1280px) { @content; } } @else if $bp == 2xl { @media (min-width: 1536px) { @content; } }
 }
 
-// ── Theme semantic tokens (referenced via CSS vars) ───────────────────────────
-$av-color-primary: var(--av-theme-color-primary,        #3B82F6);
-$av-color-primary-hover: var(--av-theme-color-primary-hover,  #2563EB);
-$av-color-primary-active: var(--av-theme-color-primary-active, #1D4ED8);
-$av-color-primary-subtle: var(--av-theme-color-primary-subtle, #EFF6FF);
-$av-color-secondary: var(--av-theme-color-secondary,      #64748B);
-$av-color-surface: var(--av-theme-color-surface,        #FFF);
-$av-color-surface-raised: var(--av-theme-color-surface-raised, #F8FAFC);
-$av-color-border: var(--av-theme-color-border,         #E2E8F0);
-$av-color-border-strong: var(--av-theme-color-border-strong,  #CBD5E1);
-$av-color-text-primary: var(--av-theme-color-text-primary,   #0F172A);
-$av-color-text-secondary: var(--av-theme-color-text-secondary, #64748B);
-$av-color-text-disabled: var(--av-theme-color-text-disabled,  #CBD5E1);
-$av-color-text-inverse: var(--av-theme-color-text-inverse,   #FFF);
-$av-color-success: var(--av-theme-color-success,        #22C55E);
-$av-color-warning: var(--av-theme-color-warning,        #F59E0B);
-$av-color-error: var(--av-theme-color-error,          #EF4444);
-$av-color-info: var(--av-theme-color-info,           #06B6D4);
-$av-color-focus-ring: var(--av-theme-color-focus-ring,     #3B82F6);
+// ── Theme semantic tokens — colors ────────────────────────────────────────────
+// Primary palette
+$av-color-primary: var(--av-theme-color-primary,              #3B82F6);
+$av-color-primary-hover: var(--av-theme-color-primary-hover,        #2563EB);
+$av-color-primary-active: var(--av-theme-color-primary-active,       #1D4ED8);
+$av-color-primary-subtle: var(--av-theme-color-primary-subtle,       #EFF6FF);
+
+// Secondary palette
+$av-color-secondary: var(--av-theme-color-secondary,            #64748B);
+$av-color-secondary-hover: var(--av-theme-color-secondary-hover,      #475569);
+$av-color-secondary-active: var(--av-theme-color-secondary-active,     #334155);
+$av-color-secondary-subtle: var(--av-theme-color-secondary-subtle,     #F1F5F9);
+
+// Accent
+$av-color-accent: var(--av-theme-color-accent,               #06B6D4);
+$av-color-accent-hover: var(--av-theme-color-accent-hover,         #0891B2);
+
+// Surfaces
+$av-color-surface: var(--av-theme-color-surface,              #FFF);
+$av-color-surface-raised: var(--av-theme-color-surface-raised,       #F8FAFC);
+$av-color-surface-overlay: var(--av-theme-color-surface-overlay,      #FFF);
+$av-color-surface-sunken: var(--av-theme-color-surface-sunken,       #F1F5F9);
+$av-color-surface-interactive: var(--av-theme-color-surface-interactive, #F8FAFC);
+
+// Borders
+$av-color-border: var(--av-theme-color-border,               #E2E8F0);
+$av-color-border-strong: var(--av-theme-color-border-strong,        #CBD5E1);
+$av-color-border-focus: var(--av-theme-color-border-focus,         #3B82F6);
+
+// Text
+$av-color-text-primary: var(--av-theme-color-text-primary,         #0F172A);
+$av-color-text-secondary: var(--av-theme-color-text-secondary,       #64748B);
+$av-color-text-disabled: var(--av-theme-color-text-disabled,        #CBD5E1);
+$av-color-text-inverse: var(--av-theme-color-text-inverse,         #FFF);
+$av-color-text-placeholder: var(--av-theme-color-text-placeholder,     #94A3B8);
+$av-color-text-link: var(--av-theme-color-text-link,            #2563EB);
+$av-color-text-link-hover: var(--av-theme-color-text-link-hover,      #1D4ED8);
+
+// Semantic states
+$av-color-success: var(--av-theme-color-success,              #22C55E);
+$av-color-success-subtle: var(--av-theme-color-success-subtle,       #F0FDF4);
+$av-color-success-border: var(--av-theme-color-success-border,       #86EFAC);
+$av-color-warning: var(--av-theme-color-warning,              #F59E0B);
+$av-color-warning-subtle: var(--av-theme-color-warning-subtle,       #FFFBEB);
+$av-color-warning-border: var(--av-theme-color-warning-border,       #FCD34D);
+$av-color-error: var(--av-theme-color-error,                #EF4444);
+$av-color-error-subtle: var(--av-theme-color-error-subtle,         #FEF2F2);
+$av-color-error-border: var(--av-theme-color-error-border,         #FCA5A5);
+$av-color-info: var(--av-theme-color-info,                 #06B6D4);
+$av-color-info-subtle: var(--av-theme-color-info-subtle,          #ECFEFF);
+$av-color-info-border: var(--av-theme-color-info-border,          #67E8F9);
+
+// Focus / overlay / interaction
+$av-color-focus-ring: var(--av-theme-color-focus-ring,           #3B82F6);
+$av-color-overlay: var(--av-theme-color-overlay,              rgb(0 0 0 / 0.4));
+$av-color-hover-overlay: var(--av-theme-color-hover-overlay,        rgb(59 130 246 / 0.06));
+$av-color-selected-overlay: var(--av-theme-color-selected-overlay,     rgb(59 130 246 / 0.10));
+$av-color-pressed-overlay: var(--av-theme-color-pressed-overlay,      rgb(59 130 246 / 0.14));
+
+// Status indicators
+$av-color-status-online: var(--av-theme-color-status-online,        #22C55E);
+$av-color-status-offline: var(--av-theme-color-status-offline,       #94A3B8);
+$av-color-status-away: var(--av-theme-color-status-away,          #F59E0B);
+$av-color-status-busy: var(--av-theme-color-status-busy,          #EF4444);
+
+// Data visualization
+$av-color-chart-1: var(--av-theme-color-chart-1,              #3B82F6);
+$av-color-chart-2: var(--av-theme-color-chart-2,              #22C55E);
+$av-color-chart-3: var(--av-theme-color-chart-3,              #F59E0B);
+$av-color-chart-4: var(--av-theme-color-chart-4,              #EF4444);
+$av-color-chart-5: var(--av-theme-color-chart-5,              #8B5CF6);
+$av-color-chart-6: var(--av-theme-color-chart-6,              #06B6D4);
+
+// Static
+$av-color-white: #fff;
+$av-color-black: #000;
+
+// ── Theme semantic tokens — typography ────────────────────────────────────────
+$av-theme-font-sans: var(--av-theme-font-sans,  #{$av-font-sans});
+$av-theme-font-mono: var(--av-theme-font-mono,  #{$av-font-mono});
+$av-theme-font-serif: var(--av-theme-font-serif, #{$av-font-serif});
+
+// ── Theme semantic tokens — border radius (per-theme overridable) ─────────────
+$av-theme-radius-sm: var(--av-theme-radius-sm,   var(--av-radius-sm,   2px));
+$av-theme-radius-md: var(--av-theme-radius-md,   var(--av-radius-md,   4px));
+$av-theme-radius-lg: var(--av-theme-radius-lg,   var(--av-radius-lg,   8px));
+$av-theme-radius-xl: var(--av-theme-radius-xl,   var(--av-radius-xl,   12px));
+$av-theme-radius-full: var(--av-theme-radius-full, var(--av-radius-full, 9999px));
+
+// ── Theme semantic tokens — shadows (per-theme overridable) ───────────────────
+$av-theme-shadow-xs: var(--av-theme-shadow-xs, var(--av-shadow-xs, 0 1px 2px 0 rgb(0 0 0 / 0.05)));
+$av-theme-shadow-sm: var(--av-theme-shadow-sm, var(--av-shadow-sm, 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)));
+$av-theme-shadow-md: var(--av-theme-shadow-md, var(--av-shadow-md, 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)));
+$av-theme-shadow-lg: var(--av-theme-shadow-lg, var(--av-shadow-lg, 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)));
+$av-theme-shadow-xl: var(--av-theme-shadow-xl, var(--av-shadow-xl, 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)));
+
+// ── Base shadows (non-theme-scoped, static) ───────────────────────────────────
+$av-shadow-none: var(--av-shadow-none,  none);
+$av-shadow-xs: var(--av-shadow-xs,    0 1px 2px 0 rgb(0 0 0 / 0.05));
+$av-shadow-sm: var(--av-shadow-sm,    0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1));
+$av-shadow-md: var(--av-shadow-md,    0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1));
+$av-shadow-lg: var(--av-shadow-lg,    0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1));
+$av-shadow-xl: var(--av-shadow-xl,    0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1));
+$av-shadow-2xl: var(--av-shadow-2xl,   0 25px 50px -12px rgb(0 0 0 / 0.25));
+$av-shadow-inner: var(--av-shadow-inner, inset 0 2px 4px 0 rgb(0 0 0 / 0.05));
+
+// ── Font Weights ──────────────────────────────────────────────────────────────
+$av-font-weight-thin: var(--av-font-weight-thin,      100);
+$av-font-weight-light: var(--av-font-weight-light,     300);
+$av-font-weight-normal: var(--av-font-weight-normal,    400);
+$av-font-weight-medium: var(--av-font-weight-medium,    500);
+$av-font-weight-semibold: var(--av-font-weight-semibold,  600);
+$av-font-weight-bold: var(--av-font-weight-bold,      700);
+$av-font-weight-extrabold: var(--av-font-weight-extrabold, 800);
+$av-font-weight-black: var(--av-font-weight-black,     900);
+
+// ── Line Heights ──────────────────────────────────────────────────────────────
+$av-leading-none: var(--av-leading-none,    1);
+$av-leading-tight: var(--av-leading-tight,   1.25);
+$av-leading-snug: var(--av-leading-snug,    1.375);
+$av-leading-normal: var(--av-leading-normal,  1.5);
+$av-leading-relaxed: var(--av-leading-relaxed, 1.625);
+$av-leading-loose: var(--av-leading-loose,   2);
+
+// ── Z-index ───────────────────────────────────────────────────────────────────
+$av-zindex-dropdown: var(--av-zindex-dropdown, 1000);
+$av-zindex-sticky: var(--av-zindex-sticky,   1100);
+$av-zindex-overlay: var(--av-zindex-overlay,  1200);
+$av-zindex-modal: var(--av-zindex-modal,    1300);
+$av-zindex-popover: var(--av-zindex-popover,  1400);
+$av-zindex-tooltip: var(--av-zindex-tooltip,  1500);
+$av-zindex-toast: var(--av-zindex-toast,    1600);
+
+// ── Transitions ───────────────────────────────────────────────────────────────
+$av-duration-fast: var(--av-duration-fast,   0.1s);
+$av-duration-base: var(--av-duration-base,   0.2s);
+$av-duration-slow: var(--av-duration-slow,   0.3s);
+$av-ease-default: var(--av-ease-default,    ease);
+$av-ease-in: var(--av-ease-in,         ease-in);
+$av-ease-out: var(--av-ease-out,        ease-out);
+$av-ease-in-out: var(--av-ease-in-out,     ease-in-out);
+
+// ── Theme color map for component loop variations ─────────────────────────
+$av-colors: (
+  "primary": (
+    50: var(--av-theme-color-primary-subtle, #EFF6FF),
+    100: var(--av-theme-color-primary-subtle, #EFF6FF),
+    300: var(--av-theme-color-primary-hover, #2563EB),
+    500: var(--av-theme-color-primary, #3B82F6),
+    900: var(--av-theme-color-primary-active, #1D4ED8)
+  ),
+  "secondary": (
+    50: var(--av-theme-color-secondary-subtle, #F1F5F9),
+    100: var(--av-theme-color-secondary-subtle, #F1F5F9),
+    300: var(--av-theme-color-secondary-hover, #475569),
+    500: var(--av-theme-color-secondary, #64748B),
+    900: var(--av-theme-color-secondary-active, #334155)
+  ),
+  "success": (
+    50: var(--av-theme-color-success-subtle, #F0FDF4),
+    100: var(--av-theme-color-success-subtle, #F0FDF4),
+    300: var(--av-theme-color-success-border, #86EFAC),
+    500: var(--av-theme-color-success, #22C55E),
+    900: var(--av-theme-color-success, #22C55E)
+  ),
+  "warning": (
+    50: var(--av-theme-color-warning-subtle, #FFFBEB),
+    100: var(--av-theme-color-warning-subtle, #FFFBEB),
+    300: var(--av-theme-color-warning-border, #FCD34D),
+    500: var(--av-theme-color-warning, #F59E0B),
+    900: var(--av-theme-color-warning, #F59E0B)
+  ),
+  "error": (
+    50: var(--av-theme-color-error-subtle, #FEF2F2),
+    100: var(--av-theme-color-error-subtle, #FEF2F2),
+    300: var(--av-theme-color-error-border, #FCA5A5),
+    500: var(--av-theme-color-error, #EF4444),
+    900: var(--av-theme-color-error, #EF4444)
+  ),
+  "info": (
+    50: var(--av-theme-color-info-subtle, #ECFEFF),
+    100: var(--av-theme-color-info-subtle, #ECFEFF),
+    300: var(--av-theme-color-info-border, #67E8F9),
+    500: var(--av-theme-color-info, #06B6D4),
+    900: var(--av-theme-color-info, #06B6D4)
+  )
+);
+

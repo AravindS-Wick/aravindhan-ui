@@ -1,0 +1,4 @@
+// @aravi1008/ui — CSS Cascade Layer order declaration
+// This must be the first CSS output so all layer blocks respect this priority.
+// Consumer styles (outside any @layer) automatically win over everything here.
+@layer aravi1008.tokens, aravi1008.base, aravi1008.components, aravi1008.utilities;

@@ -1,3 +1,69 @@
+# [1.5.0](https://github.com/AravindS-Wick/aravindhan-ui/compare/v1.4.1...v1.5.0) (2026-04-22)
+
+
+### Features
+
+* **utilities:** add fill/stroke/ring palette utilities + fix responsive gaps ([fa00eb1](https://github.com/AravindS-Wick/aravindhan-ui/commit/fa00eb1573db8b85fb314a7aa97d29469f40f56b))
+
+## [1.4.1](https://github.com/AravindS-Wick/aravindhan-ui/compare/v1.4.0...v1.4.1) (2026-04-06)
+
+
+### Bug Fixes
+
+* **p2,p3:** toggleDarkMode round-trip for non-light/dark themes ([50a2309](https://github.com/AravindS-Wick/aravindhan-ui/commit/50a2309057a65891bc189bddd2bac14246918c48))
+* **security:** resolve P0 and P1 critical bugs ([d2b18ad](https://github.com/AravindS-Wick/aravindhan-ui/commit/d2b18ad57ffcfc6ea7d5f96b6b2fc8f21409e859))
+
+# [1.4.0](https://github.com/AravindS-Wick/aravindhan-ui/compare/v1.3.1...v1.4.0) (2026-03-30)
+
+
+### Bug Fixes
+
+* **ci:** add build:css step before tests; fix stylelint errors ([9f5c7cb](https://github.com/AravindS-Wick/aravindhan-ui/commit/9f5c7cb997faeaf0f9bcdb5fbb9bd18b2cc6f532))
+
+
+### Features
+
+* **css:** add CSS Cascade Layers ([@layer](https://github.com/layer)) across all stylesheets ([16aa3f5](https://github.com/AravindS-Wick/aravindhan-ui/commit/16aa3f5c2184f1a0ea238f9853b7326fe09ce7a7))
+* **css:** add CSS Cascade Layers ([@layer](https://github.com/layer)) across all stylesheets ([3eb968e](https://github.com/AravindS-Wick/aravindhan-ui/commit/3eb968e9a2fe8c3fd463de69f238aa6cbdd7694e))
+
+## [1.3.1](https://github.com/AravindS-Wick/aravindhan-ui/compare/v1.3.0...v1.3.1) (2026-03-27)
+
+
+### Bug Fixes
+
+* **toast:** escape title and description to prevent XSS ([54ca09e](https://github.com/AravindS-Wick/aravindhan-ui/commit/54ca09e8e803ec35c004717fab2d5ccbadacfc73))
+
+# [1.3.0](https://github.com/AravindS-Wick/aravindhan-ui/compare/v1.2.0...v1.3.0) (2026-03-26)
+
+
+### Features
+
+* **utilities:** add aspect-ratio, scroll, animation, and print utilities ([#21](https://github.com/AravindS-Wick/aravindhan-ui/issues/21)) ([188f9a1](https://github.com/AravindS-Wick/aravindhan-ui/commit/188f9a1a4c3ba83d8d02161c176f4143cdd6ade3))
+
+# [1.2.0](https://github.com/AravindS-Wick/aravindhan-ui/compare/v1.1.0...v1.2.0) (2026-03-26)
+
+
+### Bug Fixes
+
+* **accordion:** replace max-height hack with CSS grid-template-rows animation ([#18](https://github.com/AravindS-Wick/aravindhan-ui/issues/18)) ([095351d](https://github.com/AravindS-Wick/aravindhan-ui/commit/095351df84764427ab02b01a2997467ddb46d446))
+* **dropdown:** add single-character typeahead keyboard navigation ([#17](https://github.com/AravindS-Wick/aravindhan-ui/issues/17)) ([9418fb1](https://github.com/AravindS-Wick/aravindhan-ui/commit/9418fb13657c2ac2f0e5973ef1b685c7ff2d1e6e))
+* **focus-trap:** re-query focusable elements live on every Tab press ([#16](https://github.com/AravindS-Wick/aravindhan-ui/issues/16)) ([2f197c0](https://github.com/AravindS-Wick/aravindhan-ui/commit/2f197c0ded228d1ed304f9cc3662bfe617999173))
+* **modal,drawer:** add shared scroll lock counter for nested overlays ([#14](https://github.com/AravindS-Wick/aravindhan-ui/issues/14)) ([5452f6f](https://github.com/AravindS-Wick/aravindhan-ui/commit/5452f6fe3fd0d47bd6f436052c0355d7b42e8f2b))
+* **table:** add sanitize option and close XSS vector in createTable ([#19](https://github.com/AravindS-Wick/aravindhan-ui/issues/19)) ([fd2a814](https://github.com/AravindS-Wick/aravindhan-ui/commit/fd2a814503de0dc3413c82032f69ef2213f35cd0))
+* **toast:** add queue and configurable max-visible cap ([#15](https://github.com/AravindS-Wick/aravindhan-ui/issues/15)) ([720dfdb](https://github.com/AravindS-Wick/aravindhan-ui/commit/720dfdbedad6183935129e29c93c2388dc13e1e6))
+
+
+### Features
+
+* **initAll:** add observe option for SPA MutationObserver re-init ([#20](https://github.com/AravindS-Wick/aravindhan-ui/issues/20)) ([9202d88](https://github.com/AravindS-Wick/aravindhan-ui/commit/9202d885e5339fa12f9970ffa10950c792921492))
+
+# [1.1.0](https://github.com/AravindS-Wick/aravindhan-ui/compare/v1.0.1...v1.1.0) (2026-03-26)
+
+
+### Features
+
+* **typography:** add 7xl-9xl sizes, fluid clamp() scale, responsive variants, prose, list styles, text colors ([#13](https://github.com/AravindS-Wick/aravindhan-ui/issues/13)) ([51d568c](https://github.com/AravindS-Wick/aravindhan-ui/commit/51d568c176210c4dbe5213717f3d4191ef89cc32))
+
 ## [1.0.1](https://github.com/AravindS-Wick/aravindhan-ui/compare/v1.0.0...v1.0.1) (2026-03-26)
 
 

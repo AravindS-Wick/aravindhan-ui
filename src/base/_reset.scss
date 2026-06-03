@@ -2,126 +2,128 @@
 
 @use '../tokens/variables' as *;
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  line-height: 1.5;
-  -webkit-text-size-adjust: 100%;
-  tab-size: 4;
-  font-feature-settings: normal;
-  font-variation-settings: normal;
-}
-
-body {
-  font-family: $av-font-sans;
-  font-size: $av-text-base;
-  line-height: 1.5;
-  color: $av-color-text-primary;
-  background-color: $av-color-surface;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-img,
-picture,
-video,
-canvas,
-svg {
-  display: block;
-  max-width: 100%;
-}
-
-input,
-button,
-textarea,
-select {
-  font: inherit;
-}
-
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  overflow-wrap: break-word;
-}
-
-a {
-  color: $av-color-primary;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-
-  &:hover {
-    color: $av-color-primary-hover;
-  }
-}
-
-// Focus styles — visible for keyboard, hidden for mouse
-:focus-visible {
-  outline: 2px solid $av-color-focus-ring;
-  outline-offset: 2px;
-  border-radius: $av-radius-sm;
-}
-
-:focus:not(:focus-visible) {
-  outline: none;
-}
-
-// List reset utility
-ul,
-ol {
-  list-style: none;
-}
-
-// Table reset
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-
-// Button reset
-button {
-  cursor: pointer;
-  background: none;
-  border: none;
-  padding: 0;
-
-  &:disabled {
-    cursor: not-allowed;
-  }
-}
-
-// HR
-hr {
-  border: none;
-  border-top: 1px solid $av-color-border;
-  margin: $av-spacing-md 0;
-}
-
-// Scrollbar
-:root {
-  scrollbar-width: thin;
-  scrollbar-color: var(--av-theme-color-border, #E2E8F0) transparent;
-}
-
-// Reduced motion — disable all transitions and animations for users who
-// prefer it. Keyframe animations are handled individually per component
-// to provide a safe static fallback rather than a frozen mid-animation state.
-@media (prefers-reduced-motion: reduce) {
+@layer aravi1008.base {
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms;
-    animation-iteration-count: 1;
-    transition-duration: 0.01ms;
-    scroll-behavior: auto;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+    tab-size: 4;
+    font-feature-settings: normal;
+    font-variation-settings: normal;
+  }
+
+  body {
+    font-family: $av-font-sans;
+    font-size: $av-text-base;
+    line-height: 1.5;
+    color: $av-color-text-primary;
+    background-color: $av-color-surface;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    overflow-wrap: break-word;
+  }
+
+  a {
+    color: $av-color-primary;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+
+    &:hover {
+      color: $av-color-primary-hover;
+    }
+  }
+
+  // Focus styles — visible for keyboard, hidden for mouse
+  :focus-visible {
+    outline: 2px solid $av-color-focus-ring;
+    outline-offset: 2px;
+    border-radius: $av-radius-sm;
+  }
+
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  // List reset utility
+  ul,
+  ol {
+    list-style: none;
+  }
+
+  // Table reset
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+
+  // Button reset
+  button {
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+
+  // HR
+  hr {
+    border: none;
+    border-top: 1px solid $av-color-border;
+    margin: $av-spacing-md 0;
+  }
+
+  // Scrollbar
+  :root {
+    scrollbar-width: thin;
+    scrollbar-color: var(--av-theme-color-border, #E2E8F0) transparent;
+  }
+
+  // Reduced motion — disable all transitions and animations for users who
+  // prefer it. Keyframe animations are handled individually per component
+  // to provide a safe static fallback rather than a frozen mid-animation state.
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms;
+      animation-iteration-count: 1;
+      transition-duration: 0.01ms;
+      scroll-behavior: auto;
+    }
   }
 }

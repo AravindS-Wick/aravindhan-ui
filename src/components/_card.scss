@@ -1,45 +1,109 @@
 // @aravi1008/ui — Card Component
-
+@use 'sass:map';
 @use '../tokens/variables' as *;
+@use 'sass:color';
 
-.av-card {
-  background-color: $av-color-surface-raised;
-  border: 1px solid $av-color-border;
-  border-radius: $av-radius-xl;
-  overflow: hidden;
+@layer aravi1008.components {
+  .av-card {
+    border-radius: $av-radius-xl;
+    overflow: hidden;
+    background-color: $av-color-surface;
+    color: $av-color-text-primary;
+    transition: box-shadow 0.2s ease, transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
 
-  &.av-card-shadow { box-shadow: var(--av-shadow-md, 0 4px 6px -1px rgb(0 0 0 / 0.1)); }
-  &.av-card-flat   { border: none; background-color: $av-color-surface; }
+    // Default Appearance: Outline
+    border: 1px solid $av-color-border;
+    
+    // Appearances
+    &.av-card-appearance-elevated {
+      border: 1px solid transparent;
+      box-shadow: var(--av-shadow-md, 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1));
+      background-color: $av-color-surface-raised;
+    }
 
-  &.av-card-hover  { transition: box-shadow 0.2s ease, transform 0.2s ease;
-    &:hover { box-shadow: var(--av-shadow-lg, 0 10px 15px -3px rgb(0 0 0 / 0.1)); transform: translateY(-2px); } }
-}
+    &.av-card-appearance-filled {
+      border: 1px solid transparent;
+      background-color: $av-color-surface-sunken;
+    }
 
-.av-card-header {
-  padding: $av-spacing-md $av-spacing-lg;
-  border-bottom: 1px solid $av-color-border;
-  font-weight: 600;
-  font-size: $av-text-base;
-  color: $av-color-text-primary;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: $av-spacing-md;
-}
+    &.av-card-appearance-outline {
+      border: 1px solid $av-color-border;
+      background-color: transparent;
+    }
 
-.av-card-body {
-  padding: $av-spacing-lg;
-}
+    &.av-card-hoverable {
+      &:hover {
+        box-shadow: var(--av-shadow-lg, 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1));
+        transform: translateY(-2px);
+      }
+    }
 
-.av-card-footer {
-  padding: $av-spacing-md $av-spacing-lg;
-  border-top: 1px solid $av-color-border;
-  display: flex;
-  align-items: center;
-  gap: $av-spacing-sm;
-}
+    &.av-card-flush {
+      border-radius: 0;
+      border-left: none;
+      border-right: none;
+    }
 
-.av-card-image {
-  width: 100%;
-  object-fit: cover;
+    // Color Variations
+    @each $name, $palette in $av-colors {
+      &.av-card-color-#{$name} {
+        @if map.has-key($palette, 100) and map.has-key($palette, 900) {
+          &.av-card-appearance-filled {
+            background-color: map.get($palette, 100);
+            color: map.get($palette, 900);
+          }
+
+          &.av-card-appearance-outline {
+            border-color: map.get($palette, 300);
+          }
+
+          &.av-card-appearance-elevated {
+            background-color: map.get($palette, 50);
+            color: map.get($palette, 900);
+          }
+        }
+      }
+    }
+  }
+
+  .av-card-header {
+    padding: $av-spacing-md $av-spacing-lg;
+    border-bottom: 1px solid $av-color-border;
+    font-weight: 600;
+    font-size: $av-text-base;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $av-spacing-md;
+
+    .av-card-appearance-filled &,
+    .av-card-appearance-elevated & {
+      border-bottom-color: rgba(0, 0, 0, 0.05);
+    }
+  }
+
+  .av-card-body {
+    padding: $av-spacing-lg;
+    color: inherit;
+  }
+
+  .av-card-footer {
+    padding: $av-spacing-md $av-spacing-lg;
+    border-top: 1px solid $av-color-border;
+    display: flex;
+    align-items: center;
+    gap: $av-spacing-sm;
+
+    .av-card-appearance-filled &,
+    .av-card-appearance-elevated & {
+      border-top-color: rgba(0, 0, 0, 0.05);
+    }
+  }
+
+  .av-card-image {
+    width: 100%;
+    object-fit: cover;
+    display: block;
+  }
 }

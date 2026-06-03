@@ -49,3 +49,6 @@ CLAUDE.md
 *.tsbuildinfo
 .eslintcache
 .stylelintcache
+
+# Documents
+docs/
