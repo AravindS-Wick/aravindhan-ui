@@ -30,8 +30,10 @@ describe('package.json', () => {
 
   test('has exports field', () => {
     expect(pkg.exports).toBeDefined();
+    expect(pkg.exports['.']).toBeDefined();
     expect(pkg.exports['./css']).toBeDefined();
-    expect(pkg.exports['./scss']).toBeDefined();
+    expect(pkg.exports['./components']).toBeDefined();
+    // ./scss and ./less are not exported (P0 security fix: remove dead exports)
   });
 
   test('files field does not include node_modules or dist source maps as secret', () => {

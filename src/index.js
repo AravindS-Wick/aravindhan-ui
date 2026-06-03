@@ -87,10 +87,34 @@ export function getTheme(target) {
 
 /**
  * Toggle between light and dark themes.
+ * For non-light/dark themes (forest, ocean, etc.), stores the previous theme
+ * and cycles: forest → dark → forest (not forest → dark → light).
  * @param {object} [options] - same as setTheme options
  */
+const _darkModeToggleState = new Map();
+
 export function toggleDarkMode(options = {}) {
-  const current = getTheme(options.target);
+  const doc = _env.getDocument();
+  const target = options.target || (doc ? doc.documentElement : null);
+  const key = target ? `toggle-${target.id || 'root'}` : 'toggle-root';
+  const current = getTheme(target);
+
+  // If current is a non-light/dark theme, remember it for round-trip
+  if (!['light', 'dark'].includes(current)) {
+    _darkModeToggleState.set(key, current);
+    setTheme('dark', options);
+    return;
+  }
+
+  // If we're on dark and have a stored non-light/dark theme, restore it
+  if (current === 'dark' && _darkModeToggleState.has(key)) {
+    const previous = _darkModeToggleState.get(key);
+    _darkModeToggleState.delete(key);
+    setTheme(previous, options);
+    return;
+  }
+
+  // Standard light ↔ dark toggle
   setTheme(current === 'dark' ? 'light' : 'dark', options);
 }
 

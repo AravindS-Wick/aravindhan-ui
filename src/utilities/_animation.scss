@@ -1,44 +1,46 @@
 // @aravi1008/ui — Animation Utilities
 
-@keyframes av-spin {
-  to { transform: rotate(360deg); }
-}
-
-@keyframes av-ping {
-  75%,
-  100% { transform: scale(2); opacity: 0; }
-}
-
-@keyframes av-pulse {
-  0%,
-  100% { opacity: 1; }
-
-  50% { opacity: 0.5; }
-}
-
-@keyframes av-bounce {
-  0%,
-  100% {
-    transform: translateY(-25%);
-    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+@layer aravi1008.utilities {
+  @keyframes av-spin {
+    to { transform: rotate(360deg); }
   }
 
-  50% {
-    transform: translateY(0);
-    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  @keyframes av-ping {
+    75%,
+    100% { transform: scale(2); opacity: 0; }
   }
-}
 
-.av-animate-spin   { animation: av-spin 1s linear infinite; }
-.av-animate-ping   { animation: av-ping 1s cubic-bezier(0, 0, 0.2, 1) infinite; }
-.av-animate-pulse  { animation: av-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-.av-animate-bounce { animation: av-bounce 1s infinite; }
-.av-animate-none   { animation: none; }
+  @keyframes av-pulse {
+    0%,
+    100% { opacity: 1; }
 
-// Respect user motion preferences
-@media (prefers-reduced-motion: reduce) {
-  .av-animate-spin,
-  .av-animate-ping,
-  .av-animate-pulse,
-  .av-animate-bounce { animation: none; }
+    50% { opacity: 0.5; }
+  }
+
+  @keyframes av-bounce {
+    0%,
+    100% {
+      transform: translateY(-25%);
+      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+
+    50% {
+      transform: translateY(0);
+      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+  }
+
+  .av-animate-spin   { animation: av-spin 1s linear infinite; }
+  .av-animate-ping   { animation: av-ping 1s cubic-bezier(0, 0, 0.2, 1) infinite; }
+  .av-animate-pulse  { animation: av-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+  .av-animate-bounce { animation: av-bounce 1s infinite; }
+  .av-animate-none   { animation: none; }
+
+  // Respect user motion preferences
+  @media (prefers-reduced-motion: reduce) {
+    .av-animate-spin,
+    .av-animate-ping,
+    .av-animate-pulse,
+    .av-animate-bounce { animation: none; }
+  }
 }

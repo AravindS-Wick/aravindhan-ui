@@ -1,0 +1,19 @@
+@use '../tokens/variables' as *;
+
+.av-tree {
+  /* Auto-generated */
+  display: flex;
+  gap: var(--av-spacing-sm, 0.5rem);
+}
+
+.av-tree-node {
+  /* Auto-generated */
+  display: flex;
+  gap: var(--av-spacing-sm, 0.5rem);
+}
+
+.av-tree-children {
+  /* Auto-generated */
+  display: flex;
+  gap: var(--av-spacing-sm, 0.5rem);
+}

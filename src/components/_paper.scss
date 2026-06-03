@@ -1,0 +1,35 @@
+@use '../tokens/variables' as *;
+
+@layer aravi1008.components {
+.av-paper {
+  background-color: $av-color-surface;
+  border-radius: $av-radius-md;
+  transition: box-shadow 0.2s ease;
+}
+
+// ── Elevation shadows ─────────────────────────────────────────────────────
+.av-shadow-1 { box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.06); }
+.av-shadow-2 { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.06); }
+.av-shadow-3 { box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.06); }
+.av-shadow-4 { box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.08), 0 8px 10px -6px rgb(0 0 0 / 0.06); }
+.av-shadow-5 { box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.12); }
+
+// ── Border radius overrides ───────────────────────────────────────────────
+.av-rounded-none { border-radius: 0; }
+.av-rounded-sm   { border-radius: $av-radius-sm; }
+.av-rounded-md   { border-radius: $av-radius-md; }
+.av-rounded-lg   { border-radius: $av-radius-lg; }
+.av-rounded-xl   { border-radius: $av-radius-xl; }
+.av-rounded-full { border-radius: $av-radius-full; }
+
+// ── Variants ──────────────────────────────────────────────────────────────
+.av-paper-outlined {
+  border: 1px solid $av-color-border;
+  box-shadow: none;
+}
+
+.av-paper-transparent {
+  background-color: transparent;
+}
+
+} // end @layer

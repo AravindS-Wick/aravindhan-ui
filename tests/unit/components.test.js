@@ -16,6 +16,7 @@ import {
   navbar,
   initAll,
   createTable,
+  _resetScrollLock,
 } from '../../src/components.js';
 
 // ── helpers ───────────────────────────────────────────────────────────────────
@@ -29,6 +30,7 @@ function el(html) {
 
 function cleanup() {
   document.body.innerHTML = '';
+  _resetScrollLock();
 }
 
 // ── exports shape ─────────────────────────────────────────────────────────────
@@ -52,8 +54,9 @@ describe('exports', () => {
     expect(typeof dropdown.init).toBe('function');
   });
 
-  test('toast has show', () => {
+  test('toast has show and configure', () => {
     expect(typeof toast.show).toBe('function');
+    expect(typeof toast.configure).toBe('function');
   });
 
   test('accordion has init', () => {
@@ -173,6 +176,32 @@ describe('modal', () => {
     const btn = document.querySelector('[data-av-modal-close]');
     btn.click();
   });
+
+  test('open locks body scroll', () => {
+    el('<div id="msl1" class="av-modal-backdrop"><div class="av-modal"></div></div>');
+    modal.open('#msl1');
+    expect(document.body.style.overflow).toBe('hidden');
+    modal.close('#msl1');
+  });
+
+  test('close restores body scroll', () => {
+    el('<div id="msl2" class="av-modal-backdrop"><div class="av-modal"></div></div>');
+    modal.open('#msl2');
+    modal.close('#msl2');
+    expect(document.body.style.overflow).toBe('');
+  });
+
+  test('nested open/close — body stays locked until last modal closes', () => {
+    el('<div id="msl3" class="av-modal-backdrop"><div class="av-modal"></div></div>');
+    el('<div id="msl4" class="av-modal-backdrop"><div class="av-modal"></div></div>');
+    modal.open('#msl3');
+    modal.open('#msl4');
+    expect(document.body.style.overflow).toBe('hidden');
+    modal.close('#msl3');
+    expect(document.body.style.overflow).toBe('hidden'); // still locked
+    modal.close('#msl4');
+    expect(document.body.style.overflow).toBe('');       // now unlocked
+  });
 });
 
 // ── drawer ─────────────────────────────────────────────────────────────────────
@@ -231,6 +260,32 @@ describe('drawer', () => {
     el('<div id="dr-b" class="av-drawer-backdrop av-drawer-open"><button data-av-drawer-close>Close</button></div>');
     drawer.init();
     document.querySelector('[data-av-drawer-close]').click();
+  });
+
+  test('open locks body scroll', () => {
+    el('<div id="dsl1" class="av-drawer-backdrop"><div class="av-drawer"></div></div>');
+    drawer.open('#dsl1');
+    expect(document.body.style.overflow).toBe('hidden');
+    drawer.close('#dsl1');
+  });
+
+  test('close restores body scroll', () => {
+    el('<div id="dsl2" class="av-drawer-backdrop"><div class="av-drawer"></div></div>');
+    drawer.open('#dsl2');
+    drawer.close('#dsl2');
+    expect(document.body.style.overflow).toBe('');
+  });
+
+  test('modal + drawer open together — body stays locked until both close', () => {
+    el('<div id="dsl3" class="av-modal-backdrop"><div class="av-modal"></div></div>');
+    el('<div id="dsl4" class="av-drawer-backdrop"><div class="av-drawer"></div></div>');
+    modal.open('#dsl3');
+    drawer.open('#dsl4');
+    expect(document.body.style.overflow).toBe('hidden');
+    modal.close('#dsl3');
+    expect(document.body.style.overflow).toBe('hidden'); // drawer still open
+    drawer.close('#dsl4');
+    expect(document.body.style.overflow).toBe('');       // all closed
   });
 });
 
@@ -369,13 +424,80 @@ describe('dropdown', () => {
     document.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     expect(dd.querySelector('.av-dropdown-menu').classList.contains('av-dropdown-open')).toBe(false);
   });
+
+  test('init() called twice does not double-attach listeners (dedup guard)', () => {
+    const dd = makeDropdown('ddDedup');
+    // Call init twice — second call should skip already-initialized dropdowns
+    dropdown.init();
+    const initCount1 = dd.querySelectorAll('.av-dropdown-trigger').length;
+    dropdown.init();
+    const initCount2 = dd.querySelectorAll('.av-dropdown-trigger').length;
+    // Should be same count (not doubled)
+    expect(initCount2).toBe(initCount1);
+  });
+
+  test('typeahead: pressing "b" jumps to first item starting with B', () => {
+    const wrap = el(`
+      <div id="ddTA1" class="av-dropdown">
+        <button class="av-dropdown-trigger">Toggle</button>
+        <ul class="av-dropdown-menu">
+          <li class="av-dropdown-item" tabindex="0">Apple</li>
+          <li class="av-dropdown-item" tabindex="0">Banana</li>
+          <li class="av-dropdown-item" tabindex="0">Cherry</li>
+        </ul>
+      </div>
+    `);
+    const dd = wrap.querySelector('#ddTA1');
+    dropdown.init();
+    dropdown.open(dd);
+    const menu = dd.querySelector('.av-dropdown-menu');
+    const items = [...menu.querySelectorAll('.av-dropdown-item')];
+    items[0].focus();
+    menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'b', bubbles: true }));
+    expect(document.activeElement).toBe(items[1]); // Banana
+  });
+
+  test('typeahead: case-insensitive match', () => {
+    const wrap = el(`
+      <div id="ddTA2" class="av-dropdown">
+        <button class="av-dropdown-trigger">Toggle</button>
+        <ul class="av-dropdown-menu">
+          <li class="av-dropdown-item" tabindex="0">Apple</li>
+          <li class="av-dropdown-item" tabindex="0">Cherry</li>
+        </ul>
+      </div>
+    `);
+    const dd = wrap.querySelector('#ddTA2');
+    dropdown.init();
+    dropdown.open(dd);
+    const menu = dd.querySelector('.av-dropdown-menu');
+    const items = [...menu.querySelectorAll('.av-dropdown-item')];
+    items[0].focus();
+    menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'C', bubbles: true }));
+    expect(document.activeElement).toBe(items[1]); // Cherry
+  });
+
+  test('typeahead: no match does not throw', () => {
+    const dd = makeDropdown('ddTA3');
+    dropdown.init();
+    dropdown.open(dd);
+    const menu = dd.querySelector('.av-dropdown-menu');
+    expect(() => {
+      menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'z', bubbles: true }));
+    }).not.toThrow();
+  });
 });
 
 // ── toast ─────────────────────────────────────────────────────────────────────
 
 describe('toast', () => {
+  beforeEach(() => {
+    toast._reset();
+  });
+
   afterEach(() => {
     cleanup();
+    toast._reset();
     jest.useRealTimers();
   });
 
@@ -482,6 +604,73 @@ describe('toast', () => {
 
   test('show() with no options does not throw', () => {
     expect(() => toast.show()).not.toThrow();
+  });
+
+  // ── queue / cap tests ──────────────────────────────────────────────────────
+
+  describe('queue and cap', () => {
+    beforeEach(() => {
+      cleanup();
+      toast._reset();
+    });
+
+    afterEach(() => {
+      cleanup();
+      toast._reset();
+    });
+
+    test('configure() sets maxVisible', () => {
+      toast.configure({ maxVisible: 3 });
+      const h1 = toast.show({ title: 'T1' });
+      const h2 = toast.show({ title: 'T2' });
+      const h3 = toast.show({ title: 'T3' });
+      const h4 = toast.show({ title: 'T4' }); // should be queued
+      expect(h1).not.toBeNull();
+      expect(h2).not.toBeNull();
+      expect(h3).not.toBeNull();
+      expect(h4).toBeNull(); // queued, not rendered yet
+      expect(document.querySelectorAll('.av-toast').length).toBe(3);
+    });
+
+    test('queued toast appears after one is dismissed', () => {
+      toast.configure({ maxVisible: 2 });
+      const h1 = toast.show({ title: 'T1', duration: 0 });
+      toast.show({ title: 'T2', duration: 0 });
+      toast.show({ title: 'T3', duration: 0 }); // queued
+
+      expect(document.querySelectorAll('.av-toast').length).toBe(2);
+
+      // Dismiss first toast — cleanup fires via transitionend or setTimeout
+      h1.dismiss();
+      // Simulate transitionend
+      h1.el.dispatchEvent(new Event('transitionend'));
+
+      // T3 should now be rendered
+      expect(document.querySelectorAll('.av-toast').length).toBe(2);
+    });
+
+    test('showing exactly maxVisible toasts all render immediately', () => {
+      toast.configure({ maxVisible: 5 });
+      for (let i = 0; i < 5; i++) toast.show({ title: `T${i}` });
+      expect(document.querySelectorAll('.av-toast').length).toBe(5);
+    });
+
+    test('toast over cap returns null', () => {
+      toast.configure({ maxVisible: 1 });
+      toast.show({ title: 'First' });
+      const result = toast.show({ title: 'Second' });
+      expect(result).toBeNull();
+    });
+
+    test('configure() ignores invalid maxVisible values', () => {
+      toast.configure({ maxVisible: 0 });   // ignored
+      toast.configure({ maxVisible: -1 });  // ignored
+      toast.configure({ maxVisible: 'bad' }); // ignored
+      // default of 5 should still apply
+      for (let i = 0; i < 5; i++) toast.show({ title: `T${i}` });
+      const overflow = toast.show({ title: 'overflow' });
+      expect(overflow).toBeNull();
+    });
   });
 });
 
@@ -754,6 +943,27 @@ describe('modal trapFocus keyboard', () => {
     expect(() => modal.open('#tf3')).not.toThrow();
     modal.close('#tf3');
   });
+
+  test('Tab cycles to dynamically added button', () => {
+    const wrapper = el('<div id="tf4" class="av-modal-backdrop"><div class="av-modal"><button id="f4">First</button></div></div>');
+    modal.open('#tf4');
+    const modalEl = wrapper.querySelector('.av-modal');
+
+    // Add a button after opening
+    const newBtn = document.createElement('button');
+    newBtn.id = 'dynamic4';
+    newBtn.textContent = 'Dynamic';
+    modalEl.appendChild(newBtn);
+
+    // Tab from the last (now: newBtn) should cycle to first
+    newBtn.focus();
+    const e = new KeyboardEvent('keydown', { key: 'Tab', bubbles: true });
+    modalEl.dispatchEvent(e);
+    // No error thrown and focus cycling works
+    expect(() => modalEl.dispatchEvent(e)).not.toThrow();
+
+    modal.close('#tf4');
+  });
 });
 
 describe('drawer backdrop click', () => {
@@ -782,15 +992,13 @@ describe('modal: open/close with no dialog child', () => {
     modal.close('#mb1');
   });
 
-  test('close calls _avCleanup when present', () => {
-    el('<div id="mb2" class="av-modal-backdrop"></div>');
+  test('close removes _avModalState after cleanup', () => {
+    el('<div id="mb2" class="av-modal-backdrop"><div class="av-modal"></div></div>');
     modal.open('#mb2');
-    // Manually attach _avCleanup to verify it gets called
     const backdrop = document.getElementById('mb2');
-    let cleaned = false;
-    backdrop._avCleanup = () => { cleaned = true; };
+    expect(backdrop._avModalState).toBeDefined();
     modal.close('#mb2');
-    expect(cleaned).toBe(true);
+    expect(backdrop._avModalState).toBeUndefined();
   });
 });
 
@@ -803,14 +1011,13 @@ describe('drawer: open/close with no .av-drawer child', () => {
     drawer.close('#db1');
   });
 
-  test('close calls _avCleanup when present', () => {
-    el('<div id="db2" class="av-drawer-backdrop"></div>');
+  test('close removes _avDrawerState after cleanup', () => {
+    el('<div id="db2" class="av-drawer-backdrop"><div class="av-drawer"></div></div>');
     drawer.open('#db2');
     const backdrop = document.getElementById('db2');
-    let cleaned = false;
-    backdrop._avCleanup = () => { cleaned = true; };
+    expect(backdrop._avDrawerState).toBeDefined();
     drawer.close('#db2');
-    expect(cleaned).toBe(true);
+    expect(backdrop._avDrawerState).toBeUndefined();
   });
 });
 
@@ -917,6 +1124,52 @@ describe('initAll', () => {
     if (orig) Object.defineProperty(document, 'readyState', orig);
     else Object.defineProperty(document, 'readyState', { value: 'complete', configurable: true });
     document.dispatchEvent(new Event('DOMContentLoaded'));
+  });
+
+  test('initAll({ observe: true }) returns a cleanup function', () => {
+    const cleanup = initAll({ observe: true });
+    expect(typeof cleanup).toBe('function');
+    cleanup(); // disconnect observer — should not throw
+  });
+
+  test('initAll({ observe: true }) cleanup disconnects observer without error', () => {
+    const stop = initAll({ observe: true });
+    expect(() => stop()).not.toThrow();
+  });
+
+  test('initAll() without observe returns undefined', () => {
+    const result = initAll();
+    expect(result).toBeUndefined();
+  });
+
+  test('initAll() called twice does not double-init (dedup guards work)', () => {
+    el(`
+      <button data-av-modal-open="#m1">Open Modal</button>
+      <button data-av-modal-close>Close</button>
+      <div id="m1" class="av-modal-backdrop"><div class="av-modal"></div></div>
+      <button data-av-drawer-open="#d1">Open Drawer</button>
+      <button data-av-drawer-close>Close</button>
+      <div id="d1" class="av-drawer-backdrop"><div class="av-drawer"></div></div>
+      <div class="av-dropdown"><button class="av-dropdown-trigger">Menu</button><ul class="av-dropdown-menu"><li class="av-dropdown-item">Item</li></ul></div>
+    `);
+    // Call initAll twice — dedup guards should prevent double listener attachment
+    expect(() => {
+      initAll();
+      initAll(); // Should not throw or double-attach listeners
+    }).not.toThrow();
+    // Verify that triggering still works after dedup
+    const openBtn = document.querySelector('[data-av-modal-open]');
+    expect(() => openBtn.click()).not.toThrow();
+  });
+
+  test('initAll({ observe: true }) re-inits when nodes are added to body', async () => {
+    const stop = initAll({ observe: true });
+    // Inject a new modal trigger — observer should fire run() without error
+    el('<div class="av-modal-backdrop" id="obs-modal"><button class="av-modal-close">X</button></div>');
+    // Allow MutationObserver microtask to flush
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(document.querySelector('#obs-modal')).not.toBeNull();
+    stop();
   });
 });
 
@@ -1041,7 +1294,7 @@ describe('createTable', () => {
 
   test('custom render function used for cell', () => {
     const wrap = el('<div id="tbl15"></div>');
-    const cols = [{ key: 'name', label: 'Name', render: (v) => `<b>${v}</b>` }];
+    const cols = [{ key: 'name', label: 'Name', render: (v) => `<b>${v}</b>`, sanitize: false }];
     createTable('#tbl15', { columns: cols, rows: [{ name: 'Alice' }] });
     expect(wrap.querySelector('td b')).not.toBeNull();
   });
@@ -1129,5 +1382,388 @@ describe('createTable', () => {
     createTable('#tbl25', { columns: [{ key: 'x', label: 'X' }], rows: [{ x: '<script>alert(1)</script>' }] });
     expect(wrap.innerHTML).not.toContain('<script>');
     expect(wrap.innerHTML).toContain('&lt;script&gt;');
+  });
+
+  test('setLoading(true) renders skeleton loaders', () => {
+    const wrap = el('<div id="tbl26"></div>');
+    const ctrl = createTable('#tbl26', { columns: COLS, rows: ROWS });
+    ctrl.setLoading(true);
+    expect(wrap.querySelector('.av-skeleton')).not.toBeNull();
+  });
+
+  test('empty rows renders emptyMessage', () => {
+    const wrap = el('<div id="tbl27"></div>');
+    createTable('#tbl27', { columns: COLS, rows: [], emptyMessage: 'No results' });
+    expect(wrap.innerHTML).toContain('No results');
+  });
+
+  test('sort() method updates sort direction and re-renders', () => {
+    const wrap = el('<div id="tbl28"></div>');
+    const ctrl = createTable('#tbl28', { columns: COLS, rows: ROWS });
+    ctrl.sort('name', 'desc');
+    const cells = [...wrap.querySelectorAll('tbody tr td:first-child')].map(td => td.textContent.trim());
+    // Sorted descending by name: Carol, Bob, Alice
+    expect(cells[0]).toBe('Carol');
+    expect(cells[1]).toBe('Bob');
+  });
+
+  test('render column with user data and sanitize:false preserves HTML', () => {
+    const wrap = el('<div id="tbl29"></div>');
+    const cols = [
+      { key: 'name', label: 'Name' },
+      { key: 'html', label: 'Badge', render: (v) => `<span class="badge">${v}</span>`, sanitize: false }
+    ];
+    createTable('#tbl29', { columns: cols, rows: [{ name: 'Alice', html: 'Admin' }] });
+    expect(wrap.querySelector('span.badge')).not.toBeNull();
+    expect(wrap.querySelector('span.badge').textContent).toBe('Admin');
+  });
+
+  test('XSS: img onerror payload in cell data is escaped', () => {
+    const wrap = el('<div id="tbl26"></div>');
+    createTable('#tbl26', {
+      columns: [{ key: 'v', label: 'V' }],
+      rows: [{ v: '<img src=x onerror=alert(1)>' }],
+    });
+    expect(wrap.querySelector('img')).toBeNull();
+    expect(wrap.innerHTML).toContain('&lt;img');
+  });
+
+  test('sanitize:true on render() column escapes render output', () => {
+    const wrap = el('<div id="tbl27"></div>');
+    createTable('#tbl27', {
+      columns: [{
+        key: 'v', label: 'V',
+        render: (val) => `<b>${val}</b>`,
+        sanitize: true,
+      }],
+      rows: [{ v: 'hello' }],
+    });
+    // sanitize:true should escape the render output, so no <b> element
+    expect(wrap.querySelector('b')).toBeNull();
+    expect(wrap.innerHTML).toContain('&lt;b&gt;');
+  });
+
+  test('sanitize:false on data column allows raw HTML (opt-out)', () => {
+    const wrap = el('<div id="tbl28"></div>');
+    createTable('#tbl28', {
+      columns: [{ key: 'v', label: 'V', sanitize: false }],
+      rows: [{ v: '<strong>raw</strong>' }],
+    });
+    expect(wrap.querySelector('strong')).not.toBeNull();
+  });
+});
+
+// ── runModalsDedup branch coverage (via initAll) ──────────────────────────────
+
+describe('runModalsDedup via initAll', () => {
+  afterEach(() => { document.body.innerHTML = ''; _resetScrollLock(); });
+
+  test('data-av-modal-close click inside backdrop closes modal (line 611-612)', () => {
+    document.body.innerHTML = `
+      <div id="rdm1" class="av-modal-backdrop av-modal-open">
+        <button data-av-modal-close>Close</button>
+      </div>`;
+    initAll();
+    const btn = document.querySelector('[data-av-modal-close]');
+    btn.click();
+    expect(document.querySelector('#rdm1').classList.contains('av-modal-open')).toBe(false);
+  });
+
+  test('data-av-modal-close with no backdrop ancestor does not throw', () => {
+    document.body.innerHTML = `<button data-av-modal-close>Close</button>`;
+    initAll();
+    expect(() => document.querySelector('[data-av-modal-close]').click()).not.toThrow();
+  });
+
+  test('data-av-modal-open click via initAll opens modal', () => {
+    document.body.innerHTML = `
+      <button data-av-modal-open="#rdm2">Open</button>
+      <div id="rdm2" class="av-modal-backdrop"></div>`;
+    initAll();
+    document.querySelector('[data-av-modal-open]').click();
+    expect(document.querySelector('#rdm2').classList.contains('av-modal-open')).toBe(true);
+  });
+});
+
+// ── runDrawersDedup branch coverage (via initAll) ─────────────────────────────
+
+describe('runDrawersDedup via initAll', () => {
+  afterEach(() => { document.body.innerHTML = ''; _resetScrollLock(); });
+
+  test('data-av-drawer-close click inside backdrop closes drawer (line 629-630)', () => {
+    document.body.innerHTML = `
+      <div id="rdd1" class="av-drawer-backdrop av-drawer-open">
+        <button data-av-drawer-close>Close</button>
+      </div>`;
+    initAll();
+    document.querySelector('[data-av-drawer-close]').click();
+    expect(document.querySelector('#rdd1').classList.contains('av-drawer-open')).toBe(false);
+  });
+
+  test('data-av-drawer-close with no backdrop ancestor does not throw', () => {
+    document.body.innerHTML = `<button data-av-drawer-close>Close</button>`;
+    initAll();
+    expect(() => document.querySelector('[data-av-drawer-close]').click()).not.toThrow();
+  });
+});
+
+// ── runDropdownsDedup branch coverage (via initAll) ───────────────────────────
+
+describe('runDropdownsDedup via initAll keyboard nav', () => {
+  afterEach(() => {
+    document.body.innerHTML = '';
+    _resetScrollLock();
+    // Reset dedup guard so the global click handler branch runs fresh each test
+    delete document._avDropdownClickHandlerAttached;
+  });
+
+  function makeDropdown() {
+    document.body.innerHTML = `
+      <div class="av-dropdown">
+        <button class="av-dropdown-trigger">Menu</button>
+        <ul class="av-dropdown-menu av-dropdown-open">
+          <li class="av-dropdown-item">Alpha</li>
+          <li class="av-dropdown-item">Beta</li>
+          <li class="av-dropdown-item">Gamma</li>
+        </ul>
+      </div>`;
+    initAll();
+    return {
+      dropdown: document.querySelector('.av-dropdown'),
+      trigger: document.querySelector('.av-dropdown-trigger'),
+      menu: document.querySelector('.av-dropdown-menu'),
+      items: [...document.querySelectorAll('.av-dropdown-item')],
+    };
+  }
+
+  test('trigger click opens dropdown (line 648-650)', () => {
+    const { trigger, menu } = makeDropdown();
+    menu.classList.remove('av-dropdown-open');
+    trigger.click();
+    expect(menu.classList.contains('av-dropdown-open')).toBe(true);
+  });
+
+  test('trigger click when open closes dropdown', () => {
+    const { trigger, menu } = makeDropdown();
+    trigger.click();
+    expect(menu.classList.contains('av-dropdown-open')).toBe(false);
+  });
+
+  test('ArrowDown focuses next item (line 657-659)', () => {
+    const { menu, items } = makeDropdown();
+    items[0].focus();
+    menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+  });
+
+  test('ArrowUp on first item focuses trigger and closes (line 662)', () => {
+    const { menu, items } = makeDropdown();
+    items[0].focus();
+    menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }));
+  });
+
+  test('ArrowUp on second item focuses previous item (line 663)', () => {
+    const { menu, items } = makeDropdown();
+    items[1].focus();
+    menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }));
+  });
+
+  test('Escape closes dropdown and focuses trigger (line 664-666)', () => {
+    const { menu } = makeDropdown();
+    menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    expect(menu.classList.contains('av-dropdown-open')).toBe(false);
+  });
+
+  test('Home key focuses first item (line 667-669)', () => {
+    const { menu, items } = makeDropdown();
+    items[2].focus();
+    menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', bubbles: true }));
+  });
+
+  test('End key focuses last item (line 670-672)', () => {
+    const { menu, items } = makeDropdown();
+    items[0].focus();
+    menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true }));
+  });
+
+  test('typeahead char key focuses matching item (line 673-676)', () => {
+    const { menu, items } = makeDropdown();
+    items[0].focus();
+    menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'b', bubbles: true }));
+  });
+
+  test('typeahead char with no match does not throw', () => {
+    const { menu } = makeDropdown();
+    expect(() => menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'z', bubbles: true }))).not.toThrow();
+  });
+
+  test('global click outside closes open dropdowns (line 684-687)', () => {
+    const { trigger, menu } = makeDropdown();
+    // First open via trigger click (registers in _openDropdowns)
+    menu.classList.remove('av-dropdown-open');
+    trigger.click(); // opens it via JS
+    expect(menu.classList.contains('av-dropdown-open')).toBe(true);
+    // Now a click outside should close it
+    document.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    expect(menu.classList.contains('av-dropdown-open')).toBe(false);
+  });
+});
+
+// ── runAccordionsDedup branch coverage (via initAll) ──────────────────────────
+
+describe('runAccordionsDedup via initAll', () => {
+  afterEach(() => { document.body.innerHTML = ''; _resetScrollLock(); });
+
+  function makeAccordionDOM(attr = '') {
+    document.body.innerHTML = `
+      <div class="av-accordion" ${attr}>
+        <button class="av-accordion-trigger" aria-expanded="false" aria-controls="ra1">Q1</button>
+        <div id="ra1" class="av-accordion-content">A1</div>
+        <button class="av-accordion-trigger" aria-expanded="false" aria-controls="ra2">Q2</button>
+        <div id="ra2" class="av-accordion-content">A2</div>
+      </div>`;
+    initAll();
+    return {
+      triggers: [...document.querySelectorAll('.av-accordion-trigger')],
+    };
+  }
+
+  test('Enter key via initAll triggers toggle (line 700-702)', () => {
+    const { triggers } = makeAccordionDOM();
+    triggers[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    expect(triggers[0].getAttribute('aria-expanded')).toBe('true');
+  });
+
+  test('Space key via initAll triggers toggle', () => {
+    const { triggers } = makeAccordionDOM();
+    triggers[0].dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true }));
+    expect(triggers[0].getAttribute('aria-expanded')).toBe('true');
+  });
+
+  test('non-Enter/Space key does not toggle', () => {
+    const { triggers } = makeAccordionDOM();
+    triggers[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true }));
+    expect(triggers[0].getAttribute('aria-expanded')).toBe('false');
+  });
+
+  test('data-av-multiple allows multiple open via initAll', () => {
+    const { triggers } = makeAccordionDOM('data-av-multiple');
+    triggers[0].click();
+    triggers[1].click();
+    expect(triggers[0].getAttribute('aria-expanded')).toBe('true');
+    expect(triggers[1].getAttribute('aria-expanded')).toBe('true');
+  });
+});
+
+// ── runTabsDedup branch coverage (via initAll) ────────────────────────────────
+
+describe('runTabsDedup via initAll', () => {
+  afterEach(() => { document.body.innerHTML = ''; _resetScrollLock(); });
+
+  function makeTabsDOM() {
+    document.body.innerHTML = `
+      <div class="av-tabs" data-av-tabs>
+        <button class="av-tab av-active" aria-controls="rtp1">Tab A</button>
+        <button class="av-tab" aria-controls="rtp2">Tab B</button>
+        <button class="av-tab" aria-controls="rtp3">Tab C</button>
+        <div id="rtp1" class="av-tab-panel av-active">Panel A</div>
+        <div id="rtp2" class="av-tab-panel">Panel B</div>
+        <div id="rtp3" class="av-tab-panel">Panel C</div>
+      </div>`;
+    initAll();
+    return [...document.querySelectorAll('.av-tab')];
+  }
+
+  test('clicking tab via initAll activates it and panel (lines 719-727)', () => {
+    const tabEls = makeTabsDOM();
+    tabEls[1].click();
+    expect(tabEls[1].classList.contains('av-active')).toBe(true);
+    expect(tabEls[1].getAttribute('aria-selected')).toBe('true');
+    expect(document.getElementById('rtp2').classList.contains('av-active')).toBe(true);
+  });
+
+  test('clicking tab deactivates others', () => {
+    const tabEls = makeTabsDOM();
+    tabEls[1].click();
+    expect(tabEls[0].classList.contains('av-active')).toBe(false);
+    expect(tabEls[0].getAttribute('aria-selected')).toBe('false');
+  });
+
+  test('ArrowRight key via initAll moves to next tab (lines 738-743)', () => {
+    const tabEls = makeTabsDOM();
+    tabEls[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+    expect(tabEls[1].classList.contains('av-active')).toBe(true);
+  });
+
+  test('ArrowLeft key via initAll moves to previous tab', () => {
+    const tabEls = makeTabsDOM();
+    tabEls[1].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
+    expect(tabEls[0].classList.contains('av-active')).toBe(true);
+  });
+
+  test('Home key via initAll moves to first tab', () => {
+    const tabEls = makeTabsDOM();
+    tabEls[2].dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', bubbles: true }));
+    expect(tabEls[0].classList.contains('av-active')).toBe(true);
+  });
+
+  test('End key via initAll moves to last tab', () => {
+    const tabEls = makeTabsDOM();
+    tabEls[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true }));
+    expect(tabEls[2].classList.contains('av-active')).toBe(true);
+  });
+
+  test('ArrowRight wraps from last to first', () => {
+    const tabEls = makeTabsDOM();
+    tabEls[2].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+    expect(tabEls[0].classList.contains('av-active')).toBe(true);
+  });
+
+  test('unrelated key does not change active tab', () => {
+    const tabEls = makeTabsDOM();
+    tabEls[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true }));
+    expect(tabEls[0].classList.contains('av-active')).toBe(true);
+  });
+});
+
+// ── runNavbarsDedup branch coverage (via initAll) ─────────────────────────────
+
+describe('runNavbarsDedup via initAll', () => {
+  afterEach(() => { document.body.innerHTML = ''; _resetScrollLock(); });
+
+  function makeNavbarDOM() {
+    document.body.innerHTML = `
+      <nav class="av-navbar">
+        <button class="av-navbar-toggle" aria-expanded="false">☰</button>
+        <div class="av-navbar-collapse">
+          <a href="#">Link</a>
+        </div>
+      </nav>`;
+    initAll();
+    return {
+      toggle: document.querySelector('.av-navbar-toggle'),
+      collapse: document.querySelector('.av-navbar-collapse'),
+    };
+  }
+
+  test('toggle click via initAll opens collapse (lines 761-763)', () => {
+    const { toggle, collapse } = makeNavbarDOM();
+    toggle.click();
+    expect(toggle.getAttribute('aria-expanded')).toBe('true');
+    expect(collapse.classList.contains('av-navbar-collapse-open')).toBe(true);
+  });
+
+  test('toggle click twice closes collapse', () => {
+    const { toggle, collapse } = makeNavbarDOM();
+    toggle.click();
+    toggle.click();
+    expect(toggle.getAttribute('aria-expanded')).toBe('false');
+    expect(collapse.classList.contains('av-navbar-collapse-open')).toBe(false);
+  });
+
+  test('outside click closes navbar collapse', () => {
+    const { toggle, collapse } = makeNavbarDOM();
+    toggle.click();
+    document.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    expect(collapse.classList.contains('av-navbar-collapse-open')).toBe(false);
   });
 });

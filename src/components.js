@@ -16,19 +16,62 @@
 // ── Environment guard ─────────────────────────────────────────────────────────
 const isBrowser = typeof document !== 'undefined';
 
+// ── HTML escape helper ────────────────────────────────────────────────────────
+function _escHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+// ── Scroll lock ───────────────────────────────────────────────────────────────
+// Shared counter so nested modals/drawers don't prematurely restore scroll.
+let _scrollLockCount = 0;
+let _scrollLockOriginal = '';
+
+function _lockScroll() {
+  if (!isBrowser) return;
+  if (_scrollLockCount === 0) {
+    _scrollLockOriginal = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+  }
+  _scrollLockCount++;
+}
+
+function _unlockScroll() {
+  if (!isBrowser) return;
+  _scrollLockCount = Math.max(0, _scrollLockCount - 1);
+  if (_scrollLockCount === 0) {
+    document.body.style.overflow = _scrollLockOriginal;
+    _scrollLockOriginal = '';
+  }
+}
+
+/** @internal Reset scroll lock state — for unit tests only */
+function _resetScrollLock() {
+  _scrollLockCount = 0;
+  _scrollLockOriginal = '';
+  if (isBrowser) document.body.style.overflow = '';
+}
+
 // ── Focus trap helper ─────────────────────────────────────────────────────────
 const FOCUSABLE =
   'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),' +
   'textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
 
 function trapFocus(container) {
-  const els = [...container.querySelectorAll(FOCUSABLE)];
-  if (!els.length) return () => {};
-  const first = els[0];
-  const last = els[els.length - 1];
+  const initialEls = [...container.querySelectorAll(FOCUSABLE)];
+  if (!initialEls.length) return () => {};
 
   function handler(e) {
     if (e.key !== 'Tab') return;
+    // Re-query live on every Tab so dynamically added elements are included
+    const els = [...container.querySelectorAll(FOCUSABLE)];
+    if (!els.length) return;
+    const first = els[0];
+    const last = els[els.length - 1];
     if (e.shiftKey) {
       if (document.activeElement === first) { e.preventDefault(); last.focus(); }
     } else {
@@ -37,14 +80,11 @@ function trapFocus(container) {
   }
 
   container.addEventListener('keydown', handler);
-  first.focus();
+  initialEls[0].focus();
   return () => container.removeEventListener('keydown', handler);
 }
 
 // ── Modal ─────────────────────────────────────────────────────────────────────
-
-let _modalReleaseFocus = null;
-let _modalPreviousFocus = null;
 
 /**
  * Open a modal.
@@ -55,32 +95,36 @@ function openModal(target) {
   const backdrop = typeof target === 'string' ? document.querySelector(target) : target;
   if (!backdrop) return;
 
-  _modalPreviousFocus = document.activeElement;
+  const state = {
+    backdrop,
+    previousFocus: document.activeElement,
+    releaseFocus: null,
+    onBackdropClick: null,
+    onKeyDown: null,
+  };
+
   backdrop.classList.add('av-modal-open');
   backdrop.setAttribute('aria-hidden', 'false');
-  document.body.style.overflow = 'hidden';
+  _lockScroll();
 
   const dialog = backdrop.querySelector('.av-modal');
   if (dialog) {
     dialog.setAttribute('role', 'dialog');
     dialog.setAttribute('aria-modal', 'true');
-    _modalReleaseFocus = trapFocus(dialog);
+    state.releaseFocus = trapFocus(dialog);
   }
 
-  function onBackdropClick(e) {
+  state.onBackdropClick = (e) => {
     if (e.target === backdrop) closeModal(backdrop);
-  }
-
-  function onKeyDown(e) {
-    if (e.key === 'Escape') closeModal(backdrop);
-  }
-
-  backdrop.addEventListener('click', onBackdropClick, { once: false });
-  backdrop._avCleanup = () => {
-    backdrop.removeEventListener('click', onBackdropClick);
-    document.removeEventListener('keydown', onKeyDown);
   };
-  document.addEventListener('keydown', onKeyDown);
+
+  state.onKeyDown = (e) => {
+    if (e.key === 'Escape') closeModal(backdrop);
+  };
+
+  backdrop.addEventListener('click', state.onBackdropClick, { once: false });
+  backdrop.addEventListener('keydown', state.onKeyDown);
+  backdrop._avModalState = state;
 }
 
 /**
@@ -94,26 +138,35 @@ function closeModal(target) {
 
   backdrop.classList.remove('av-modal-open');
   backdrop.setAttribute('aria-hidden', 'true');
-  document.body.style.overflow = '';
 
-  if (_modalReleaseFocus) { _modalReleaseFocus(); _modalReleaseFocus = null; }
-  if (_modalPreviousFocus) { _modalPreviousFocus.focus(); _modalPreviousFocus = null; }
-  if (backdrop._avCleanup) { backdrop._avCleanup(); delete backdrop._avCleanup; }
+  const state = backdrop._avModalState;
+  if (!state) return;
+
+  _unlockScroll();
+  if (state.releaseFocus) { state.releaseFocus(); }
+  if (state.previousFocus) { state.previousFocus.focus(); }
+
+  backdrop.removeEventListener('click', state.onBackdropClick);
+  backdrop.removeEventListener('keydown', state.onKeyDown);
+  delete backdrop._avModalState;
 }
 
 function initModals() {
+  // Deprecated: use initAll() or runModalsDedup() instead
   if (!isBrowser) return;
-  document.querySelectorAll('[data-av-modal-open]').forEach((trigger) => {
+  document.querySelectorAll('[data-av-modal-open]:not([_av-modal-init])').forEach((trigger) => {
     trigger.addEventListener('click', () => {
       const target = trigger.getAttribute('data-av-modal-open');
       openModal(target);
     });
+    trigger.setAttribute('_av-modal-init', 'true');
   });
-  document.querySelectorAll('[data-av-modal-close]').forEach((trigger) => {
+  document.querySelectorAll('[data-av-modal-close]:not([_av-modal-close-init])').forEach((trigger) => {
     trigger.addEventListener('click', () => {
       const backdrop = trigger.closest('.av-modal-backdrop');
       if (backdrop) closeModal(backdrop);
     });
+    trigger.setAttribute('_av-modal-close-init', 'true');
   });
 }
 
@@ -121,35 +174,36 @@ export const modal = { open: openModal, close: closeModal, init: initModals };
 
 // ── Drawer ────────────────────────────────────────────────────────────────────
 
-let _drawerReleaseFocus = null;
-let _drawerPreviousFocus = null;
-
 function openDrawer(target) {
   if (!isBrowser) return;
   const backdrop = typeof target === 'string' ? document.querySelector(target) : target;
   if (!backdrop) return;
 
-  _drawerPreviousFocus = document.activeElement;
+  const state = {
+    backdrop,
+    previousFocus: document.activeElement,
+    releaseFocus: null,
+    onBackdropClick: null,
+    onKeyDown: null,
+  };
+
   backdrop.classList.add('av-drawer-open');
   backdrop.setAttribute('aria-hidden', 'false');
-  document.body.style.overflow = 'hidden';
+  _lockScroll();
 
   const panel = backdrop.querySelector('.av-drawer');
   if (panel) {
     panel.setAttribute('role', 'dialog');
     panel.setAttribute('aria-modal', 'true');
-    _drawerReleaseFocus = trapFocus(panel);
+    state.releaseFocus = trapFocus(panel);
   }
 
-  function onBackdropClick(e) { if (e.target === backdrop) closeDrawer(backdrop); }
-  function onKeyDown(e) { if (e.key === 'Escape') closeDrawer(backdrop); }
+  state.onBackdropClick = (e) => { if (e.target === backdrop) closeDrawer(backdrop); };
+  state.onKeyDown = (e) => { if (e.key === 'Escape') closeDrawer(backdrop); };
 
-  backdrop.addEventListener('click', onBackdropClick);
-  backdrop._avCleanup = () => {
-    backdrop.removeEventListener('click', onBackdropClick);
-    document.removeEventListener('keydown', onKeyDown);
-  };
-  document.addEventListener('keydown', onKeyDown);
+  backdrop.addEventListener('click', state.onBackdropClick);
+  backdrop.addEventListener('keydown', state.onKeyDown);
+  backdrop._avDrawerState = state;
 }
 
 function closeDrawer(target) {
@@ -159,23 +213,32 @@ function closeDrawer(target) {
 
   backdrop.classList.remove('av-drawer-open');
   backdrop.setAttribute('aria-hidden', 'true');
-  document.body.style.overflow = '';
 
-  if (_drawerReleaseFocus) { _drawerReleaseFocus(); _drawerReleaseFocus = null; }
-  if (_drawerPreviousFocus) { _drawerPreviousFocus.focus(); _drawerPreviousFocus = null; }
-  if (backdrop._avCleanup) { backdrop._avCleanup(); delete backdrop._avCleanup; }
+  const state = backdrop._avDrawerState;
+  if (!state) return;
+
+  _unlockScroll();
+  if (state.releaseFocus) { state.releaseFocus(); }
+  if (state.previousFocus) { state.previousFocus.focus(); }
+
+  backdrop.removeEventListener('click', state.onBackdropClick);
+  backdrop.removeEventListener('keydown', state.onKeyDown);
+  delete backdrop._avDrawerState;
 }
 
 function initDrawers() {
+  // Deprecated: use initAll() or runDrawersDedup() instead
   if (!isBrowser) return;
-  document.querySelectorAll('[data-av-drawer-open]').forEach((trigger) => {
+  document.querySelectorAll('[data-av-drawer-open]:not([_av-drawer-init])').forEach((trigger) => {
     trigger.addEventListener('click', () => openDrawer(trigger.getAttribute('data-av-drawer-open')));
+    trigger.setAttribute('_av-drawer-init', 'true');
   });
-  document.querySelectorAll('[data-av-drawer-close]').forEach((trigger) => {
+  document.querySelectorAll('[data-av-drawer-close]:not([_av-drawer-close-init])').forEach((trigger) => {
     trigger.addEventListener('click', () => {
       const backdrop = trigger.closest('.av-drawer-backdrop');
       if (backdrop) closeDrawer(backdrop);
     });
+    trigger.setAttribute('_av-drawer-close-init', 'true');
   });
 }
 
@@ -213,9 +276,10 @@ function closeDropdown(dropdown) {
 }
 
 function initDropdowns() {
+  // Deprecated: use initAll() or runDropdownsDedup() instead
   if (!isBrowser) return;
 
-  document.querySelectorAll('.av-dropdown').forEach((dropdown) => {
+  document.querySelectorAll('.av-dropdown:not([_av-dropdown-init])').forEach((dropdown) => {
     const trigger = dropdown.querySelector('.av-dropdown-trigger');
     const menu = dropdown.querySelector('.av-dropdown-menu');
     if (!trigger || !menu) return;
@@ -229,7 +293,6 @@ function initDropdowns() {
       isOpen ? closeDropdown(dropdown) : openDropdown(dropdown);
     });
 
-    // Keyboard navigation
     menu.addEventListener('keydown', (e) => {
       const items = [...menu.querySelectorAll('.av-dropdown-item:not([disabled]):not([aria-disabled="true"])')];
       const idx = items.indexOf(document.activeElement);
@@ -250,14 +313,22 @@ function initDropdowns() {
       } else if (e.key === 'End') {
         e.preventDefault();
         items[items.length - 1]?.focus();
+      } else if (e.key.length === 1 && /[a-z0-9]/i.test(e.key)) {
+        const char = e.key.toLowerCase();
+        const match = items.find((item) => item.textContent.trim().toLowerCase().startsWith(char));
+        if (match) { e.preventDefault(); match.focus(); }
       }
     });
+
+    dropdown.setAttribute('_av-dropdown-init', 'true');
   });
 
-  // Close on outside click
-  document.addEventListener('click', () => {
-    _openDropdowns.forEach((d) => closeDropdown(d));
-  });
+  if (!document._avDropdownClickHandlerAttached) {
+    document.addEventListener('click', () => {
+      _openDropdowns.forEach((d) => closeDropdown(d));
+    });
+    document._avDropdownClickHandlerAttached = true;
+  }
 }
 
 export const dropdown = { open: openDropdown, close: closeDropdown, init: initDropdowns };
@@ -269,6 +340,11 @@ const _toastDefaults = {
   placement: 'top-right',
   pauseOnHover: true,
 };
+
+// Queue state
+let _toastMaxVisible = 5;
+let _toastVisibleCount = 0;
+const _toastQueue = [];
 
 function getOrCreateContainer(placement) {
   const cls = `av-toast-container av-toast-${placement}`;
@@ -283,35 +359,22 @@ function getOrCreateContainer(placement) {
   return container;
 }
 
-/**
- * Show a toast notification.
- * @param {object} options
- * @param {string} options.title
- * @param {string} [options.description]
- * @param {'info'|'success'|'warning'|'error'|'light'} [options.type='info']
- * @param {number} [options.duration=4000] ms, 0 = no auto-dismiss
- * @param {string} [options.placement='top-right']
- * @param {boolean} [options.pauseOnHover=true]
- */
-function showToast(options = {}) {
-  if (!isBrowser) return null;
-  const cfg = { ..._toastDefaults, ...options };
+function _buildToastHTML(cfg) {
+  const titlePart = cfg.title ? `<div class="av-toast-title">${_escHtml(cfg.title)}</div>` : '';
+  const descPart = cfg.description ? `<div class="av-toast-description">${_escHtml(cfg.description)}</div>` : '';
+  const progressPart = cfg.duration > 0 ? `<div class="av-toast-progress" style="animation-duration:${cfg.duration}ms"></div>` : '';
+  return `<div class="av-toast-content">${titlePart}${descPart}</div><button class="av-toast-close" aria-label="Dismiss">&times;</button>${progressPart}`;
+}
 
+function _renderToast(cfg) {
   const container = getOrCreateContainer(cfg.placement);
-
   const el = document.createElement('div');
   el.className = `av-toast av-toast-${cfg.type || 'info'}`;
   el.setAttribute('role', 'alert');
-  el.innerHTML = `
-    <div class="av-toast-content">
-      ${cfg.title ? `<div class="av-toast-title">${cfg.title}</div>` : ''}
-      ${cfg.description ? `<div class="av-toast-description">${cfg.description}</div>` : ''}
-    </div>
-    <button class="av-toast-close" aria-label="Dismiss">&times;</button>
-    ${cfg.duration > 0 ? `<div class="av-toast-progress" style="animation-duration:${cfg.duration}ms"></div>` : ''}
-  `;
+  el.innerHTML = _buildToastHTML(cfg);
 
   container.appendChild(el);
+  _toastVisibleCount++;
 
   // Animate in
   requestAnimationFrame(() => el.classList.add('av-toast-visible'));
@@ -319,9 +382,19 @@ function showToast(options = {}) {
   function dismiss() {
     el.classList.remove('av-toast-visible');
     el.classList.add('av-toast-exit');
-    el.addEventListener('transitionend', () => el.remove(), { once: true });
+    let cleaned = false;
+    function cleanup() {
+      if (cleaned) return;
+      cleaned = true;
+      el.remove();
+      _toastVisibleCount = Math.max(0, _toastVisibleCount - 1);
+      if (_toastQueue.length > 0) {
+        _renderToast(_toastQueue.shift());
+      }
+    }
+    el.addEventListener('transitionend', cleanup, { once: true });
     // Fallback removal if transition doesn't fire
-    setTimeout(() => el.remove(), 400);
+    setTimeout(cleanup, 400);
   }
 
   el.querySelector('.av-toast-close').addEventListener('click', dismiss);
@@ -339,7 +412,45 @@ function showToast(options = {}) {
   return { dismiss, el };
 }
 
-export const toast = { show: showToast };
+/**
+ * Show a toast notification.
+ * @param {object} options
+ * @param {string} options.title
+ * @param {string} [options.description]
+ * @param {'info'|'success'|'warning'|'error'|'light'} [options.type='info']
+ * @param {number} [options.duration=4000] ms, 0 = no auto-dismiss
+ * @param {string} [options.placement='top-right']
+ * @param {boolean} [options.pauseOnHover=true]
+ */
+function showToast(options = {}) {
+  if (!isBrowser) return null;
+  const cfg = { ..._toastDefaults, ...options };
+  if (_toastVisibleCount >= _toastMaxVisible) {
+    _toastQueue.push(cfg);
+    return null;
+  }
+  return _renderToast(cfg);
+}
+
+/**
+ * Configure toast behaviour.
+ * @param {object} options
+ * @param {number} [options.maxVisible=5] Maximum number of toasts shown at once
+ */
+function configureToast(options = {}) {
+  if (typeof options.maxVisible === 'number' && options.maxVisible > 0) {
+    _toastMaxVisible = options.maxVisible;
+  }
+}
+
+/** @internal Reset queue state — for unit tests only */
+function _resetToastState() {
+  _toastMaxVisible = 5;
+  _toastVisibleCount = 0;
+  _toastQueue.length = 0;
+}
+
+export const toast = { show: showToast, configure: configureToast, _reset: _resetToastState };
 
 // ── Accordion ─────────────────────────────────────────────────────────────────
 
@@ -429,9 +540,10 @@ export const tabs = { init: initTabs };
 // ── Navbar mobile toggle ──────────────────────────────────────────────────────
 
 function initNavbars() {
+  // Deprecated: use initAll() or runNavbarsDedup() instead
   if (!isBrowser) return;
 
-  document.querySelectorAll('.av-navbar-toggle').forEach((toggle) => {
+  document.querySelectorAll('.av-navbar-toggle:not([_av-navbar-toggle-init])').forEach((toggle) => {
     const navbar = toggle.closest('.av-navbar');
     if (!navbar) return;
     const collapse = navbar.querySelector('.av-navbar-collapse');
@@ -443,13 +555,17 @@ function initNavbars() {
       collapse.classList.toggle('av-navbar-collapse-open', !isOpen);
     });
 
-    // Close on outside click
-    document.addEventListener('click', (e) => {
-      if (!navbar.contains(e.target)) {
-        toggle.setAttribute('aria-expanded', 'false');
-        collapse.classList.remove('av-navbar-collapse-open');
-      }
-    });
+    if (!navbar._avNavbarClickHandlerAttached) {
+      document.addEventListener('click', (e) => {
+        if (!navbar.contains(e.target)) {
+          toggle.setAttribute('aria-expanded', 'false');
+          collapse.classList.remove('av-navbar-collapse-open');
+        }
+      });
+      navbar._avNavbarClickHandlerAttached = true;
+    }
+
+    toggle.setAttribute('_av-navbar-toggle-init', 'true');
   });
 }
 
@@ -460,17 +576,214 @@ export const navbar = { init: initNavbars };
 /**
  * Initialise all interactive components.
  * Call once after the DOM is ready.
+ *
+ * @param {object} [options]
+ * @param {boolean} [options.observe=false]
+ *   If true, a MutationObserver watches document.body for newly added nodes
+ *   and re-runs init on every DOM insertion. Useful for SPAs that inject
+ *   component HTML after the initial page load.
+ *   Returns a cleanup function that disconnects the observer.
+ * @returns {(() => void) | void} Cleanup function when observe:true, otherwise void.
  */
-export function initAll() {
-  if (!isBrowser) return;
+export function initAll(options = {}) {
+  if (!isBrowser) return undefined;
+
+  const _initializedSelectors = {
+    modals: new Set(),
+    drawers: new Set(),
+    dropdowns: new Set(),
+    accordions: new Set(),
+    tabs: new Set(),
+    navbars: new Set(),
+  };
+
+  function runModalsDedup() {
+    if (!isBrowser) return;
+    document.querySelectorAll('[data-av-modal-open]').forEach((trigger) => {
+      const key = trigger.getAttribute('data-av-modal-open');
+      if (_initializedSelectors.modals.has(key)) return;
+      trigger.addEventListener('click', () => openModal(key));
+      _initializedSelectors.modals.add(key);
+    });
+    document.querySelectorAll('[data-av-modal-close]').forEach((trigger) => {
+      if (trigger._avModalCloseInit) return;
+      trigger.addEventListener('click', () => {
+        const backdrop = trigger.closest('.av-modal-backdrop');
+        if (backdrop) closeModal(backdrop);
+      });
+      trigger._avModalCloseInit = true;
+    });
+  }
+
+  function runDrawersDedup() {
+    if (!isBrowser) return;
+    document.querySelectorAll('[data-av-drawer-open]').forEach((trigger) => {
+      const key = trigger.getAttribute('data-av-drawer-open');
+      if (_initializedSelectors.drawers.has(key)) return;
+      trigger.addEventListener('click', () => openDrawer(key));
+      _initializedSelectors.drawers.add(key);
+    });
+    document.querySelectorAll('[data-av-drawer-close]').forEach((trigger) => {
+      if (trigger._avDrawerCloseInit) return;
+      trigger.addEventListener('click', () => {
+        const backdrop = trigger.closest('.av-drawer-backdrop');
+        if (backdrop) closeDrawer(backdrop);
+      });
+      trigger._avDrawerCloseInit = true;
+    });
+  }
+
+  function runDropdownsDedup() {
+    if (!isBrowser) return;
+    document.querySelectorAll('.av-dropdown').forEach((dropdown) => {
+      if (dropdown._avDropdownInit) return;
+      const trigger = dropdown.querySelector('.av-dropdown-trigger');
+      const menu = dropdown.querySelector('.av-dropdown-menu');
+      if (!trigger || !menu) return;
+
+      trigger.setAttribute('aria-haspopup', 'true');
+      trigger.setAttribute('aria-expanded', 'false');
+
+      trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = menu.classList.contains('av-dropdown-open');
+        isOpen ? closeDropdown(dropdown) : openDropdown(dropdown);
+      });
+
+      menu.addEventListener('keydown', (e) => {
+        const items = [...menu.querySelectorAll('.av-dropdown-item:not([disabled]):not([aria-disabled="true"])')];
+        const idx = items.indexOf(document.activeElement);
+
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          items[Math.min(idx + 1, items.length - 1)]?.focus();
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          if (idx === 0) { trigger.focus(); closeDropdown(dropdown); }
+          else items[Math.max(idx - 1, 0)]?.focus();
+        } else if (e.key === 'Escape') {
+          closeDropdown(dropdown);
+          trigger.focus();
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          items[0]?.focus();
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          items[items.length - 1]?.focus();
+        } else if (e.key.length === 1 && /[a-z0-9]/i.test(e.key)) {
+          const char = e.key.toLowerCase();
+          const match = items.find((item) => item.textContent.trim().toLowerCase().startsWith(char));
+          if (match) { e.preventDefault(); match.focus(); }
+        }
+      });
+
+      dropdown._avDropdownInit = true;
+    });
+
+    if (!document._avDropdownClickHandlerAttached) {
+      document.addEventListener('click', () => {
+        _openDropdowns.forEach((d) => closeDropdown(d));
+      });
+      document._avDropdownClickHandlerAttached = true;
+    }
+  }
+
+  function runAccordionsDedup() {
+    if (!isBrowser) return;
+    document.querySelectorAll('.av-accordion').forEach((accordion) => {
+      if (accordion._avAccordionInit) return;
+      const allowMultiple = accordion.hasAttribute('data-av-multiple');
+
+      accordion.querySelectorAll('.av-accordion-trigger').forEach((trigger) => {
+        trigger.addEventListener('click', () => toggleAccordionItem(trigger, accordion, allowMultiple));
+        trigger.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            toggleAccordionItem(trigger, accordion, allowMultiple);
+          }
+        });
+      });
+
+      accordion._avAccordionInit = true;
+    });
+  }
+
+  function runTabsDedup() {
+    if (!isBrowser) return;
+    document.querySelectorAll('.av-tabs[data-av-tabs]').forEach((tabsEl) => {
+      if (tabsEl._avTabsInit) return;
+      const tabs = [...tabsEl.querySelectorAll('.av-tab')];
+      const panels = [...tabsEl.querySelectorAll('.av-tab-panel')];
+
+      function activate(tab) {
+        tabs.forEach((t) => { t.classList.remove('av-active'); t.setAttribute('aria-selected', 'false'); });
+        panels.forEach((p) => p.classList.remove('av-active'));
+
+        tab.classList.add('av-active');
+        tab.setAttribute('aria-selected', 'true');
+        const panelId = tab.getAttribute('aria-controls');
+        if (panelId) {
+          const panel = document.getElementById(panelId);
+          if (panel) panel.classList.add('av-active');
+        }
+      }
+
+      tabs.forEach((tab, i) => {
+        tab.setAttribute('role', 'tab');
+        tab.setAttribute('tabindex', tab.classList.contains('av-active') ? '0' : '-1');
+
+        tab.addEventListener('click', () => { activate(tab); tab.setAttribute('tabindex', '0'); });
+
+        tab.addEventListener('keydown', (e) => {
+          let next = null;
+          if (e.key === 'ArrowRight') next = tabs[(i + 1) % tabs.length];
+          else if (e.key === 'ArrowLeft') next = tabs[(i - 1 + tabs.length) % tabs.length];
+          else if (e.key === 'Home') next = tabs[0];
+          else if (e.key === 'End')  next = tabs[tabs.length - 1];
+          if (next) { e.preventDefault(); activate(next); next.focus(); next.setAttribute('tabindex', '0'); tab.setAttribute('tabindex', '-1'); }
+        });
+      });
+
+      tabsEl._avTabsInit = true;
+    });
+  }
+
+  function runNavbarsDedup() {
+    if (!isBrowser) return;
+    document.querySelectorAll('.av-navbar-toggle').forEach((toggle) => {
+      if (toggle._avNavbarToggleInit) return;
+      const navbar = toggle.closest('.av-navbar');
+      if (!navbar) return;
+      const collapse = navbar.querySelector('.av-navbar-collapse');
+      if (!collapse) return;
+
+      toggle.addEventListener('click', () => {
+        const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!isOpen));
+        collapse.classList.toggle('av-navbar-collapse-open', !isOpen);
+      });
+
+      if (!navbar._avNavbarClickHandlerAttached) {
+        document.addEventListener('click', (e) => {
+          if (!navbar.contains(e.target)) {
+            toggle.setAttribute('aria-expanded', 'false');
+            collapse.classList.remove('av-navbar-collapse-open');
+          }
+        });
+        navbar._avNavbarClickHandlerAttached = true;
+      }
+
+      toggle._avNavbarToggleInit = true;
+    });
+  }
 
   function run() {
-    initModals();
-    initDrawers();
-    initDropdowns();
-    initAccordions();
-    initTabs();
-    initNavbars();
+    runModalsDedup();
+    runDrawersDedup();
+    runDropdownsDedup();
+    runAccordionsDedup();
+    runTabsDedup();
+    runNavbarsDedup();
   }
 
   if (document.readyState === 'loading') {
@@ -478,6 +791,17 @@ export function initAll() {
   } else {
     run();
   }
+
+  if (options.observe) {
+    const observer = new MutationObserver((mutations) => {
+      const hasAddedNodes = mutations.some((m) => m.addedNodes.length > 0);
+      if (hasAddedNodes) { run(); }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+    return () => observer.disconnect();
+  }
+
+  return undefined;
 }
 
 // ── createTable — data-driven table component ─────────────────────────────────
@@ -487,7 +811,7 @@ export function initAll() {
  *
  * @param {string|HTMLElement} target  - Selector or element to render into
  * @param {object} options
- * @param {Array<{key,label,sortable?,width?,align?,render?}>} options.columns
+ * @param {Array<{key,label,sortable?,width?,align?,render?,sanitize?}>} options.columns
  * @param {Array<object>} options.rows
  * @param {object}  [options.pagination]
  * @param {boolean} [options.pagination.enabled=false]
@@ -585,7 +909,15 @@ export function createTable(target, options = {}) {
     return `<tbody>${visibleRows.map((row) =>
       `<tr>${cfg.columns.map((col) => {
         const val = row[col.key] ?? '';
-        const cell = col.render ? col.render(val, row) : _esc(val);
+        let cell;
+        if (col.render) {
+          const rendered = col.render(val, row);
+          // render() output is escaped by default; set sanitize:false to allow raw HTML
+          cell = col.sanitize === false ? rendered : _esc(rendered);
+        } else {
+          // Raw data values are always escaped unless sanitize is explicitly false
+          cell = col.sanitize === false ? String(val) : _esc(val);
+        }
         const align = col.align ? ` class="av-text-${col.align}"` : '';
         return `<td${align}>${cell}</td>`;
       }).join('')}</tr>`
@@ -689,6 +1021,12 @@ export function createTable(target, options = {}) {
     },
   };
 }
+
+// ── Internals (exported for testing only) ─────────────────────────────────────
+
+export { _resetScrollLock };
+
+// ── Default export ────────────────────────────────────────────────────────────
 
 export default {
   modal,
