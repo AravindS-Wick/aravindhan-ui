@@ -1,5 +1,5 @@
 // @aravi1008/ui — Form Components
-
+@use 'sass:map';
 @use '../tokens/variables' as *;
 
 // ── Shared input base (SCSS placeholder — must stay outside @layer) ───────────
@@ -55,6 +55,56 @@
     &.av-input-success {
       border-color: $av-color-success;
       &:focus-visible { box-shadow: 0 0 0 3px var(--av-theme-color-success-subtle, #F0FDF4); }
+    }
+
+    // Appearances
+    &.av-input-appearance-outline {
+      // Default styles from %av-input-base
+    }
+
+    &.av-input-appearance-filled {
+      border: none;
+      border-bottom: 2px solid $av-color-border;
+      border-radius: $av-radius-md $av-radius-md 0 0;
+      background-color: $av-color-surface-raised;
+      
+      &:focus-visible {
+        border-color: $av-color-primary;
+        box-shadow: none;
+        background-color: $av-color-surface;
+      }
+    }
+
+    &.av-input-appearance-flushed {
+      border: none;
+      border-bottom: 2px solid $av-color-border;
+      border-radius: 0;
+      background-color: transparent;
+      padding-left: 0;
+      padding-right: 0;
+      
+      &:focus-visible {
+        border-color: $av-color-primary;
+        box-shadow: none;
+      }
+    }
+
+    // Colors
+    @each $name, $palette in $av-colors {
+      &.av-input-color-#{$name} {
+        @if map.has-key($palette, 500) {
+          &:focus-visible {
+            border-color: map.get($palette, 500);
+            box-shadow: 0 0 0 3px map.get($palette, 100);
+          }
+          
+          &.av-input-appearance-filled:focus-visible,
+          &.av-input-appearance-flushed:focus-visible {
+            box-shadow: none;
+            border-bottom-color: map.get($palette, 500);
+          }
+        }
+      }
     }
   }
 
