@@ -199,3 +199,50 @@ $av-ease-default: var(--av-ease-default,    ease);
 $av-ease-in: var(--av-ease-in,         ease-in);
 $av-ease-out: var(--av-ease-out,        ease-out);
 $av-ease-in-out: var(--av-ease-in-out,     ease-in-out);
+
+// ── Theme color map for component loop variations ─────────────────────────
+$av-colors: (
+  "primary": (
+    50: var(--av-theme-color-primary-subtle, #EFF6FF),
+    100: var(--av-theme-color-primary-subtle, #EFF6FF),
+    300: var(--av-theme-color-primary-hover, #2563EB),
+    500: var(--av-theme-color-primary, #3B82F6),
+    900: var(--av-theme-color-primary-active, #1D4ED8)
+  ),
+  "secondary": (
+    50: var(--av-theme-color-secondary-subtle, #F1F5F9),
+    100: var(--av-theme-color-secondary-subtle, #F1F5F9),
+    300: var(--av-theme-color-secondary-hover, #475569),
+    500: var(--av-theme-color-secondary, #64748B),
+    900: var(--av-theme-color-secondary-active, #334155)
+  ),
+  "success": (
+    50: var(--av-theme-color-success-subtle, #F0FDF4),
+    100: var(--av-theme-color-success-subtle, #F0FDF4),
+    300: var(--av-theme-color-success-border, #86EFAC),
+    500: var(--av-theme-color-success, #22C55E),
+    900: var(--av-theme-color-success, #22C55E)
+  ),
+  "warning": (
+    50: var(--av-theme-color-warning-subtle, #FFFBEB),
+    100: var(--av-theme-color-warning-subtle, #FFFBEB),
+    300: var(--av-theme-color-warning-border, #FCD34D),
+    500: var(--av-theme-color-warning, #F59E0B),
+    900: var(--av-theme-color-warning, #F59E0B)
+  ),
+  "error": (
+    50: var(--av-theme-color-error-subtle, #FEF2F2),
+    100: var(--av-theme-color-error-subtle, #FEF2F2),
+    300: var(--av-theme-color-error-border, #FCA5A5),
+    500: var(--av-theme-color-error, #EF4444),
+    900: var(--av-theme-color-error, #EF4444)
+  ),
+  "info": (
+    50: var(--av-theme-color-info-subtle, #ECFEFF),
+    100: var(--av-theme-color-info-subtle, #ECFEFF),
+    300: var(--av-theme-color-info-border, #67E8F9),
+    500: var(--av-theme-color-info, #06B6D4),
+    900: var(--av-theme-color-info, #06B6D4)
+  )
+);
+
