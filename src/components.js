@@ -587,7 +587,6 @@ export const navbar = { init: initNavbars };
  */
 export function initAll(options = {}) {
   if (!isBrowser) return undefined;
-
   const _initializedSelectors = {
     modals: new Set(),
     drawers: new Set(),
