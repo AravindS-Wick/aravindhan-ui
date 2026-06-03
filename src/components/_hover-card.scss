@@ -1,0 +1,47 @@
+@use '../tokens/variables' as *;
+
+.av-hover-card {
+  position: relative;
+  display: inline-block;
+
+  &__content {
+    position: absolute;
+    z-index: var(--av-z-tooltip);
+    width: 320px;
+    background: var(--av-surface);
+    border: 1px solid var(--av-border);
+    border-radius: var(--av-radius-lg);
+    box-shadow: var(--av-shadow-xl);
+    padding: var(--av-space-4);
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--av-transition-normal) cubic-bezier(0.16, 1, 0.3, 1);
+    
+    /* Default position: bottom center */
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(8px);
+    margin-top: var(--av-space-2);
+
+    /* Arrow */
+    &::before {
+      content: '';
+      position: absolute;
+      top: -5px;
+      left: 50%;
+      transform: translateX(-50%) rotate(45deg);
+      width: 10px;
+      height: 10px;
+      background: var(--av-surface);
+      border-left: 1px solid var(--av-border);
+      border-top: 1px solid var(--av-border);
+    }
+  }
+
+  &[data-state='open'] &__content,
+  &:hover &__content {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+  }
+}
