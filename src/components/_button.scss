@@ -119,11 +119,11 @@
   );
 
   @each $name, $palette in $av-btn-colors {
-    $base: list.list.list.nth($palette, 1);
-    $hover: list.list.list.nth($palette, 2);
-    $active: list.list.list.nth($palette, 3);
-    $subtle: list.list.list.nth($palette, 4);
-    $text: list.list.list.nth($palette, 5);
+    $base: list.nth($palette, 1);
+    $hover: list.nth($palette, 2);
+    $active: list.nth($palette, 3);
+    $subtle: list.nth($palette, 4);
+    $text: list.nth($palette, 5);
 
     // Solid
     .av-btn-solid-#{$name} {
