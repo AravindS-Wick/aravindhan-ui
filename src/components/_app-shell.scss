@@ -1,0 +1,62 @@
+@layer components {
+  .av-app-shell {
+    display: grid;
+    grid-template:
+      "header header" auto "sidebar main" 1fr "footer footer" auto / auto 1fr;
+    min-height: 100vh;
+    background-color: var(--av-color-surface);
+    color: var(--av-color-text);
+
+    &--mobile-toggled {
+      // Toggle logic handled via JS classes/state
+    }
+
+    &__header {
+      grid-area: header;
+      z-index: var(--av-z-fixed, 10);
+      position: sticky;
+      top: 0;
+    }
+
+    &__sidebar {
+      grid-area: sidebar;
+      width: 280px;
+      position: sticky;
+      top: var(--av-app-shell-header-height, 60px);
+      height: calc(100vh - var(--av-app-shell-header-height, 60px));
+      overflow-y: auto;
+      border-inline-end: 1px solid var(--av-color-border);
+      background-color: var(--av-color-surface-sunken);
+      transition: width var(--av-transition-normal) ease;
+      
+      &--collapsed {
+        width: 80px;
+      }
+      
+      @media (max-width: 768px) {
+        position: fixed;
+        left: -100%;
+        height: 100vh;
+        top: 0;
+        z-index: var(--av-z-drawer, 200);
+        
+        &--mobile-open {
+          left: 0;
+        }
+      }
+    }
+
+    &__main {
+      grid-area: main;
+      padding: var(--av-spacing-6);
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__footer {
+      grid-area: footer;
+      z-index: var(--av-z-fixed, 10);
+    }
+  }
+}
