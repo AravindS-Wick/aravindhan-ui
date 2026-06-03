@@ -1,0 +1,142 @@
+@use '../tokens/variables' as *;
+
+.av-speed-dial {
+  position: fixed;
+  z-index: var(--av-z-fixed);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--av-space-3);
+  
+  /* Positions */
+  &--bottom-right { bottom: var(--av-space-6); right: var(--av-space-6); }
+  &--bottom-left { bottom: var(--av-space-6); left: var(--av-space-6); }
+  &--top-right { top: var(--av-space-6); right: var(--av-space-6); flex-direction: column-reverse; }
+  &--top-left { top: var(--av-space-6); left: var(--av-space-6); flex-direction: column-reverse; }
+
+  /* Directions (when positioned arbitrarily) */
+  &--up { flex-direction: column-reverse; }
+  &--down { flex-direction: column; }
+  &--left { flex-direction: row-reverse; }
+  &--right { flex-direction: row; }
+
+  &__actions {
+    display: flex;
+    flex-direction: inherit;
+    align-items: center;
+    gap: var(--av-space-2);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity var(--av-transition-normal), visibility var(--av-transition-normal);
+    
+    &[data-state="open"] {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+  }
+
+  &__action {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--av-radius-full);
+    background: var(--av-surface);
+    color: var(--av-text-secondary);
+    border: 1px solid var(--av-border);
+    box-shadow: var(--av-shadow-sm);
+    cursor: pointer;
+    transition: all var(--av-transition-fast);
+    transform: scale(0.8);
+    opacity: 0;
+
+    .av-speed-dial__actions[data-state="open"] & {
+      transform: scale(1);
+      opacity: 1;
+      
+      @for $i from 1 through 10 {
+        &:nth-child(#{$i}) {
+          transition-delay: #{$i * 30}ms;
+        }
+      }
+    }
+
+    &:hover {
+      background: var(--av-surface-hover);
+      color: var(--av-text-primary);
+    }
+
+    .av-speed-dial__actions[data-state="open"] &:hover {
+      transform: scale(1.1);
+    }
+
+    /* Tooltip logic */
+    &::after {
+      content: attr(aria-label);
+      position: absolute;
+      white-space: nowrap;
+      background: var(--av-gray-800);
+      color: white;
+      padding: var(--av-space-1) var(--av-space-2);
+      border-radius: var(--av-radius-sm);
+      font-size: var(--av-font-size-xs);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--av-transition-fast);
+    }
+  }
+
+  /* Tooltip Positions based on alignment */
+  &--bottom-right &__action::after,
+  &--top-right &__action::after {
+    right: 100%;
+    margin-right: var(--av-space-2);
+  }
+
+  &--bottom-left &__action::after,
+  &--top-left &__action::after {
+    left: 100%;
+    margin-left: var(--av-space-2);
+  }
+
+  &__action:hover::after {
+    opacity: 1;
+  }
+
+  &__trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: var(--av-radius-full);
+    background: var(--av-primary);
+    color: var(--av-primary-fg);
+    border: none;
+    box-shadow: var(--av-shadow-lg);
+    cursor: pointer;
+    transition: all var(--av-transition-normal) cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 1;
+
+    &:hover {
+      background: var(--av-primary-hover);
+      transform: scale(1.05);
+    }
+
+    svg {
+      transition: transform var(--av-transition-normal);
+    }
+
+    &[data-state="open"] {
+      background: var(--av-gray-800);
+
+      svg {
+        transform: rotate(45deg);
+      }
+    }
+  }
+}

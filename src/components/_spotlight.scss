@@ -1,0 +1,35 @@
+@layer components {
+  .av-spotlight {
+    position: fixed;
+    inset: 0;
+    z-index: var(--av-z-modal, 1000);
+    pointer-events: none;
+
+    // Radial gradient to create a "hole" (spotlight) in the dark overlay
+    // The hole position and size should be controlled by inline CSS variables
+    // --av-spotlight-x, --av-spotlight-y, --av-spotlight-radius
+    background: radial-gradient(
+      circle var(--av-spotlight-radius, 100px) at var(--av-spotlight-x, 50%) var(--av-spotlight-y, 50%),
+      transparent 0%,
+      rgba(0, 0, 0, 0.75) 100%
+    );
+    transition: background 0.3s ease-out;
+
+    &__content {
+      position: absolute;
+      pointer-events: auto;
+
+      // Controlled via JS to position near the hole
+      top: var(--av-spotlight-content-y, 50%);
+      left: var(--av-spotlight-content-x, 50%);
+      transform: translate(-50%, 0);
+      margin-top: calc(var(--av-spotlight-radius, 100px) + 20px);
+      background-color: var(--av-color-surface);
+      border-radius: var(--av-radius-md);
+      box-shadow: var(--av-shadow-lg);
+      padding: var(--av-spacing-4);
+      max-width: 320px;
+      color: var(--av-color-text);
+    }
+  }
+}
