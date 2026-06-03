@@ -2,58 +2,60 @@
 
 @use '../tokens/variables' as *;
 
-.av-progress {
-  width: 100%;
-  height: 8px;
-  background-color: $av-color-surface-raised;
-  border-radius: $av-radius-full;
-  overflow: hidden;
-  border: 1px solid $av-color-border;
+@layer aravi1008.components {
+  .av-progress {
+    width: 100%;
+    height: 8px;
+    background-color: $av-color-surface-raised;
+    border-radius: $av-radius-full;
+    overflow: hidden;
+    border: 1px solid $av-color-border;
 
-  &.av-progress-sm { height: 4px; }
-  &.av-progress-lg { height: 12px; }
-  &.av-progress-xl { height: 16px; }
-}
-
-.av-progress-bar {
-  height: 100%;
-  border-radius: $av-radius-full;
-  background-color: $av-color-primary;
-  transition: width 0.4s ease;
-
-  &.av-progress-success { background-color: $av-color-success; }
-  &.av-progress-warning { background-color: $av-color-warning; }
-  &.av-progress-error   { background-color: $av-color-error; }
-
-  &.av-progress-striped {
-    background-image: linear-gradient(
-      45deg,
-      rgba(255, 255, 255, 0.15) 25%,
-      transparent 25%,
-      transparent 50%,
-      rgba(255, 255, 255, 0.15) 50%,
-      rgba(255, 255, 255, 0.15) 75%,
-      transparent 75%,
-      transparent
-    );
-    background-size: 1rem 1rem;
+    &.av-progress-sm { height: 4px; }
+    &.av-progress-lg { height: 12px; }
+    &.av-progress-xl { height: 16px; }
   }
 
-  &.av-progress-animated {
-    animation: av-progress-stripes 1s linear infinite;
-  }
-}
-
-@keyframes av-progress-stripes {
-  to { background-position-x: 1rem; }
-}
-
-@media (prefers-reduced-motion: reduce) {
   .av-progress-bar {
-    transition: none;
+    height: 100%;
+    border-radius: $av-radius-full;
+    background-color: $av-color-primary;
+    transition: width $av-duration-slow $av-ease-default;
+
+    &.av-progress-success { background-color: $av-color-success; }
+    &.av-progress-warning { background-color: $av-color-warning; }
+    &.av-progress-error   { background-color: $av-color-error; }
+
+    &.av-progress-striped {
+      background-image: linear-gradient(
+        45deg,
+        rgb(from $av-color-white r g b / 0.15) 25%,
+        transparent 25%,
+        transparent 50%,
+        rgb(from $av-color-white r g b / 0.15) 50%,
+        rgb(from $av-color-white r g b / 0.15) 75%,
+        transparent 75%,
+        transparent
+      );
+      background-size: 1rem 1rem;
+    }
 
     &.av-progress-animated {
-      animation: none;
+      animation: av-progress-stripes 1s linear infinite;
+    }
+  }
+
+  @keyframes av-progress-stripes {
+    to { background-position-x: 1rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .av-progress-bar {
+      transition: none;
+
+      &.av-progress-animated {
+        animation: none;
+      }
     }
   }
 }

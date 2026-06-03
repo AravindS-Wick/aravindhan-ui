@@ -2,43 +2,45 @@
 
 @use '../tokens/variables' as *;
 
-.av-breadcrumb {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: $av-spacing-1;
-  font-size: $av-text-sm;
-  color: $av-color-text-secondary;
-  list-style: none;
-}
-
-.av-breadcrumb-item {
-  display: flex;
-  align-items: center;
-  gap: $av-spacing-1;
-
-  a {
+@layer aravi1008.components {
+  .av-breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: $av-spacing-1;
+    font-size: $av-text-sm;
     color: $av-color-text-secondary;
-    text-decoration: none;
-    transition: color 0.15s ease;
+    list-style: none;
+  }
 
-    &:hover { color: $av-color-primary; }
+  .av-breadcrumb-item {
+    display: flex;
+    align-items: center;
+    gap: $av-spacing-1;
 
-    &:focus-visible {
-      outline: 2px solid $av-color-focus-ring;
-      outline-offset: 2px;
-      border-radius: $av-radius-sm;
+    a {
+      color: $av-color-text-secondary;
+      text-decoration: none;
+      transition: color 0.15s ease;
+
+      &:hover { color: $av-color-primary; }
+
+      &:focus-visible {
+        outline: 2px solid $av-color-focus-ring;
+        outline-offset: 2px;
+        border-radius: $av-radius-sm;
+      }
     }
-  }
 
-  &.av-active {
-    color: $av-color-text-primary;
-    font-weight: 500;
-  }
+    &.av-active {
+      color: $av-color-text-primary;
+      font-weight: 500;
+    }
 
-  &:not(:last-child)::after {
-    content: '/';
-    color: $av-color-border-strong;
-    margin-left: $av-spacing-1;
+    &:not(:last-child)::after {
+      content: '/';
+      color: $av-color-border-strong;
+      margin-left: $av-spacing-1;
+    }
   }
 }

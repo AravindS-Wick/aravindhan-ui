@@ -2,51 +2,53 @@
 
 @use '../tokens/variables' as *;
 
-.av-pagination {
-  display: flex;
-  align-items: center;
-  gap: $av-spacing-1;
-  list-style: none;
-}
-
-.av-page-item {
-  .av-page-link {
-    display: inline-flex;
+@layer aravi1008.components {
+  .av-pagination {
+    display: flex;
     align-items: center;
-    justify-content: center;
-    min-width: 2rem;
-    height: 2rem;
-    padding: 0 $av-spacing-2;
-    font-size: $av-text-sm;
-    font-weight: 500;
-    color: $av-color-text-secondary;
-    background-color: transparent;
-    border: 1px solid $av-color-border;
-    border-radius: $av-radius-md;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
-    user-select: none;
+    gap: $av-spacing-1;
+    list-style: none;
+  }
 
-    &:hover { background-color: $av-color-surface-raised; color: $av-color-text-primary; border-color: $av-color-border-strong; }
+  .av-page-item {
+    .av-page-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 2rem;
+      height: 2rem;
+      padding: 0 $av-spacing-2;
+      font-size: $av-text-sm;
+      font-weight: 500;
+      color: $av-color-text-secondary;
+      background-color: transparent;
+      border: 1px solid $av-color-border;
+      border-radius: $av-radius-md;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+      user-select: none;
 
-    &:focus-visible {
-      outline: 2px solid $av-color-focus-ring;
-      outline-offset: 2px;
+      &:hover { background-color: $av-color-surface-raised; color: $av-color-text-primary; border-color: $av-color-border-strong; }
+
+      &:focus-visible {
+        outline: 2px solid $av-color-focus-ring;
+        outline-offset: 2px;
+      }
     }
-  }
 
-  &.av-active .av-page-link {
-    background-color: $av-color-primary;
-    border-color: $av-color-primary;
-    color: #fff;
+    &.av-active .av-page-link {
+      background-color: $av-color-primary;
+      border-color: $av-color-primary;
+      color: #fff;
 
-    &:hover { background-color: $av-color-primary-hover; }
-  }
+      &:hover { background-color: $av-color-primary-hover; }
+    }
 
-  &.av-disabled .av-page-link {
-    opacity: 0.5;
-    cursor: not-allowed;
-    pointer-events: none;
+    &.av-disabled .av-page-link {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
   }
 }

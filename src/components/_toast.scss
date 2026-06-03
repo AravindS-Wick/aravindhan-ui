@@ -3,6 +3,7 @@
 
 @use '../tokens/variables' as *;
 
+@layer aravi1008.components {
 // ── Container (stacking region) ───────────────────────────────────────────────
 .av-toast-container {
   position: fixed;
@@ -141,3 +142,5 @@
   .av-toast { transition: none; }
   .av-toast-progress { animation: none; }
 }
+
+} // end @layer aravi1008.components

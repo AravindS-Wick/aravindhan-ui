@@ -3,116 +3,7 @@
 
 @use '../tokens/variables' as *;
 
-// ── Semantic text colors ───────────────────────────────────────────────────────
-.av-text-primary    { color: $av-color-text-primary; }
-.av-text-secondary  { color: $av-color-text-secondary; }
-.av-text-disabled   { color: $av-color-text-disabled; }
-.av-text-inverse    { color: $av-color-text-inverse; }
-.av-text-brand      { color: $av-color-primary; }
-.av-text-success    { color: $av-color-success; }
-.av-text-warning    { color: $av-color-warning; }
-.av-text-error      { color: $av-color-error; }
-.av-text-info       { color: $av-color-info; }
-.av-text-white      { color: #fff; }
-.av-text-black      { color: #000; }
-.av-text-inherit    { color: inherit; }
-.av-text-current    { color: currentColor; }
-
-// ── Semantic background colors ─────────────────────────────────────────────────
-.av-bg-surface          { background-color: $av-color-surface; }
-.av-bg-surface-raised   { background-color: $av-color-surface-raised; }
-.av-bg-surface-overlay  { background-color: var(--av-theme-color-surface-overlay, rgba(0 0 0 / 50%)); }
-.av-bg-primary          { background-color: $av-color-primary; }
-.av-bg-primary-subtle   { background-color: $av-color-primary-subtle; }
-.av-bg-secondary        { background-color: $av-color-secondary; }
-.av-bg-success          { background-color: $av-color-success; }
-.av-bg-success-subtle   { background-color: var(--av-theme-color-success-subtle, #F0FDF4); }
-.av-bg-warning          { background-color: $av-color-warning; }
-.av-bg-warning-subtle   { background-color: var(--av-theme-color-warning-subtle, #FFFBEB); }
-.av-bg-error            { background-color: $av-color-error; }
-.av-bg-error-subtle     { background-color: var(--av-theme-color-error-subtle, #FEF2F2); }
-.av-bg-info             { background-color: $av-color-info; }
-.av-bg-info-subtle      { background-color: var(--av-theme-color-info-subtle, #EFF6FF); }
-.av-bg-transparent      { background-color: transparent; }
-.av-bg-white            { background-color: #fff; }
-.av-bg-black            { background-color: #000; }
-
-// ── Semantic border colors ─────────────────────────────────────────────────────
-.av-border-color-default  { border-color: $av-color-border; }
-.av-border-color-strong   { border-color: $av-color-border-strong; }
-.av-border-color-primary  { border-color: $av-color-primary; }
-.av-border-color-success  { border-color: $av-color-success; }
-.av-border-color-warning  { border-color: $av-color-warning; }
-.av-border-color-error    { border-color: $av-color-error; }
-.av-border-color-info     { border-color: $av-color-info; }
-
-// ── Border width ───────────────────────────────────────────────────────────────
-.av-border    { border-width: 1px; border-style: solid; }
-.av-border-0  { border-width: 0; }
-.av-border-2  { border-width: 2px; border-style: solid; }
-.av-border-4  { border-width: 4px; border-style: solid; }
-.av-border-t  { border-top-width: 1px; border-top-style: solid; }
-.av-border-b  { border-bottom-width: 1px; border-bottom-style: solid; }
-.av-border-l  { border-left-width: 1px; border-left-style: solid; }
-.av-border-r  { border-right-width: 1px; border-right-style: solid; }
-.av-border-x  { border-left-width: 1px; border-left-style: solid; border-right-width: 1px; border-right-style: solid; }
-.av-border-y  { border-top-width: 1px; border-top-style: solid; border-bottom-width: 1px; border-bottom-style: solid; }
-
-// ── Border radius ──────────────────────────────────────────────────────────────
-.av-rounded-none  { border-radius: 0; }
-.av-rounded-sm    { border-radius: $av-radius-sm; }
-.av-rounded       { border-radius: $av-radius-md; }
-.av-rounded-md    { border-radius: $av-radius-md; }
-.av-rounded-lg    { border-radius: $av-radius-lg; }
-.av-rounded-xl    { border-radius: $av-radius-xl; }
-.av-rounded-2xl   { border-radius: $av-radius-2xl; }
-.av-rounded-3xl   { border-radius: 1.5rem; }
-.av-rounded-full  { border-radius: $av-radius-full; }
-
-.av-rounded-t-none  { border-top-left-radius: 0; border-top-right-radius: 0; }
-.av-rounded-t-md    { border-top-left-radius: $av-radius-md; border-top-right-radius: $av-radius-md; }
-.av-rounded-t-lg    { border-top-left-radius: $av-radius-lg; border-top-right-radius: $av-radius-lg; }
-.av-rounded-b-none  { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
-.av-rounded-b-md    { border-bottom-left-radius: $av-radius-md; border-bottom-right-radius: $av-radius-md; }
-.av-rounded-b-lg    { border-bottom-left-radius: $av-radius-lg; border-bottom-right-radius: $av-radius-lg; }
-
-// ── Shadows ────────────────────────────────────────────────────────────────────
-.av-shadow-none  { box-shadow: none; }
-.av-shadow-xs    { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
-.av-shadow-sm    { box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1); }
-.av-shadow       { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
-.av-shadow-md    { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
-.av-shadow-lg    { box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); }
-.av-shadow-xl    { box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); }
-.av-shadow-2xl   { box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25); }
-.av-shadow-inner { box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05); }
-
-// Hover shadow helpers
-.av-hover\:shadow-md:hover    { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
-.av-hover\:shadow-lg:hover    { box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); }
-.av-hover\:shadow-xl:hover    { box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); }
-
-// ── Opacity ────────────────────────────────────────────────────────────────────
-.av-opacity-0    { opacity: 0; }
-.av-opacity-5    { opacity: 0.05; }
-.av-opacity-10   { opacity: 0.1; }
-.av-opacity-20   { opacity: 0.2; }
-.av-opacity-25   { opacity: 0.25; }
-.av-opacity-30   { opacity: 0.3; }
-.av-opacity-40   { opacity: 0.4; }
-.av-opacity-50   { opacity: 0.5; }
-.av-opacity-60   { opacity: 0.6; }
-.av-opacity-70   { opacity: 0.7; }
-.av-opacity-75   { opacity: 0.75; }
-.av-opacity-80   { opacity: 0.8; }
-.av-opacity-90   { opacity: 0.9; }
-.av-opacity-95   { opacity: 0.95; }
-.av-opacity-100  { opacity: 1; }
-
-// ── Full palette scale utilities (50→900) ──────────────────────────────────────
-// Text, background, border for every palette colour.
-// Usage: .av-text-blue-500, .av-bg-green-100, .av-border-red-300
-
+// ── SCSS palette maps (compile-time — must stay outside @layer) ───────────────
 // Gray
 $av-palette-gray: (
   '50': #F8FAFC, '100': #F1F5F9, '200': #E2E8F0, '300': #CBD5E1,
@@ -219,80 +110,219 @@ $av-palettes: (
   'rose': $av-palette-rose
 );
 
-@each $palette-name, $palette in $av-palettes {
-  @each $shade, $value in $palette {
-    .av-text-#{$palette-name}-#{$shade}   { color: $value; }
-    .av-bg-#{$palette-name}-#{$shade}     { background-color: $value; }
-    .av-border-#{$palette-name}-#{$shade} { border-color: $value; }
+// ── CSS output ────────────────────────────────────────────────────────────────
+@layer aravi1008.utilities {
+  // ── Semantic text colors ────────────────────────────────────────────────
+  .av-text-primary    { color: $av-color-text-primary; }
+  .av-text-secondary  { color: $av-color-text-secondary; }
+  .av-text-disabled   { color: $av-color-text-disabled; }
+  .av-text-inverse    { color: $av-color-text-inverse; }
+  .av-text-brand      { color: $av-color-primary; }
+  .av-text-success    { color: $av-color-success; }
+  .av-text-warning    { color: $av-color-warning; }
+  .av-text-error      { color: $av-color-error; }
+  .av-text-info       { color: $av-color-info; }
+  .av-text-white      { color: #fff; }
+  .av-text-black      { color: #000; }
+  .av-text-inherit    { color: inherit; }
+  .av-text-current    { color: currentColor; }
 
-    // Hover state helpers
-    .av-hover\:text-#{$palette-name}-#{$shade}:hover   { color: $value; }
-    .av-hover\:bg-#{$palette-name}-#{$shade}:hover     { background-color: $value; }
+  // ── Semantic background colors ──────────────────────────────────────────
+  .av-bg-surface          { background-color: $av-color-surface; }
+  .av-bg-surface-raised   { background-color: $av-color-surface-raised; }
+  .av-bg-surface-overlay  { background-color: var(--av-theme-color-surface-overlay, rgba(0 0 0 / 50%)); }
+  .av-bg-primary          { background-color: $av-color-primary; }
+  .av-bg-primary-subtle   { background-color: $av-color-primary-subtle; }
+  .av-bg-secondary        { background-color: $av-color-secondary; }
+  .av-bg-success          { background-color: $av-color-success; }
+  .av-bg-success-subtle   { background-color: var(--av-theme-color-success-subtle, #F0FDF4); }
+  .av-bg-warning          { background-color: $av-color-warning; }
+  .av-bg-warning-subtle   { background-color: var(--av-theme-color-warning-subtle, #FFFBEB); }
+  .av-bg-error            { background-color: $av-color-error; }
+  .av-bg-error-subtle     { background-color: var(--av-theme-color-error-subtle, #FEF2F2); }
+  .av-bg-info             { background-color: $av-color-info; }
+  .av-bg-info-subtle      { background-color: var(--av-theme-color-info-subtle, #EFF6FF); }
+  .av-bg-transparent      { background-color: transparent; }
+  .av-bg-white            { background-color: #fff; }
+  .av-bg-black            { background-color: #000; }
 
-    // Focus-visible state helpers
-    .av-focus\:text-#{$palette-name}-#{$shade}:focus-visible   { color: $value; }
-    .av-focus\:bg-#{$palette-name}-#{$shade}:focus-visible     { background-color: $value; }
-  }
-}
+  // ── Semantic border colors ──────────────────────────────────────────────
+  .av-border-color-default  { border-color: $av-color-border; }
+  .av-border-color-strong   { border-color: $av-color-border-strong; }
+  .av-border-color-primary  { border-color: $av-color-primary; }
+  .av-border-color-success  { border-color: $av-color-success; }
+  .av-border-color-warning  { border-color: $av-color-warning; }
+  .av-border-color-error    { border-color: $av-color-error; }
+  .av-border-color-info     { border-color: $av-color-info; }
 
-// ── Dark mode variants ─────────────────────────────────────────────────────────
-// Applied when [data-av-theme="dark"] is set on any ancestor.
+  // ── Border width ─────────────────────────────────────────────────────────
+  .av-border    { border-width: 1px; border-style: solid; }
+  .av-border-0  { border-width: 0; }
+  .av-border-2  { border-width: 2px; border-style: solid; }
+  .av-border-4  { border-width: 4px; border-style: solid; }
+  .av-border-t  { border-top-width: 1px; border-top-style: solid; }
+  .av-border-b  { border-bottom-width: 1px; border-bottom-style: solid; }
+  .av-border-l  { border-left-width: 1px; border-left-style: solid; }
+  .av-border-r  { border-right-width: 1px; border-right-style: solid; }
+  .av-border-x  { border-left-width: 1px; border-left-style: solid; border-right-width: 1px; border-right-style: solid; }
+  .av-border-y  { border-top-width: 1px; border-top-style: solid; border-bottom-width: 1px; border-bottom-style: solid; }
 
-[data-av-theme='dark'] {
-  // Semantic overrides are handled by CSS vars in the theme tokens.
-  // These utilities let you explicitly force colors in dark mode:
+  // ── Border radius ─────────────────────────────────────────────────────────
+  .av-rounded-none  { border-radius: 0; }
+  .av-rounded-sm    { border-radius: $av-radius-sm; }
+  .av-rounded       { border-radius: $av-radius-md; }
+  .av-rounded-md    { border-radius: $av-radius-md; }
+  .av-rounded-lg    { border-radius: $av-radius-lg; }
+  .av-rounded-xl    { border-radius: $av-radius-xl; }
+  .av-rounded-2xl   { border-radius: $av-radius-2xl; }
+  .av-rounded-3xl   { border-radius: 1.5rem; }
+  .av-rounded-full  { border-radius: $av-radius-full; }
 
-  .av-dark\:text-white      { color: #fff; }
-  .av-dark\:text-black      { color: #000; }
-  .av-dark\:bg-white        { background-color: #fff; }
-  .av-dark\:bg-black        { background-color: #000; }
-  .av-dark\:bg-transparent  { background-color: transparent; }
-  .av-dark\:border-white    { border-color: #fff; }
-  .av-dark\:hidden          { display: none; }
-  .av-dark\:block           { display: block; }
-  .av-dark\:flex            { display: flex; }
+  .av-rounded-t-none  { border-top-left-radius: 0; border-top-right-radius: 0; }
+  .av-rounded-t-md    { border-top-left-radius: $av-radius-md; border-top-right-radius: $av-radius-md; }
+  .av-rounded-t-lg    { border-top-left-radius: $av-radius-lg; border-top-right-radius: $av-radius-lg; }
+  .av-rounded-b-none  { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+  .av-rounded-b-md    { border-bottom-left-radius: $av-radius-md; border-bottom-right-radius: $av-radius-md; }
+  .av-rounded-b-lg    { border-bottom-left-radius: $av-radius-lg; border-bottom-right-radius: $av-radius-lg; }
 
-  // Dark palette overrides — e.g. .av-dark:bg-gray-800 in dark mode
+  // ── Shadows ───────────────────────────────────────────────────────────────
+  .av-shadow-none  { box-shadow: none; }
+  .av-shadow-xs    { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
+  .av-shadow-sm    { box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1); }
+  .av-shadow       { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
+  .av-shadow-md    { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
+  .av-shadow-lg    { box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); }
+  .av-shadow-xl    { box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); }
+  .av-shadow-2xl   { box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25); }
+  .av-shadow-inner { box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05); }
+
+  // Hover shadow helpers
+  .av-hover\:shadow-md:hover    { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
+  .av-hover\:shadow-lg:hover    { box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); }
+  .av-hover\:shadow-xl:hover    { box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); }
+
+  // ── Opacity ───────────────────────────────────────────────────────────────
+  .av-opacity-0    { opacity: 0; }
+  .av-opacity-5    { opacity: 0.05; }
+  .av-opacity-10   { opacity: 0.1; }
+  .av-opacity-20   { opacity: 0.2; }
+  .av-opacity-25   { opacity: 0.25; }
+  .av-opacity-30   { opacity: 0.3; }
+  .av-opacity-40   { opacity: 0.4; }
+  .av-opacity-50   { opacity: 0.5; }
+  .av-opacity-60   { opacity: 0.6; }
+  .av-opacity-70   { opacity: 0.7; }
+  .av-opacity-75   { opacity: 0.75; }
+  .av-opacity-80   { opacity: 0.8; }
+  .av-opacity-90   { opacity: 0.9; }
+  .av-opacity-95   { opacity: 0.95; }
+  .av-opacity-100  { opacity: 1; }
+
+  // ── Full palette scale utilities (50→900) ─────────────────────────────────
+  // Text, background, border for every palette colour.
+  // Usage: .av-text-blue-500, .av-bg-green-100, .av-border-red-300
   @each $palette-name, $palette in $av-palettes {
     @each $shade, $value in $palette {
-      .av-dark\:text-#{$palette-name}-#{$shade}   { color: $value; }
-      .av-dark\:bg-#{$palette-name}-#{$shade}     { background-color: $value; }
-      .av-dark\:border-#{$palette-name}-#{$shade} { border-color: $value; }
+      .av-text-#{$palette-name}-#{$shade}   { color: $value; }
+      .av-bg-#{$palette-name}-#{$shade}     { background-color: $value; }
+      .av-border-#{$palette-name}-#{$shade} { border-color: $value; }
+
+      // Hover state helpers
+      .av-hover\:text-#{$palette-name}-#{$shade}:hover   { color: $value; }
+      .av-hover\:bg-#{$palette-name}-#{$shade}:hover     { background-color: $value; }
+
+      // Focus-visible state helpers
+      .av-focus\:text-#{$palette-name}-#{$shade}:focus-visible   { color: $value; }
+      .av-focus\:bg-#{$palette-name}-#{$shade}:focus-visible     { background-color: $value; }
     }
   }
-}
 
-// ── Divide utilities (border between children) ─────────────────────────────────
-.av-divide-y > * + * { border-top: 1px solid $av-color-border; }
-.av-divide-x > * + * { border-left: 1px solid $av-color-border; }
+  // ── Dark mode variants ────────────────────────────────────────────────────
+  // Applied when [data-av-theme="dark"] is set on any ancestor.
+  [data-av-theme='dark'] {
+    // Semantic overrides are handled by CSS vars in the theme tokens.
+    // These utilities let you explicitly force colors in dark mode:
 
-// ── Ring (outline) utilities ───────────────────────────────────────────────────
-.av-ring           { outline: 2px solid $av-color-focus-ring; outline-offset: 2px; }
-.av-ring-0         { outline: none; }
-.av-ring-1         { outline: 1px solid $av-color-focus-ring; outline-offset: 1px; }
-.av-ring-2         { outline: 2px solid $av-color-focus-ring; outline-offset: 2px; }
-.av-ring-4         { outline: 4px solid $av-color-focus-ring; outline-offset: 2px; }
-.av-ring-primary   { outline: 2px solid $av-color-primary; outline-offset: 2px; }
-.av-ring-error     { outline: 2px solid $av-color-error; outline-offset: 2px; }
-.av-ring-success   { outline: 2px solid $av-color-success; outline-offset: 2px; }
+    .av-dark\:text-white      { color: #fff; }
+    .av-dark\:text-black      { color: #000; }
+    .av-dark\:bg-white        { background-color: #fff; }
+    .av-dark\:bg-black        { background-color: #000; }
+    .av-dark\:bg-transparent  { background-color: transparent; }
+    .av-dark\:border-white    { border-color: #fff; }
+    .av-dark\:hidden          { display: none; }
+    .av-dark\:block           { display: block; }
+    .av-dark\:flex            { display: flex; }
 
-// ── Background gradient helpers ────────────────────────────────────────────────
-.av-bg-gradient-primary {
-  background-image: linear-gradient(135deg, var(--av-theme-color-primary, #3B82F6), var(--av-theme-color-secondary, #6366F1));
-}
+    // Dark palette overrides — e.g. .av-dark:bg-gray-800 in dark mode
+    @each $palette-name, $palette in $av-palettes {
+      @each $shade, $value in $palette {
+        .av-dark\:text-#{$palette-name}-#{$shade}   { color: $value; }
+        .av-dark\:bg-#{$palette-name}-#{$shade}     { background-color: $value; }
+        .av-dark\:border-#{$palette-name}-#{$shade} { border-color: $value; }
+      }
+    }
+  }
 
-.av-bg-gradient-success {
-  background-image: linear-gradient(135deg, #22C55E, #16A34A);
-}
+  // ── Divide utilities (border between children) ────────────────────────────
+  .av-divide-y > * + * { border-top: 1px solid $av-color-border; }
+  .av-divide-x > * + * { border-left: 1px solid $av-color-border; }
 
-.av-bg-gradient-warning {
-  background-image: linear-gradient(135deg, #F59E0B, #D97706);
-}
+  // ── Ring (outline) utilities ──────────────────────────────────────────────
+  .av-ring           { outline: 2px solid $av-color-focus-ring; outline-offset: 2px; }
+  .av-ring-0         { outline: none; }
+  .av-ring-1         { outline: 1px solid $av-color-focus-ring; outline-offset: 1px; }
+  .av-ring-2         { outline: 2px solid $av-color-focus-ring; outline-offset: 2px; }
+  .av-ring-4         { outline: 4px solid $av-color-focus-ring; outline-offset: 2px; }
+  .av-ring-primary   { outline: 2px solid $av-color-primary; outline-offset: 2px; }
+  .av-ring-error     { outline: 2px solid $av-color-error; outline-offset: 2px; }
+  .av-ring-success   { outline: 2px solid $av-color-success; outline-offset: 2px; }
 
-.av-bg-gradient-error {
-  background-image: linear-gradient(135deg, #EF4444, #DC2626);
-}
+  // ── SVG fill / stroke utilities ───────────────────────────────────────────
+  .av-fill-current   { fill: currentColor; }
+  .av-fill-none      { fill: none; }
+  .av-stroke-current { stroke: currentColor; }
+  .av-stroke-none    { stroke: none; }
+  .av-stroke-0       { stroke-width: 0; }
+  .av-stroke-1       { stroke-width: 1; }
+  .av-stroke-2       { stroke-width: 2; }
 
-.av-bg-gradient-subtle {
-  background-image: linear-gradient(135deg, $av-color-surface, $av-color-surface-raised);
+  @each $palette-name, $palette in $av-palettes {
+    @each $shade, $value in $palette {
+      .av-fill-#{$palette-name}-#{$shade}   { fill: $value; }
+      .av-stroke-#{$palette-name}-#{$shade} { stroke: $value; }
+    }
+  }
+
+  // ── Ring (outline) per palette ─────────────────────────────────────────────
+  @each $palette-name, $palette in $av-palettes {
+    @each $shade, $value in $palette {
+      .av-ring-#{$palette-name}-#{$shade} { outline: 2px solid $value; outline-offset: 2px; }
+    }
+  }
+
+  // ── Caret / placeholder / accent ──────────────────────────────────────────
+  .av-caret-primary   { caret-color: $av-color-primary; }
+  .av-caret-error     { caret-color: $av-color-error; }
+  .av-accent-primary  { accent-color: $av-color-primary; }
+
+  // ── Background gradient helpers ───────────────────────────────────────────
+  .av-bg-gradient-primary {
+    background-image: linear-gradient(135deg, var(--av-theme-color-primary, #3B82F6), var(--av-theme-color-secondary, #6366F1));
+  }
+
+  .av-bg-gradient-success {
+    background-image: linear-gradient(135deg, #22C55E, #16A34A);
+  }
+
+  .av-bg-gradient-warning {
+    background-image: linear-gradient(135deg, #F59E0B, #D97706);
+  }
+
+  .av-bg-gradient-error {
+    background-image: linear-gradient(135deg, #EF4444, #DC2626);
+  }
+
+  .av-bg-gradient-subtle {
+    background-image: linear-gradient(135deg, $av-color-surface, $av-color-surface-raised);
+  }
 }

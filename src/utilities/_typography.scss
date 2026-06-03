@@ -3,7 +3,7 @@
 @use '../tokens/variables' as *;
 @use 'sass:list';
 
-// ── Font size scale ────────────────────────────────────────────────────────────
+// ── SCSS compile-time maps (must stay outside @layer) ─────────────────────────
 $av-font-size-map: (
   'xs':   ($av-text-xs,   1.5),    // 12px / lh 1.5
   'sm':   ($av-text-sm,   1.5),    // 14px / lh 1.5
@@ -19,220 +19,223 @@ $av-font-size-map: (
   '8xl':  (6rem,          1),      // 96px / lh 1
   '9xl':  (8rem,          1),      // 128px / lh 1
 );
-
-@each $size, $vals in $av-font-size-map {
-  $fs: list.nth($vals, 1);
-  $lh: list.nth($vals, 2);
-  .av-text-#{$size} { font-size: $fs; line-height: $lh; }
-}
-
-// ── Fluid typography — scales smoothly between breakpoints via clamp() ─────────
-// Usage: <h1 class="av-text-fluid-4xl"> scales from 1.875rem (sm) → 3rem (xl)
-.av-text-fluid-sm   { font-size: clamp(0.75rem,  1.5vw, 0.875rem); }
-.av-text-fluid-base { font-size: clamp(0.875rem, 2vw,   1rem); }
-.av-text-fluid-lg   { font-size: clamp(1rem,     2.5vw, 1.125rem); }
-.av-text-fluid-xl   { font-size: clamp(1.125rem, 3vw,   1.25rem); }
-.av-text-fluid-2xl  { font-size: clamp(1.25rem,  3.5vw, 1.5rem); }
-.av-text-fluid-3xl  { font-size: clamp(1.5rem,   4vw,   1.875rem); }
-.av-text-fluid-4xl  { font-size: clamp(1.875rem, 5vw,   2.25rem); }
-.av-text-fluid-5xl  { font-size: clamp(2.25rem,  6vw,   3rem); }
-.av-text-fluid-6xl  { font-size: clamp(3rem,     8vw,   3.75rem); }
-.av-text-fluid-7xl  { font-size: clamp(3.75rem,  9vw,   4.5rem); }
-.av-text-fluid-8xl  { font-size: clamp(4.5rem,   10vw,  6rem); }
-.av-text-fluid-9xl  { font-size: clamp(6rem,     12vw,  8rem); }
-
-// ── Responsive font sizes — sm: md: lg: xl: prefixes ──────────────────────────
 $av-bp-text: ('sm': 480px, 'md': 768px, 'lg': 1024px, 'xl': 1280px);
 
-@each $bp, $bp-val in $av-bp-text {
-  @media (min-width: #{$bp-val}) {
-    @each $size, $vals in $av-font-size-map {
-      $fs: list.nth($vals, 1);
-      $lh: list.nth($vals, 2);
-      .av-#{$bp}\:text-#{$size} { font-size: $fs; line-height: $lh; }
+// ── CSS output ────────────────────────────────────────────────────────────────
+@layer aravi1008.utilities {
+  // ── Font size scale ──────────────────────────────────────────────────────
+  @each $size, $vals in $av-font-size-map {
+    $fs: list.nth($vals, 1);
+    $lh: list.nth($vals, 2);
+    .av-text-#{$size} { font-size: $fs; line-height: $lh; }
+  }
+
+  // ── Fluid typography — scales smoothly between breakpoints via clamp() ──
+  // Usage: <h1 class="av-text-fluid-4xl"> scales from 1.875rem (sm) → 3rem (xl)
+  .av-text-fluid-sm   { font-size: clamp(0.75rem,  1.5vw, 0.875rem); }
+  .av-text-fluid-base { font-size: clamp(0.875rem, 2vw,   1rem); }
+  .av-text-fluid-lg   { font-size: clamp(1rem,     2.5vw, 1.125rem); }
+  .av-text-fluid-xl   { font-size: clamp(1.125rem, 3vw,   1.25rem); }
+  .av-text-fluid-2xl  { font-size: clamp(1.25rem,  3.5vw, 1.5rem); }
+  .av-text-fluid-3xl  { font-size: clamp(1.5rem,   4vw,   1.875rem); }
+  .av-text-fluid-4xl  { font-size: clamp(1.875rem, 5vw,   2.25rem); }
+  .av-text-fluid-5xl  { font-size: clamp(2.25rem,  6vw,   3rem); }
+  .av-text-fluid-6xl  { font-size: clamp(3rem,     8vw,   3.75rem); }
+  .av-text-fluid-7xl  { font-size: clamp(3.75rem,  9vw,   4.5rem); }
+  .av-text-fluid-8xl  { font-size: clamp(4.5rem,   10vw,  6rem); }
+  .av-text-fluid-9xl  { font-size: clamp(6rem,     12vw,  8rem); }
+
+  // ── Responsive font sizes — sm: md: lg: xl: prefixes ────────────────────
+  @each $bp, $bp-val in $av-bp-text {
+    @media (min-width: #{$bp-val}) {
+      @each $size, $vals in $av-font-size-map {
+        $fs: list.nth($vals, 1);
+        $lh: list.nth($vals, 2);
+        .av-#{$bp}\:text-#{$size} { font-size: $fs; line-height: $lh; }
+      }
     }
   }
+
+  // Font weights
+  .av-font-thin       { font-weight: 100; }
+  .av-font-light      { font-weight: 300; }
+  .av-font-normal     { font-weight: 400; }
+  .av-font-medium     { font-weight: 500; }
+  .av-font-semibold   { font-weight: 600; }
+  .av-font-bold       { font-weight: 700; }
+  .av-font-extrabold  { font-weight: 800; }
+  .av-font-black      { font-weight: 900; }
+
+  // Font family
+  .av-font-sans   { font-family: $av-font-sans; }
+  .av-font-mono   { font-family: $av-font-mono; }
+  .av-font-serif  { font-family: $av-font-serif; }
+
+  // Text alignment
+  .av-text-left    { text-align: left; }
+  .av-text-center  { text-align: center; }
+  .av-text-right   { text-align: right; }
+  .av-text-justify { text-align: justify; }
+
+  // Text decoration
+  .av-underline       { text-decoration: underline; }
+  .av-no-underline    { text-decoration: none; }
+  .av-line-through    { text-decoration: line-through; }
+
+  // Text transform
+  .av-uppercase   { text-transform: uppercase; }
+  .av-lowercase   { text-transform: lowercase; }
+  .av-capitalize  { text-transform: capitalize; }
+  .av-normal-case { text-transform: none; }
+
+  // Line height
+  .av-leading-none    { line-height: 1; }
+  .av-leading-tight   { line-height: 1.25; }
+  .av-leading-snug    { line-height: 1.375; }
+  .av-leading-normal  { line-height: 1.5; }
+  .av-leading-relaxed { line-height: 1.625; }
+  .av-leading-loose   { line-height: 2; }
+
+  // Letter spacing
+  .av-tracking-tighter { letter-spacing: -0.05em; }
+  .av-tracking-tight   { letter-spacing: -0.025em; }
+  .av-tracking-normal  { letter-spacing: 0; }
+  .av-tracking-wide    { letter-spacing: 0.025em; }
+  .av-tracking-wider   { letter-spacing: 0.05em; }
+  .av-tracking-widest  { letter-spacing: 0.1em; }
+
+  // ── Overflow / whitespace ────────────────────────────────────────────────
+  .av-truncate          { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .av-text-ellipsis     { text-overflow: ellipsis; }
+  .av-whitespace-nowrap { white-space: nowrap; }
+  .av-whitespace-normal { white-space: normal; }
+  .av-whitespace-pre    { white-space: pre; }
+  .av-whitespace-pre-wrap { white-space: pre-wrap; }
+  .av-break-words       { overflow-wrap: break-word; }
+  .av-break-all         { word-break: break-all; }
+  .av-break-keep        { word-break: keep-all; }
+
+  // ── List styles ──────────────────────────────────────────────────────────
+  .av-list-none   { list-style-type: none; padding-inline-start: 0; }
+  .av-list-disc   { list-style-type: disc; padding-inline-start: 1.5rem; }
+  .av-list-decimal { list-style-type: decimal; padding-inline-start: 1.5rem; }
+  .av-list-inside  { list-style-position: inside; }
+  .av-list-outside { list-style-position: outside; }
+
+  // ── Prose — readable long-form content ──────────────────────────────────
+  // Apply to article/blog wrappers: <article class="av-prose">
+  .av-prose {
+    max-width: 65ch;
+    color: var(--av-theme-color-text-primary, #1a1a1a);
+    line-height: 1.75;
+
+    h1, h2, h3, h4, h5, h6 {
+      font-weight: 700;
+      line-height: 1.25;
+      margin-block: 1.5em 0.5em;
+    }
+    h1 { font-size: 2.25rem; }
+    h2 { font-size: 1.875rem; }
+    h3 { font-size: 1.5rem; }
+    h4 { font-size: 1.25rem; }
+    h5 { font-size: 1.125rem; }
+    h6 { font-size: 1rem; }
+
+    p  { margin-block-end: 1.25em; }
+
+    a  {
+      color: var(--av-theme-color-primary, #3b82f6);
+      text-decoration: underline;
+      &:hover { text-decoration: none; }
+    }
+
+    ul { list-style-type: disc;    padding-inline-start: 1.5rem; margin-block-end: 1.25em; }
+    ol { list-style-type: decimal; padding-inline-start: 1.5rem; margin-block-end: 1.25em; }
+    li { margin-block-end: 0.375em; }
+
+    blockquote {
+      border-inline-start: 4px solid var(--av-theme-color-border, #e5e7eb);
+      padding-inline-start: 1rem;
+      margin-inline: 0;
+      color: var(--av-theme-color-text-secondary, #6b7280);
+      font-style: italic;
+    }
+
+    code {
+      font-family: $av-font-mono;
+      font-size: 0.875em;
+      background: var(--av-theme-color-surface-secondary, #f3f4f6);
+      padding: 0.125em 0.375em;
+      border-radius: 0.25rem;
+    }
+
+    pre {
+      font-family: $av-font-mono;
+      font-size: 0.875rem;
+      background: var(--av-theme-color-surface-secondary, #f3f4f6);
+      padding: 1rem;
+      border-radius: 0.5rem;
+      overflow-x: auto;
+      margin-block-end: 1.25em;
+
+      code { background: none; padding: 0; }
+    }
+
+    hr {
+      border: none;
+      border-block-start: 1px solid var(--av-theme-color-border, #e5e7eb);
+      margin-block: 2rem;
+    }
+
+    img { max-width: 100%; height: auto; border-radius: 0.5rem; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-block-end: 1.25em;
+
+      th, td { padding: 0.5rem 0.75rem; border: 1px solid var(--av-theme-color-border, #e5e7eb); }
+      th { font-weight: 600; background: var(--av-theme-color-surface-secondary, #f3f4f6); }
+    }
+  }
+
+  // Dark mode prose
+  [data-av-theme='dark'] .av-prose {
+    color: var(--av-theme-color-text-primary, #f9fafb);
+
+    a  { color: var(--av-theme-color-primary, #60a5fa); }
+
+    blockquote { color: var(--av-theme-color-text-secondary, #9ca3af); }
+
+    code, pre { background: var(--av-theme-color-surface-secondary, #1f2937); }
+  }
+
+  // Large prose variant
+  .av-prose-lg {
+    font-size: 1.125rem;
+    h1 { font-size: 2.75rem; }
+    h2 { font-size: 2.25rem; }
+    h3 { font-size: 1.875rem; }
+  }
+
+  // ── Numeric / tabular figures ────────────────────────────────────────────
+  .av-tabular-nums   { font-variant-numeric: tabular-nums; }
+  .av-oldstyle-nums  { font-variant-numeric: oldstyle-nums; }
+  .av-proportional-nums { font-variant-numeric: proportional-nums; }
+  .av-slashed-zero   { font-variant-numeric: slashed-zero; }
+  .av-lining-nums    { font-variant-numeric: lining-nums; }
+  .av-ordinal        { font-variant-numeric: ordinal; }
+
+  // ── Text colors (semantic — theme-aware) ─────────────────────────────────
+  .av-text-primary   { color: var(--av-theme-color-text-primary,   inherit); }
+  .av-text-secondary { color: var(--av-theme-color-text-secondary, #6b7280); }
+  .av-text-muted     { color: var(--av-theme-color-text-muted,     #9ca3af); }
+  .av-text-disabled  { color: var(--av-theme-color-text-disabled,  #d1d5db); }
+  .av-text-error     { color: var(--av-color-error-600,            #dc2626); }
+  .av-text-success   { color: var(--av-color-success-600,          #16a34a); }
+  .av-text-warning   { color: var(--av-color-warning-600,          #d97706); }
+  .av-text-info      { color: var(--av-color-info-600,             #2563eb); }
+  .av-text-inherit   { color: inherit; }
+  .av-text-current   { color: currentColor; }
+  .av-text-transparent { color: transparent; }
 }
-
-// Font weights
-.av-font-thin       { font-weight: 100; }
-.av-font-light      { font-weight: 300; }
-.av-font-normal     { font-weight: 400; }
-.av-font-medium     { font-weight: 500; }
-.av-font-semibold   { font-weight: 600; }
-.av-font-bold       { font-weight: 700; }
-.av-font-extrabold  { font-weight: 800; }
-.av-font-black      { font-weight: 900; }
-
-// Font family
-.av-font-sans   { font-family: $av-font-sans; }
-.av-font-mono   { font-family: $av-font-mono; }
-.av-font-serif  { font-family: $av-font-serif; }
-
-// Text alignment
-.av-text-left    { text-align: left; }
-.av-text-center  { text-align: center; }
-.av-text-right   { text-align: right; }
-.av-text-justify { text-align: justify; }
-
-// Text decoration
-.av-underline       { text-decoration: underline; }
-.av-no-underline    { text-decoration: none; }
-.av-line-through    { text-decoration: line-through; }
-
-// Text transform
-.av-uppercase   { text-transform: uppercase; }
-.av-lowercase   { text-transform: lowercase; }
-.av-capitalize  { text-transform: capitalize; }
-.av-normal-case { text-transform: none; }
-
-// Line height
-.av-leading-none    { line-height: 1; }
-.av-leading-tight   { line-height: 1.25; }
-.av-leading-snug    { line-height: 1.375; }
-.av-leading-normal  { line-height: 1.5; }
-.av-leading-relaxed { line-height: 1.625; }
-.av-leading-loose   { line-height: 2; }
-
-// Letter spacing
-.av-tracking-tighter { letter-spacing: -0.05em; }
-.av-tracking-tight   { letter-spacing: -0.025em; }
-.av-tracking-normal  { letter-spacing: 0; }
-.av-tracking-wide    { letter-spacing: 0.025em; }
-.av-tracking-wider   { letter-spacing: 0.05em; }
-.av-tracking-widest  { letter-spacing: 0.1em; }
-
-// ── Overflow / whitespace ──────────────────────────────────────────────────────
-.av-truncate          { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.av-text-ellipsis     { text-overflow: ellipsis; }
-.av-whitespace-nowrap { white-space: nowrap; }
-.av-whitespace-normal { white-space: normal; }
-.av-whitespace-pre    { white-space: pre; }
-.av-whitespace-pre-wrap { white-space: pre-wrap; }
-.av-break-words       { overflow-wrap: break-word; }
-.av-break-all         { word-break: break-all; }
-.av-break-keep        { word-break: keep-all; }
-
-// ── List styles ────────────────────────────────────────────────────────────────
-.av-list-none   { list-style-type: none; padding-inline-start: 0; }
-.av-list-disc   { list-style-type: disc; padding-inline-start: 1.5rem; }
-.av-list-decimal { list-style-type: decimal; padding-inline-start: 1.5rem; }
-.av-list-inside  { list-style-position: inside; }
-.av-list-outside { list-style-position: outside; }
-
-// ── Prose — readable long-form content ────────────────────────────────────────
-// Apply to article/blog wrappers: <article class="av-prose">
-.av-prose {
-  max-width: 65ch;
-  color: var(--av-theme-color-text-primary, #1a1a1a);
-  line-height: 1.75;
-
-  h1, h2, h3, h4, h5, h6 {
-    font-weight: 700;
-    line-height: 1.25;
-    margin-block: 1.5em 0.5em;
-  }
-  h1 { font-size: 2.25rem; }
-  h2 { font-size: 1.875rem; }
-  h3 { font-size: 1.5rem; }
-  h4 { font-size: 1.25rem; }
-  h5 { font-size: 1.125rem; }
-  h6 { font-size: 1rem; }
-
-  p  { margin-block-end: 1.25em; }
-
-  a  {
-    color: var(--av-theme-color-primary, #3b82f6);
-    text-decoration: underline;
-    &:hover { text-decoration: none; }
-  }
-
-  ul { list-style-type: disc;    padding-inline-start: 1.5rem; margin-block-end: 1.25em; }
-  ol { list-style-type: decimal; padding-inline-start: 1.5rem; margin-block-end: 1.25em; }
-  li { margin-block-end: 0.375em; }
-
-  blockquote {
-    border-inline-start: 4px solid var(--av-theme-color-border, #e5e7eb);
-    padding-inline-start: 1rem;
-    margin-inline: 0;
-    color: var(--av-theme-color-text-secondary, #6b7280);
-    font-style: italic;
-  }
-
-  code {
-    font-family: $av-font-mono;
-    font-size: 0.875em;
-    background: var(--av-theme-color-surface-secondary, #f3f4f6);
-    padding: 0.125em 0.375em;
-    border-radius: 0.25rem;
-  }
-
-  pre {
-    font-family: $av-font-mono;
-    font-size: 0.875rem;
-    background: var(--av-theme-color-surface-secondary, #f3f4f6);
-    padding: 1rem;
-    border-radius: 0.5rem;
-    overflow-x: auto;
-    margin-block-end: 1.25em;
-
-    code { background: none; padding: 0; }
-  }
-
-  hr {
-    border: none;
-    border-block-start: 1px solid var(--av-theme-color-border, #e5e7eb);
-    margin-block: 2rem;
-  }
-
-  img { max-width: 100%; height: auto; border-radius: 0.5rem; }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-block-end: 1.25em;
-
-    th, td { padding: 0.5rem 0.75rem; border: 1px solid var(--av-theme-color-border, #e5e7eb); }
-    th { font-weight: 600; background: var(--av-theme-color-surface-secondary, #f3f4f6); }
-  }
-}
-
-// Dark mode prose
-[data-av-theme='dark'] .av-prose {
-  color: var(--av-theme-color-text-primary, #f9fafb);
-
-  a  { color: var(--av-theme-color-primary, #60a5fa); }
-
-  blockquote { color: var(--av-theme-color-text-secondary, #9ca3af); }
-
-  code, pre { background: var(--av-theme-color-surface-secondary, #1f2937); }
-}
-
-// Large prose variant
-.av-prose-lg {
-  font-size: 1.125rem;
-  h1 { font-size: 2.75rem; }
-  h2 { font-size: 2.25rem; }
-  h3 { font-size: 1.875rem; }
-}
-
-// ── Numeric / tabular figures ──────────────────────────────────────────────────
-.av-tabular-nums   { font-variant-numeric: tabular-nums; }
-.av-oldstyle-nums  { font-variant-numeric: oldstyle-nums; }
-.av-proportional-nums { font-variant-numeric: proportional-nums; }
-.av-slashed-zero   { font-variant-numeric: slashed-zero; }
-.av-lining-nums    { font-variant-numeric: lining-nums; }
-.av-ordinal        { font-variant-numeric: ordinal; }
-
-// ── Text colors (semantic — theme-aware) ──────────────────────────────────────
-.av-text-primary   { color: var(--av-theme-color-text-primary,   inherit); }
-.av-text-secondary { color: var(--av-theme-color-text-secondary, #6b7280); }
-.av-text-muted     { color: var(--av-theme-color-text-muted,     #9ca3af); }
-.av-text-disabled  { color: var(--av-theme-color-text-disabled,  #d1d5db); }
-.av-text-error     { color: var(--av-color-error-600,            #dc2626); }
-.av-text-success   { color: var(--av-color-success-600,          #16a34a); }
-.av-text-warning   { color: var(--av-color-warning-600,          #d97706); }
-.av-text-info      { color: var(--av-color-info-600,             #2563eb); }
-.av-text-inherit   { color: inherit; }
-.av-text-current   { color: currentColor; }
-.av-text-transparent { color: transparent; }

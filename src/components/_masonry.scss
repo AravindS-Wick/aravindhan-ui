@@ -1,0 +1,19 @@
+@layer components {
+  .av-masonry {
+    column-count: 1;
+    column-gap: var(--av-spacing-4);
+
+    @media (min-width: 640px) { column-count: 2; }
+
+    @media (min-width: 1024px) { column-count: 3; }
+
+    @media (min-width: 1280px) { column-count: 4; }
+
+    &__item {
+      break-inside: avoid;
+      margin-block-end: var(--av-spacing-4);
+      display: block;
+      width: 100%;
+    }
+  }
+}

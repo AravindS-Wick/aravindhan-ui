@@ -1,0 +1,7 @@
+@use '../tokens/variables' as *;
+
+.av-kbd {
+  /* Auto-generated */
+  display: flex;
+  gap: var(--av-spacing-sm, 0.5rem);
+}

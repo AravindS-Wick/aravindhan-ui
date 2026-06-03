@@ -1,7 +1,11 @@
 // @aravi1008/ui — Main Entry Point
 // Import this file to get full design system: tokens, reset, utilities, components
 
+// ── 0. Layer order declaration (must come first) ─────────────────────────────
+@forward 'base/layers';
+
 // ── 1. Tokens (CSS Custom Properties) ───────────────────────────────────────
+@forward 'tokens/layer-tokens';
 @forward 'tokens/variables';
 
 // ── 2. Base Reset & Typography ───────────────────────────────────────────────
@@ -16,6 +20,10 @@
 @forward 'utilities/typography';
 @forward 'utilities/colors';
 @forward 'utilities/responsive';
+@forward 'utilities/aspect-ratio';
+@forward 'utilities/scroll';
+@forward 'utilities/animation';
+@forward 'utilities/print';
 
 // ── 4. Components — base ──────────────────────────────────────────────────────
 @forward 'components/button';
@@ -25,6 +33,7 @@
 @forward 'components/badge';
 @forward 'components/alert';
 @forward 'components/table';
+@forward 'components/datagrid';
 @forward 'components/navbar';
 @forward 'components/tabs';
 @forward 'components/spinner';
@@ -47,6 +56,49 @@
 @forward 'components/stepper';
 @forward 'components/timeline';
 @forward 'components/stat';
+@forward 'components/clock';
+@forward 'components/countdown';
 
 // ── 7. Icons ──────────────────────────────────────────────────────────────────
 @forward 'icons/icons';
+@forward 'components/chip';
+@forward 'components/file-upload';
+@forward 'components/treeview';
+@forward 'components/color-picker';
+@forward 'components/popover';
+@forward 'components/menu';
+@forward 'components/sidenav';
+@forward 'components/list';
+@forward 'components/paper';
+@forward 'components/empty-state';
+@forward 'components/kbd';
+@forward 'components/code';
+@forward 'components/toggle-button';
+@forward 'components/otp';
+@forward 'components/slider';
+@forward 'components/rating';
+@forward 'components/combobox';
+@forward 'components/image';
+@forward 'components/tilt-card';
+@forward 'components/spotlight';
+@forward 'components/split-pane';
+@forward 'components/speed-dial';
+@forward 'components/sparkline';
+@forward 'components/ripple';
+@forward 'components/neon-text';
+@forward 'components/navigation-menu';
+@forward 'components/masonry';
+@forward 'components/marquee';
+@forward 'components/magnetic-button';
+@forward 'components/hover-card';
+@forward 'components/glitch-effect';
+@forward 'components/glass-panel';
+@forward 'components/context-menu';
+@forward 'components/confetti';
+@forward 'components/command-palette';
+@forward 'components/carousel';
+@forward 'components/bottom-navigation';
+@forward 'components/bento-grid';
+@forward 'components/backdrop';
+@forward 'components/app-shell';
+@forward 'components/action-sheet';

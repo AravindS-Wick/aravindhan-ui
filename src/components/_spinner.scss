@@ -2,48 +2,54 @@
 
 @use '../tokens/variables' as *;
 
-.av-spinner {
-  display: inline-block;
-  width: 1.5rem;
-  height: 1.5rem;
-  border: 2px solid $av-color-border;
-  border-top-color: $av-color-primary;
-  border-radius: $av-radius-full;
-  animation: av-spin 0.7s linear infinite;
-
-  &.av-spinner-xs  { width: 0.75rem; height: 0.75rem; border-width: 1.5px; }
-  &.av-spinner-sm  { width: 1rem;    height: 1rem;    border-width: 2px; }
-  &.av-spinner-md  { /* default */ }
-  &.av-spinner-lg  { width: 2rem;    height: 2rem;    border-width: 2.5px; }
-  &.av-spinner-xl  { width: 3rem;    height: 3rem;    border-width: 3px; }
-
-  &.av-spinner-primary { border-top-color: $av-color-primary; }
-  &.av-spinner-white   { border-color: rgba(255,255,255,0.3); border-top-color: #fff; }
-}
-
-@keyframes av-spin {
-  to { transform: rotate(360deg); }
-}
-
-@media (prefers-reduced-motion: reduce) {
+@layer aravi1008.components {
   .av-spinner {
-    animation: av-spinner-pulse 1.2s ease-in-out infinite;
-    border-color: $av-color-primary;
+    display: inline-block;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 2px solid $av-color-border;
+    border-top-color: $av-color-primary;
+    border-radius: $av-radius-full;
+    animation: av-spin 0.7s linear infinite;
+
+    &.av-spinner-xs  { width: 0.75rem; height: 0.75rem; border-width: 1.5px; }
+    &.av-spinner-sm  { width: 1rem;    height: 1rem;    border-width: 2px; }
+    &.av-spinner-md  { /* default */ }
+    &.av-spinner-lg  { width: 2rem;    height: 2rem;    border-width: 2.5px; }
+    &.av-spinner-xl  { width: 3rem;    height: 3rem;    border-width: 3px; }
+
+    &.av-spinner-primary { border-top-color: $av-color-primary; }
+
+    &.av-spinner-white {
+      border-color: rgb(from $av-color-white r g b / 0.3);
+      border-top-color: $av-color-white;
+    }
   }
 
-  @keyframes av-spinner-pulse {
-    0%, 100% { opacity: 1; }
-    50%       { opacity: 0.3; }
+  @keyframes av-spin {
+    to { transform: rotate(360deg); }
   }
-}
 
-// Full-page overlay loader
-.av-loader-overlay {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(0, 0, 0, 0.4);
-  z-index: var(--av-zindex-overlay, 1200);
+  @media (prefers-reduced-motion: reduce) {
+    .av-spinner {
+      animation: av-spinner-pulse 1.2s $av-ease-in-out infinite;
+      border-color: $av-color-primary;
+    }
+
+    @keyframes av-spinner-pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+  }
+
+  // Full-page overlay loader
+  .av-loader-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $av-color-overlay;
+    z-index: $av-zindex-overlay;
+  }
 }

@@ -1,0 +1,27 @@
+@use '../tokens/variables' as *;
+
+.av-sparkline {
+  display: inline-flex;
+  align-items: flex-end;
+  height: 40px;
+  gap: 2px;
+
+  &__bar {
+    width: 4px;
+    background: var(--av-primary);
+    border-radius: 2px 2px 0 0;
+    transition: height var(--av-transition-normal) ease-out;
+
+    &[data-variant="success"] {
+      background: var(--av-success);
+    }
+
+    &[data-variant="danger"] {
+      background: var(--av-danger);
+    }
+
+    &[data-variant="warning"] {
+      background: var(--av-warning);
+    }
+  }
+}

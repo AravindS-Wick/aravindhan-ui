@@ -1,34 +1,36 @@
 // @aravi1008/ui — Grid Utilities
 
-// Grid columns
-@for $i from 1 through 12 {
-  .av-grid-cols-#{$i} { grid-template-columns: repeat(#{$i}, minmax(0, 1fr)); }
+@layer aravi1008.utilities {
+  // Grid columns
+  @for $i from 1 through 12 {
+    .av-grid-cols-#{$i} { grid-template-columns: repeat(#{$i}, minmax(0, 1fr)); }
+  }
+  .av-grid-cols-none { grid-template-columns: none; }
+
+  // Col span
+  @for $i from 1 through 12 {
+    .av-col-span-#{$i} { grid-column: span #{$i} / span #{$i}; }
+  }
+  .av-col-span-full { grid-column: 1 / -1; }
+
+  // Grid rows
+  @for $i from 1 through 6 {
+    .av-grid-rows-#{$i} { grid-template-rows: repeat(#{$i}, minmax(0, 1fr)); }
+  }
+
+  // Row span
+  @for $i from 1 through 6 {
+    .av-row-span-#{$i} { grid-row: span #{$i} / span #{$i}; }
+  }
+
+  // Auto grid columns
+  .av-auto-cols-auto  { grid-auto-columns: auto; }
+  .av-auto-cols-fr    { grid-auto-columns: minmax(0, 1fr); }
+  .av-auto-rows-auto  { grid-auto-rows: auto; }
+  .av-auto-rows-fr    { grid-auto-rows: minmax(0, 1fr); }
+
+  // Common grid layouts
+  .av-grid-auto-fill-sm  { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+  .av-grid-auto-fill-md  { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+  .av-grid-auto-fill-lg  { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
 }
-.av-grid-cols-none { grid-template-columns: none; }
-
-// Col span
-@for $i from 1 through 12 {
-  .av-col-span-#{$i} { grid-column: span #{$i} / span #{$i}; }
-}
-.av-col-span-full { grid-column: 1 / -1; }
-
-// Grid rows
-@for $i from 1 through 6 {
-  .av-grid-rows-#{$i} { grid-template-rows: repeat(#{$i}, minmax(0, 1fr)); }
-}
-
-// Row span
-@for $i from 1 through 6 {
-  .av-row-span-#{$i} { grid-row: span #{$i} / span #{$i}; }
-}
-
-// Auto grid columns
-.av-auto-cols-auto  { grid-auto-columns: auto; }
-.av-auto-cols-fr    { grid-auto-columns: minmax(0, 1fr); }
-.av-auto-rows-auto  { grid-auto-rows: auto; }
-.av-auto-rows-fr    { grid-auto-rows: minmax(0, 1fr); }
-
-// Common grid layouts
-.av-grid-auto-fill-sm  { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
-.av-grid-auto-fill-md  { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
-.av-grid-auto-fill-lg  { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
