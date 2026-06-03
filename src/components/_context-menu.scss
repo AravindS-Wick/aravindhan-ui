@@ -1,0 +1,108 @@
+@use '../tokens/variables' as *;
+
+.av-context-menu {
+  position: fixed;
+  z-index: var(--av-z-dropdown);
+  min-width: 220px;
+  background: var(--av-surface);
+  border: 1px solid var(--av-border);
+  border-radius: var(--av-radius-md);
+  box-shadow: var(--av-shadow-xl);
+  padding: var(--av-space-1);
+  display: flex;
+  flex-direction: column;
+  animation: av-context-menu-in var(--av-transition-fast) cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+
+  &__item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: var(--av-space-2) var(--av-space-3);
+    font-size: var(--av-font-size-sm);
+    color: var(--av-text-secondary);
+    border-radius: var(--av-radius-sm);
+    cursor: default;
+    user-select: none;
+    outline: none;
+    transition: background var(--av-transition-fast), color var(--av-transition-fast);
+
+    &:hover,
+    &:focus {
+      background: var(--av-primary);
+      color: var(--av-primary-fg);
+    }
+
+    &--disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    &--inset {
+      padding-left: var(--av-space-8);
+    }
+  }
+
+  &__label {
+    padding: var(--av-space-2) var(--av-space-3);
+    font-size: var(--av-font-size-xs);
+    font-weight: var(--av-font-weight-semibold);
+    color: var(--av-text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  &__separator {
+    height: 1px;
+    background: var(--av-border);
+    margin: var(--av-space-1) -var(--av-space-1);
+  }
+
+  &__shortcut {
+    margin-left: auto;
+    padding-left: var(--av-space-4);
+    font-size: var(--av-font-size-xs);
+    letter-spacing: 0.1em;
+    opacity: 0.6;
+  }
+
+  &__icon {
+    width: 1rem;
+    height: 1rem;
+    margin-right: var(--av-space-2);
+  }
+
+  &__checkbox,
+  &__radio {
+    position: absolute;
+    left: var(--av-space-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1rem;
+    height: 1rem;
+  }
+
+  &__sub-trigger {
+    &::after {
+      content: '';
+      margin-left: auto;
+      border-style: solid;
+      border-width: 4px 0 4px 4px;
+      border-color: transparent transparent transparent currentColor;
+      opacity: 0.6;
+    }
+  }
+}
+
+@keyframes av-context-menu-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
