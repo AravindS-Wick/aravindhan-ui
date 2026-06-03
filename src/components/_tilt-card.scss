@@ -1,0 +1,8 @@
+@layer aravi1008.components {
+.av-tilt-card {
+  transition-property: transform;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+}
+
+}
