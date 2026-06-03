@@ -1,5 +1,5 @@
 // @aravi1008/ui — Button Component
-
+@use 'sass:list';
 @use '../tokens/variables' as *;
 
 @layer aravi1008.components {
@@ -96,68 +96,66 @@
   }
 
   // ── Variants ─────────────────────────────────────────────────────────────────
-  .av-btn-primary {
-    background-color: $av-color-primary;
-    border-color: $av-color-primary;
-    color: var(--av-theme-color-text-inverse, #fff);
+  @mixin button-variant($bg, $bg-hover, $bg-active, $color, $border, $border-hover, $border-active) {
+    background-color: $bg;
+    border-color: $border;
+    color: $color;
 
-    &:hover:not(:disabled) { background-color: $av-color-primary-hover; border-color: $av-color-primary-hover; }
-    &:active:not(:disabled) { background-color: $av-color-primary-active; border-color: $av-color-primary-active; }
+    &:hover:not(:disabled) { background-color: $bg-hover; border-color: $border-hover; }
+    &:active:not(:disabled) { background-color: $bg-active; border-color: $border-active; }
   }
 
-  .av-btn-secondary {
-    background-color: $av-color-secondary;
-    border-color: $av-color-secondary;
-    color: var(--av-theme-color-text-inverse, #fff);
+  // Define semantic color maps
+  // Format: name: (base, hover, active, subtle, text)
+  $av-btn-colors: (
+    "primary": ($av-color-primary, $av-color-primary-hover, $av-color-primary-active, $av-color-primary-subtle, var(--av-theme-color-text-inverse, #fff)),
+    "secondary": ($av-color-secondary, $av-color-secondary-hover, $av-color-secondary-active, $av-color-secondary-subtle, var(--av-theme-color-text-inverse, #fff)),
+    "success": ($av-color-success, #16a34a, #15803d, $av-color-success-subtle, var(--av-theme-color-text-inverse, #fff)),
+    "danger": ($av-color-error, #dc2626, #b91c1c, $av-color-error-subtle, var(--av-theme-color-text-inverse, #fff)),
+    "warning": ($av-color-warning, #d97706, #b45309, $av-color-warning-subtle, #fff),
+    "info": ($av-color-info, #0891b2, #0e7490, $av-color-info-subtle, #fff),
+    "dark": (#0f172a, #1e293b, #334155, #f1f5f9, #fff),
+    "light": (#f8fafc, #f1f5f9, #e2e8f0, #f8fafc, #0f172a)
+  );
 
-    &:hover:not(:disabled) { background-color: var(--av-theme-color-secondary-hover, #475569); border-color: var(--av-theme-color-secondary-hover, #475569); }
+  @each $name, $palette in $av-btn-colors {
+    $base: list.list.list.nth($palette, 1);
+    $hover: list.list.list.nth($palette, 2);
+    $active: list.list.list.nth($palette, 3);
+    $subtle: list.list.list.nth($palette, 4);
+    $text: list.list.list.nth($palette, 5);
+
+    // Solid
+    .av-btn-solid-#{$name} {
+      @include button-variant($base, $hover, $active, $text, $base, $hover, $active);
+    }
+
+    // Outline
+    .av-btn-outline-#{$name} {
+      @include button-variant(transparent, $subtle, $base, $base, $base, $base, $base);
+      &:active:not(:disabled) { color: $text; }
+    }
+
+    // Ghost
+    .av-btn-ghost-#{$name} {
+      @include button-variant(transparent, $subtle, $av-color-border, $base, transparent, transparent, transparent);
+    }
+
+    // Link
+    .av-btn-link-#{$name} {
+      background-color: transparent;
+      border-color: transparent;
+      color: $base;
+      padding-left: 0;
+      padding-right: 0;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+
+      &:hover:not(:disabled) { color: $hover; }
+      &:active:not(:disabled) { color: $active; }
+    }
   }
 
-  .av-btn-outline {
-    background-color: transparent;
-    border-color: $av-color-primary;
-    color: $av-color-primary;
-
-    &:hover:not(:disabled) { background-color: $av-color-primary-subtle; }
-    &:active:not(:disabled) { background-color: $av-color-primary; color: var(--av-theme-color-text-inverse, #fff); }
-  }
-
-  .av-btn-ghost {
-    background-color: transparent;
-    border-color: transparent;
-    color: $av-color-primary;
-
-    &:hover:not(:disabled) { background-color: $av-color-primary-subtle; }
-    &:active:not(:disabled) { background-color: $av-color-border; }
-  }
-
-  .av-btn-danger {
-    background-color: $av-color-error;
-    border-color: $av-color-error;
-    color: #fff;
-
-    &:hover:not(:disabled) { background-color: var(--av-color-red-700, #B91C1C); border-color: var(--av-color-red-700, #B91C1C); }
-  }
-
-  .av-btn-success {
-    background-color: $av-color-success;
-    border-color: $av-color-success;
-    color: #fff;
-
-    &:hover:not(:disabled) { filter: brightness(0.9); }
-  }
-
-  .av-btn-link {
-    background-color: transparent;
-    border-color: transparent;
-    color: $av-color-primary;
-    padding-left: 0;
-    padding-right: 0;
-    text-decoration: underline;
-    text-underline-offset: 2px;
-
-    &:hover:not(:disabled) { color: $av-color-primary-hover; }
-  }
 
   // ── Animation ──────────────────────────────────────────────────────────────
   @keyframes av-btn-spin {
