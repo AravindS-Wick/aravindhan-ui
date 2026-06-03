@@ -1,0 +1,54 @@
+@layer components {
+  .av-split-pane {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    &--vertical {
+      flex-direction: column;
+    }
+
+    &__pane {
+      overflow: auto;
+    }
+
+    &__resizer {
+      background-color: var(--av-color-border);
+      flex-shrink: 0;
+      position: relative;
+      z-index: 10;
+      transition: background-color var(--av-transition-fast);
+
+      &:hover, &:active {
+        background-color: var(--av-color-primary);
+      }
+
+      // Horizontal resizer
+      .av-split-pane:not(.av-split-pane--vertical) > & {
+        width: 4px;
+        cursor: col-resize;
+        margin-inline: -2px;
+        
+        &::after {
+          content: "";
+          position: absolute;
+          inset: 0 -4px;
+        }
+      }
+
+      // Vertical resizer
+      .av-split-pane--vertical > & {
+        height: 4px;
+        cursor: row-resize;
+        margin-block: -2px;
+        
+        &::after {
+          content: "";
+          position: absolute;
+          inset: -4px 0;
+        }
+      }
+    }
+  }
+}
