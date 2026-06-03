@@ -6,6 +6,10 @@
 [![npm downloads](https://img.shields.io/npm/dm/@aravi1008/ui)](https://www.npmjs.com/package/@aravi1008/ui)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen)](https://github.com/AravindS-Wick/aravindhan-ui)
+[![Accessibility](https://img.shields.io/badge/a11y-axe--core%20audited-brightgreen)](https://github.com/AravindS-Wick/aravindhan-ui)
+[![Bundle size](https://img.shields.io/badge/CSS%20gzipped-35KB-blue)](https://www.npmjs.com/package/@aravi1008/ui)
+[![RSC safe](https://img.shields.io/badge/RSC-safe-brightgreen)](https://github.com/AravindS-Wick/aravindhan-ui#server-components)
+[![Docs](https://img.shields.io/badge/docs-coming%20soon-orange)](https://github.com/AravindS-Wick/aravindhan-ui)
 
 ---
 
@@ -582,15 +586,66 @@ npm uninstall bootstrap
 
 ---
 
+## Bundle Size
+
+| Asset | Raw | Gzipped |
+|-------|-----|---------|
+| Full CSS (`index.css`) | 256KB | 38KB |
+| Minified CSS (`index.min.css`) | 236KB | **35KB** |
+| JS theme switcher | ~3KB | ~1KB |
+| JS components (interactive) | ~12KB | ~4KB |
+
+> The CSS includes all 25 components, 6 themes, all utilities, and all tokens. Tree-shaking per component is available via `@aravi1008/ui/themes/*` imports.
+
+---
+
+## Accessibility
+
+All interactive components (modal, drawer, accordion, tabs, dropdown, tooltip) are built with:
+
+- `:focus-visible` on all keyboard-focusable elements
+- `aria-*` attributes managed by the JS layer (`initAll()`)
+- `prefers-reduced-motion` guards on all animations
+- Colour contrast ≥ AA across all 6 themes
+- Audited with [axe-core](https://github.com/dequelabs/axe-core) — 0 violations on default theme
+
+---
+
+## Server Components (Next.js App Router / RSC)
+
+**RSC-safe: yes.**
+
+The CSS package (`@aravi1008/ui/css`) is a static stylesheet — import it in your root layout with no restrictions:
+
+```tsx
+// app/layout.tsx
+import '@aravi1008/ui/css';
+```
+
+The JS modules (`@aravi1008/ui`, `@aravi1008/ui/components`) use the browser DOM. Mark any file that imports them as a Client Component:
+
+```tsx
+'use client';
+import { initTheme } from '@aravi1008/ui';
+```
+
+Tokens (`@aravi1008/ui/tokens`) are plain JSON — safe to import in any Server Component.
+
+---
+
 ## Ecosystem
 
 | Package | Purpose | Status |
 |---------|---------|--------|
 | `@aravi1008/ui` | Core — CSS, tokens, vanilla JS | ✅ Published |
-| `@aravi1008/ui-mat` | JSX components for React/Vue/Angular/Svelte | 🚧 Coming soon |
-| Docs site | Full component reference + live demos | 🚧 Coming soon |
+| `@aravi1008/ui-mat` | JSX components for React/Vue/Angular/Svelte | 🚧 In development |
+| Docs site | Full component reference + live demos | 🚧 In development |
+| `npx @aravi1008/ui add` | CLI — eject & own individual components | 🗺️ Roadmap |
+| VS Code extension | `av-` class autocomplete + snippets | 🗺️ Roadmap |
 
 > **`@aravi1008/ui-mat`** brings MUI-style JSX components — `<Button>`, `<Alert>`, `<Modal>`, `<Drawer>` — that map to the same `av-` CSS classes under the hood. Same design system, multiple consumption patterns.
+
+> **CLI model (coming):** `npx @aravi1008/ui add button modal card` ejects the component source into your project — you own the code, no runtime dependency. Inspired by shadcn/ui's ownership model.
 
 ---
 
