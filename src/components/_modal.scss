@@ -3,115 +3,117 @@
 
 @use '../tokens/variables' as *;
 
-// ── Backdrop ──────────────────────────────────────────────────────────────────
-.av-modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background-color: rgb(0 0 0 / 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: $av-spacing-4;
-  z-index: var(--av-zindex-modal, 1300);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.2s ease, visibility 0.2s ease;
+@layer aravi1008.components {
+  // ── Backdrop ─────────────────────────────────────────────────────────────────
+  .av-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background-color: rgb(0 0 0 / 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: $av-spacing-4;
+    z-index: var(--av-zindex-modal, 1300);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
 
-  &.av-modal-open {
-    opacity: 1;
-    visibility: visible;
-  }
-}
-
-// ── Dialog ────────────────────────────────────────────────────────────────────
-.av-modal {
-  position: relative;
-  background-color: $av-color-surface;
-  border-radius: $av-radius-xl;
-  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-  width: 100%;
-  max-width: 32rem;
-  max-height: calc(100vh - 2rem);
-  overflow-y: auto;
-  transform: scale(0.95) translateY(-8px);
-  transition: transform 0.2s ease;
-
-  .av-modal-backdrop.av-modal-open & {
-    transform: scale(1) translateY(0);
+    &.av-modal-open {
+      opacity: 1;
+      visibility: visible;
+    }
   }
 
-  // Sizes
-  &.av-modal-sm  { max-width: 20rem; }
-  &.av-modal-md  { max-width: 32rem; }
-  &.av-modal-lg  { max-width: 48rem; }
-  &.av-modal-xl  { max-width: 64rem; }
+  // ── Dialog ───────────────────────────────────────────────────────────────────
+  .av-modal {
+    position: relative;
+    background-color: $av-color-surface;
+    border-radius: $av-radius-xl;
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+    width: 100%;
+    max-width: 32rem;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+    transform: scale(0.95) translateY(-8px);
+    transition: transform 0.2s ease;
 
-  &.av-modal-full {
-    max-width: 100%;
-    max-height: 100%;
-    height: 100%;
-    border-radius: 0;
+    .av-modal-backdrop.av-modal-open & {
+      transform: scale(1) translateY(0);
+    }
+
+    // Sizes
+    &.av-modal-sm  { max-width: 20rem; }
+    &.av-modal-md  { max-width: 32rem; }
+    &.av-modal-lg  { max-width: 48rem; }
+    &.av-modal-xl  { max-width: 64rem; }
+
+    &.av-modal-full {
+      max-width: 100%;
+      max-height: 100%;
+      height: 100%;
+      border-radius: 0;
+      margin: 0;
+    }
+  }
+
+  // ── Sections ─────────────────────────────────────────────────────────────────
+  .av-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $av-spacing-4;
+    padding: $av-spacing-5 $av-spacing-6;
+    border-bottom: 1px solid $av-color-border;
+  }
+
+  .av-modal-title {
+    font-size: $av-text-lg;
+    font-weight: 600;
+    color: $av-color-text-primary;
     margin: 0;
   }
-}
 
-// ── Sections ──────────────────────────────────────────────────────────────────
-.av-modal-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: $av-spacing-4;
-  padding: $av-spacing-5 $av-spacing-6;
-  border-bottom: 1px solid $av-color-border;
-}
+  .av-modal-body {
+    padding: $av-spacing-6;
+    color: $av-color-text-primary;
+  }
 
-.av-modal-title {
-  font-size: $av-text-lg;
-  font-weight: 600;
-  color: $av-color-text-primary;
-  margin: 0;
-}
+  .av-modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: $av-spacing-3;
+    padding: $av-spacing-4 $av-spacing-6;
+    border-top: 1px solid $av-color-border;
+  }
 
-.av-modal-body {
-  padding: $av-spacing-6;
-  color: $av-color-text-primary;
-}
+  .av-modal-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: $av-radius-md;
+    color: $av-color-text-secondary;
+    cursor: pointer;
+    background: none;
+    border: none;
+    flex-shrink: 0;
+    transition: background-color 0.15s ease, color 0.15s ease;
 
-.av-modal-footer {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: $av-spacing-3;
-  padding: $av-spacing-4 $av-spacing-6;
-  border-top: 1px solid $av-color-border;
-}
+    &:hover { background-color: $av-color-surface-raised; color: $av-color-text-primary; }
+    &:focus-visible { outline: 2px solid $av-color-focus-ring; outline-offset: 2px; }
+  }
 
-.av-modal-close {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2rem;
-  height: 2rem;
-  border-radius: $av-radius-md;
-  color: $av-color-text-secondary;
-  cursor: pointer;
-  background: none;
-  border: none;
-  flex-shrink: 0;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  // ── Scrollable body ───────────────────────────────────────────────────────────
+  .av-modal-body-scroll {
+    overflow-y: auto;
+    max-height: 60vh;
+  }
 
-  &:hover { background-color: $av-color-surface-raised; color: $av-color-text-primary; }
-  &:focus-visible { outline: 2px solid $av-color-focus-ring; outline-offset: 2px; }
-}
-
-// ── Scrollable body ────────────────────────────────────────────────────────────
-.av-modal-body-scroll {
-  overflow-y: auto;
-  max-height: 60vh;
-}
-
-// ── Reduced motion ─────────────────────────────────────────────────────────────
-@media (prefers-reduced-motion: reduce) {
-  .av-modal-backdrop,
-  .av-modal { transition: none; }
+  // ── Reduced motion ────────────────────────────────────────────────────────────
+  @media (prefers-reduced-motion: reduce) {
+    .av-modal-backdrop,
+    .av-modal { transition: none; }
+  }
 }

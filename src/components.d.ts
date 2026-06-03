@@ -48,8 +48,15 @@ export interface ToastHandle {
   el: HTMLElement;
 }
 
+export interface ToastConfig {
+  /** Maximum number of toasts visible at once. Default: 5 */
+  maxVisible?: number;
+}
+
 export declare const toast: {
   show(options?: ToastOptions): ToastHandle | null;
+  /** Configure global toast behaviour (e.g. max visible count) */
+  configure(options?: ToastConfig): void;
 };
 
 // ── Accordion ─────────────────────────────────────────────────────────────────
@@ -71,11 +78,22 @@ export declare const navbar: {
 };
 
 // ── initAll ───────────────────────────────────────────────────────────────────
+export interface InitAllOptions {
+  /**
+   * When true, a MutationObserver watches document.body for new nodes and
+   * re-runs component init automatically. Useful for SPAs.
+   * Returns a cleanup function to disconnect the observer.
+   */
+  observe?: boolean;
+}
+
 /**
  * Initialise all interactive components.
  * Safe to call after DOMContentLoaded or before if DOM is already ready.
+ * @param options.observe - enable MutationObserver for SPA re-init
+ * @returns cleanup function when observe:true, otherwise void
  */
-export declare function initAll(): void;
+export declare function initAll(options?: InitAllOptions): (() => void) | void;
 
 // ── createTable ───────────────────────────────────────────────────────────────
 
@@ -85,7 +103,16 @@ export interface TableColumn {
   sortable?: boolean;
   width?: string;
   align?: 'left' | 'center' | 'right';
+  /**
+   * Custom renderer — output is inserted as raw HTML.
+   * @warning Ensure output is trusted, or set `sanitize: true` to escape it.
+   */
   render?: (value: unknown, row: Record<string, unknown>) => string;
+  /**
+   * For columns without render: default true (values are HTML-escaped).
+   * For columns with render: default false (raw HTML allowed); set true to escape render output.
+   */
+  sanitize?: boolean;
 }
 
 export interface TablePagination {

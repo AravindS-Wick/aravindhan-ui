@@ -2,70 +2,72 @@
 
 @use '../tokens/variables' as *;
 
-h1, h2, h3, h4, h5, h6 {
-  color: $av-color-text-primary;
-  font-weight: var(--av-font-weight-bold, 700);
-  line-height: var(--av-font-leading-tight, 1.25);
-}
-
-h1 { font-size: $av-text-4xl; }
-h2 { font-size: $av-text-3xl; }
-h3 { font-size: $av-text-2xl; }
-h4 { font-size: $av-text-xl; }
-h5 { font-size: $av-text-lg; }
-h6 { font-size: $av-text-base; }
-
-p {
-  color: $av-color-text-primary;
-  line-height: var(--av-font-leading-normal, 1.5);
-  margin-bottom: $av-spacing-md;
-
-  &:last-child {
-    margin-bottom: 0;
+@layer aravi1008.base {
+  h1, h2, h3, h4, h5, h6 {
+    color: $av-color-text-primary;
+    font-weight: var(--av-font-weight-bold, 700);
+    line-height: var(--av-font-leading-tight, 1.25);
   }
-}
 
-small {
-  font-size: $av-text-sm;
-  color: $av-color-text-secondary;
-}
+  h1 { font-size: $av-text-4xl; }
+  h2 { font-size: $av-text-3xl; }
+  h3 { font-size: $av-text-2xl; }
+  h4 { font-size: $av-text-xl; }
+  h5 { font-size: $av-text-lg; }
+  h6 { font-size: $av-text-base; }
 
-strong, b {
-  font-weight: var(--av-font-weight-semibold, 600);
-}
+  p {
+    color: $av-color-text-primary;
+    line-height: var(--av-font-leading-normal, 1.5);
+    margin-bottom: $av-spacing-md;
 
-code, kbd, samp, pre {
-  font-family: $av-font-mono;
-  font-size: 0.875em;
-}
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 
-code {
-  background-color: $av-color-surface-raised;
-  border: 1px solid $av-color-border;
-  border-radius: $av-radius-sm;
-  padding: 0.1em 0.3em;
-}
+  small {
+    font-size: $av-text-sm;
+    color: $av-color-text-secondary;
+  }
 
-pre {
-  background-color: $av-color-surface-raised;
-  border: 1px solid $av-color-border;
-  border-radius: $av-radius-md;
-  padding: $av-spacing-md;
-  overflow-x: auto;
-  white-space: pre;
+  strong, b {
+    font-weight: var(--av-font-weight-semibold, 600);
+  }
+
+  code, kbd, samp, pre {
+    font-family: $av-font-mono;
+    font-size: 0.875em;
+  }
 
   code {
-    background: none;
-    border: none;
-    padding: 0;
-    font-size: inherit;
+    background-color: $av-color-surface-raised;
+    border: 1px solid $av-color-border;
+    border-radius: $av-radius-sm;
+    padding: 0.1em 0.3em;
   }
-}
 
-blockquote {
-  border-left: 4px solid $av-color-primary;
-  padding-left: $av-spacing-md;
-  color: $av-color-text-secondary;
-  font-style: italic;
-  margin: $av-spacing-md 0;
+  pre {
+    background-color: $av-color-surface-raised;
+    border: 1px solid $av-color-border;
+    border-radius: $av-radius-md;
+    padding: $av-spacing-md;
+    overflow-x: auto;
+    white-space: pre;
+
+    code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: inherit;
+    }
+  }
+
+  blockquote {
+    border-left: 4px solid $av-color-primary;
+    padding-left: $av-spacing-md;
+    color: $av-color-text-secondary;
+    font-style: italic;
+    margin: $av-spacing-md 0;
+  }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@aravi1008/ui",
-  "version": "0.0.1",
+  "version": "1.5.0",
   "description": "A personal professional-grade design system — global CSS, themes, icons, utilities, components. One install, full project setup.",
   "author": "Aravindhan Sivaraman",
   "license": "MIT",
@@ -13,10 +13,12 @@
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
-    "./css": "./dist/index.css",
-    "./css/min": "./dist/index.min.css",
-    "./scss": "./src/index.scss",
-    "./less": "./src/index.less",
+    "./css": {
+      "import": "./dist/css-entry.mjs",
+      "require": "./dist/css-entry.cjs",
+      "style": "./dist/index.css"
+    },
+    "./dist/index.css": "./dist/index.css",
     "./tokens": "./dist/tokens/tokens.js",
     "./tokens/css": "./dist/tokens/variables.css",
     "./tokens/scss": "./dist/tokens/variables.scss",
