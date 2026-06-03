@@ -1,0 +1,55 @@
+@layer aravi1008.components {
+@keyframes av-marquee-horizontal {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-100% - var(--av-gap, 1rem))); }
+}
+
+@keyframes av-marquee-vertical {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(calc(-100% - var(--av-gap, 1rem))); }
+}
+
+.av-marquee {
+  display: flex;
+  overflow: hidden;
+  padding: 0.5rem;
+
+  --av-gap: 1rem;
+
+  gap: var(--av-gap);
+
+  &--horizontal {
+    flex-direction: row;
+    
+    .av-marquee__track {
+      flex-direction: row;
+      animation: av-marquee-horizontal var(--av-duration, 40s) linear infinite;
+    }
+  }
+
+  &--vertical {
+    flex-direction: column;
+
+    .av-marquee__track {
+      flex-direction: column;
+      animation: av-marquee-vertical var(--av-duration, 40s) linear infinite;
+    }
+  }
+
+  &--reverse .av-marquee__track {
+    animation-direction: reverse;
+  }
+
+  &--pause-on-hover:hover .av-marquee__track {
+    animation-play-state: paused;
+  }
+
+  &__track {
+    display: flex;
+    flex-shrink: 0;
+    justify-content: space-around;
+    gap: var(--av-gap);
+  }
+}
+
+}
