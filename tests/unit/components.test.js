@@ -1161,7 +1161,6 @@ describe('initAll', () => {
     const openBtn = document.querySelector('[data-av-modal-open]');
     expect(() => openBtn.click()).not.toThrow();
   });
-
   test('initAll({ observe: true }) re-inits when nodes are added to body', async () => {
     const stop = initAll({ observe: true });
     // Inject a new modal trigger — observer should fire run() without error
