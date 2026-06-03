@@ -1,0 +1,19 @@
+@layer aravi1008.components {
+@keyframes av-neon-flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; text-shadow: 0 0 10px var(--av-neon-color), 0 0 20px var(--av-neon-color), 0 0 40px var(--av-neon-color), 0 0 80px var(--av-neon-color); }
+  20%, 24%, 55% { opacity: 0.5; text-shadow: none; }
+}
+
+.av-neon-text {
+  font-family: inherit;
+  font-weight: 700;
+  color: #fff;
+  display: inline-block;
+  text-shadow: 0 0 10px var(--av-neon-color), 0 0 20px var(--av-neon-color), 0 0 40px var(--av-neon-color), 0 0 80px var(--av-neon-color);
+
+  &--flicker {
+    animation: av-neon-flicker 3s infinite alternate;
+  }
+}
+
+}
