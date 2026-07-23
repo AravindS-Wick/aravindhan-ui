@@ -9,14 +9,6 @@
 import { jest } from '@jest/globals';
 import {
   modal,
-  drawer,
-  dropdown,
-  toast,
-  accordion,
-  tabs,
-  navbar,
-  initAll,
-  createTable,
   _resetScrollLock,
 } from '../../src/components.js';
 
