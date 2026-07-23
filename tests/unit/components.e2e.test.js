@@ -42,32 +42,32 @@ describe('Button Component', () => {
   test('renders with av-btn class', () => {
     const container = el('<button class="av-btn">Click me</button>');
     const btn = container.querySelector('button');
-    expect(btn).toHaveClass('av-btn');
+    expect(btn.classList.contains('av-btn')).toBe(true);
     expect(btn.textContent).toBe('Click me');
   });
 
   test('renders primary variant', () => {
     const container = el('<button class="av-btn av-btn-primary">Primary</button>');
     const btn = container.querySelector('button');
-    expect(btn).toHaveClass('av-btn-primary');
+    expect(btn.classList.contains('av-btn-primary')).toBe(true);
   });
 
   test('renders secondary variant', () => {
     const container = el('<button class="av-btn av-btn-secondary">Secondary</button>');
     const btn = container.querySelector('button');
-    expect(btn).toHaveClass('av-btn-secondary');
+    expect(btn.classList.contains('av-btn-secondary')).toBe(true);
   });
 
   test('renders success variant', () => {
     const container = el('<button class="av-btn av-btn-success">Success</button>');
     const btn = container.querySelector('button');
-    expect(btn).toHaveClass('av-btn-success');
+    expect(btn.classList.contains('av-btn-success')).toBe(true);
   });
 
   test('renders danger variant', () => {
     const container = el('<button class="av-btn av-btn-danger">Delete</button>');
     const btn = container.querySelector('button');
-    expect(btn).toHaveClass('av-btn-danger');
+    expect(btn.classList.contains('av-btn-danger')).toBe(true);
   });
 
   test('renders size variants', () => {
@@ -76,9 +76,9 @@ describe('Button Component', () => {
       <button class="av-btn av-btn-md">Medium</button>
       <button class="av-btn av-btn-lg">Large</button>
     `);
-    expect(container.querySelector('.av-btn-sm')).toHaveClass('av-btn-sm');
-    expect(container.querySelector('.av-btn-md')).toHaveClass('av-btn-md');
-    expect(container.querySelector('.av-btn-lg')).toHaveClass('av-btn-lg');
+    expect(container.querySelector('.av-btn-sm').classList.contains('av-btn-sm')).toBe(true);
+    expect(container.querySelector('.av-btn-md').classList.contains('av-btn-md')).toBe(true);
+    expect(container.querySelector('.av-btn-lg').classList.contains('av-btn-lg')).toBe(true);
   });
 
   test('button click event fires', () => {
@@ -112,31 +112,31 @@ describe('Alert Component', () => {
   test('renders with av-alert class', () => {
     const container = el('<div class="av-alert">Alert message</div>');
     const alert = container.querySelector('.av-alert');
-    expect(alert).toHaveClass('av-alert');
+    expect(alert.classList.contains('av-alert')).toBe(true);
   });
 
   test('renders success variant', () => {
     const container = el('<div class="av-alert av-alert-success">Success!</div>');
     const alert = container.querySelector('.av-alert');
-    expect(alert).toHaveClass('av-alert-success');
+    expect(alert.classList.contains('av-alert-success')).toBe(true);
   });
 
   test('renders warning variant', () => {
     const container = el('<div class="av-alert av-alert-warning">Warning!</div>');
     const alert = container.querySelector('.av-alert');
-    expect(alert).toHaveClass('av-alert-warning');
+    expect(alert.classList.contains('av-alert-warning')).toBe(true);
   });
 
   test('renders error variant', () => {
     const container = el('<div class="av-alert av-alert-error">Error!</div>');
     const alert = container.querySelector('.av-alert');
-    expect(alert).toHaveClass('av-alert-error');
+    expect(alert.classList.contains('av-alert-error')).toBe(true);
   });
 
   test('renders info variant', () => {
     const container = el('<div class="av-alert av-alert-info">Info!</div>');
     const alert = container.querySelector('.av-alert');
-    expect(alert).toHaveClass('av-alert-info');
+    expect(alert.classList.contains('av-alert-info')).toBe(true);
   });
 
   test('alert with close button', () => {
@@ -147,9 +147,9 @@ describe('Alert Component', () => {
       </div>
     `);
     const closeBtn = container.querySelector('.av-alert-close');
-    expect(closeBtn).toHaveClass('av-alert-close');
+    expect(closeBtn.classList.contains('av-alert-close')).toBe(true);
     closeBtn.click();
-    expect(closeBtn).toBeInTheDocument();
+    expect(closeBtn).toBeTruthy();
   });
 });
 
@@ -161,31 +161,31 @@ describe('Badge Component', () => {
   test('renders with av-badge class', () => {
     const container = el('<span class="av-badge">New</span>');
     const badge = container.querySelector('.av-badge');
-    expect(badge).toHaveClass('av-badge');
+    expect(badge.classList.contains('av-badge')).toBe(true);
   });
 
   test('renders primary variant', () => {
     const container = el('<span class="av-badge av-badge-primary">New</span>');
     const badge = container.querySelector('.av-badge');
-    expect(badge).toHaveClass('av-badge-primary');
+    expect(badge.classList.contains('av-badge-primary')).toBe(true);
   });
 
   test('renders secondary variant', () => {
     const container = el('<span class="av-badge av-badge-secondary">Draft</span>');
     const badge = container.querySelector('.av-badge');
-    expect(badge).toHaveClass('av-badge-secondary');
+    expect(badge.classList.contains('av-badge-secondary')).toBe(true);
   });
 
   test('renders success variant', () => {
     const container = el('<span class="av-badge av-badge-success">Active</span>');
     const badge = container.querySelector('.av-badge');
-    expect(badge).toHaveClass('av-badge-success');
+    expect(badge.classList.contains('av-badge-success')).toBe(true);
   });
 
   test('renders danger variant', () => {
     const container = el('<span class="av-badge av-badge-danger">Urgent</span>');
     const badge = container.querySelector('.av-badge');
-    expect(badge).toHaveClass('av-badge-danger');
+    expect(badge.classList.contains('av-badge-danger')).toBe(true);
   });
 
   test('renders size variants', () => {
@@ -193,14 +193,14 @@ describe('Badge Component', () => {
       <span class="av-badge av-badge-sm">Small</span>
       <span class="av-badge av-badge-lg">Large</span>
     `);
-    expect(container.querySelector('.av-badge-sm')).toHaveClass('av-badge-sm');
-    expect(container.querySelector('.av-badge-lg')).toHaveClass('av-badge-lg');
+    expect(container.querySelector('.av-badge-sm').classList.contains('av-badge-sm')).toBe(true);
+    expect(container.querySelector('.av-badge-lg').classList.contains('av-badge-lg')).toBe(true);
   });
 
   test('renders as dot badge', () => {
     const container = el('<span class="av-badge av-badge-dot"></span>');
     const badge = container.querySelector('.av-badge');
-    expect(badge).toHaveClass('av-badge-dot');
+    expect(badge.classList.contains('av-badge-dot')).toBe(true);
   });
 });
 
@@ -212,7 +212,7 @@ describe('Input Component', () => {
   test('renders text input', () => {
     const container = el('<input type="text" class="av-input" placeholder="Enter text">');
     const input = container.querySelector('input');
-    expect(input).toHaveClass('av-input');
+    expect(input.classList.contains('av-input')).toBe(true);
     expect(input.type).toBe('text');
   });
 
@@ -255,7 +255,7 @@ describe('Input Component', () => {
   test('renders textarea', () => {
     const container = el('<textarea class="av-input"></textarea>');
     const textarea = container.querySelector('textarea');
-    expect(textarea).toHaveClass('av-input');
+    expect(textarea.classList.contains('av-input')).toBe(true);
   });
 
   test('renders with label', () => {
@@ -266,7 +266,7 @@ describe('Input Component', () => {
       </label>
     `);
     const label = container.querySelector('label');
-    expect(label).toHaveClass('av-label');
+    expect(label.classList.contains('av-label')).toBe(true);
   });
 
   test('renders with error state', () => {
@@ -277,7 +277,7 @@ describe('Input Component', () => {
       </div>
     `);
     const group = container.querySelector('.av-input-group');
-    expect(group).toHaveClass('av-input-error');
+    expect(group.classList.contains('av-input-error')).toBe(true);
   });
 });
 
@@ -303,9 +303,9 @@ describe('Modal Component', () => {
       </div>
     `);
     const modalEl = container.querySelector('#test-modal');
-    expect(modalEl).toHaveClass('av-modal');
-    expect(container.querySelector('.av-modal-backdrop')).toBeInTheDocument();
-    expect(container.querySelector('.av-modal-header')).toBeInTheDocument();
+    expect(modalEl.classList.contains('av-modal')).toBe(true);
+    expect(container.querySelector('.av-modal-backdrop')).toBeTruthy();
+    expect(container.querySelector('.av-modal-header')).toBeTruthy();
   });
 
   test('modal has open and close methods', () => {
@@ -323,9 +323,9 @@ describe('Modal Component', () => {
       <div class="av-modal av-modal-lg"></div>
       <div class="av-modal av-modal-xl"></div>
     `);
-    expect(container.querySelector('.av-modal-sm')).toHaveClass('av-modal-sm');
-    expect(container.querySelector('.av-modal-lg')).toHaveClass('av-modal-lg');
-    expect(container.querySelector('.av-modal-xl')).toHaveClass('av-modal-xl');
+    expect(container.querySelector('.av-modal-sm').classList.contains('av-modal-sm')).toBe(true);
+    expect(container.querySelector('.av-modal-lg').classList.contains('av-modal-lg')).toBe(true);
+    expect(container.querySelector('.av-modal-xl').classList.contains('av-modal-xl')).toBe(true);
   });
 });
 
@@ -337,7 +337,7 @@ describe('Card Component', () => {
   test('renders with av-card class', () => {
     const container = el('<div class="av-card">Card content</div>');
     const card = container.querySelector('.av-card');
-    expect(card).toHaveClass('av-card');
+    expect(card.classList.contains('av-card')).toBe(true);
   });
 
   test('renders card with header', () => {
@@ -363,7 +363,7 @@ describe('Card Component', () => {
       </div>
     `);
     const footer = container.querySelector('.av-card-footer');
-    expect(footer).toBeInTheDocument();
+    expect(footer).toBeTruthy();
   });
 
   test('renders card with image', () => {
@@ -380,13 +380,13 @@ describe('Card Component', () => {
   test('renders elevated card variant', () => {
     const container = el('<div class="av-card av-card-elevated">Content</div>');
     const card = container.querySelector('.av-card');
-    expect(card).toHaveClass('av-card-elevated');
+    expect(card.classList.contains('av-card-elevated')).toBe(true);
   });
 
   test('renders outlined card variant', () => {
     const container = el('<div class="av-card av-card-outline">Content</div>');
     const card = container.querySelector('.av-card');
-    expect(card).toHaveClass('av-card-outline');
+    expect(card.classList.contains('av-card-outline')).toBe(true);
   });
 
   test('renders interactive card', () => {
@@ -414,11 +414,11 @@ describe('Component Integration', () => {
         <div class="av-card">Card</div>
       </div>
     `);
-    expect(container.querySelector('.av-btn')).toBeInTheDocument();
-    expect(container.querySelector('.av-badge')).toBeInTheDocument();
-    expect(container.querySelector('.av-alert')).toBeInTheDocument();
-    expect(container.querySelector('.av-input')).toBeInTheDocument();
-    expect(container.querySelector('.av-card')).toBeInTheDocument();
+    expect(container.querySelector('.av-btn')).toBeTruthy();
+    expect(container.querySelector('.av-badge')).toBeTruthy();
+    expect(container.querySelector('.av-alert')).toBeTruthy();
+    expect(container.querySelector('.av-input')).toBeTruthy();
+    expect(container.querySelector('.av-card')).toBeTruthy();
   });
 
   test('components maintain css class prefixes', () => {
@@ -433,7 +433,7 @@ describe('Component Integration', () => {
     expect(allAvElements.length).toBeGreaterThan(0);
     allAvElements.forEach((element) => {
       const className = element.className;
-      expect(className).toMatch(/av-/);
+      expect(className.includes('av-')).toBe(true);
     });
   });
 
@@ -443,7 +443,7 @@ describe('Component Integration', () => {
       <div class="av-card av-sm:av-card-sm av-lg:av-card-lg">Card</div>
     `);
     const btn = container.querySelector('.av-btn');
-    expect(btn.className).toContain('av-');
+    expect(btn.className.includes('av-')).toBe(true);
   });
 
   test('dark mode classes apply', () => {
@@ -453,7 +453,7 @@ describe('Component Integration', () => {
       </div>
     `);
     const darkDiv = container.querySelector('[class*="av-dark"]');
-    expect(darkDiv).toBeInTheDocument();
+    expect(darkDiv).toBeTruthy();
   });
 });
 
@@ -475,13 +475,13 @@ describe('Accessibility Features', () => {
   test('inputs have focus visible state', () => {
     const container = el('<input type="text" class="av-input av-focus:av-ring-2">');
     const input = container.querySelector('input');
-    expect(input.className).toContain('av-');
+    expect(input.className.includes('av-')).toBe(true);
   });
 
   test('alert has role attribute', () => {
     const container = el('<div class="av-alert" role="alert">Message</div>');
     const alert = container.querySelector('[role="alert"]');
-    expect(alert).toHaveAttribute('role', 'alert');
+    expect(alert.getAttribute('role')).toBe('alert');
   });
 
   test('modal has proper aria attributes', () => {
@@ -491,7 +491,7 @@ describe('Accessibility Features', () => {
       </div>
     `);
     const modalEl = container.querySelector('[role="dialog"]');
-    expect(modalEl).toHaveAttribute('aria-modal', 'true');
+    expect(modalEl.getAttribute('aria-modal')).toBe('true');
   });
 });
 
@@ -504,7 +504,7 @@ describe('Cross-Browser Compatibility', () => {
     expect(document).toBeDefined();
     expect(window).toBeDefined();
     const container = el('<div class="av-container">Test</div>');
-    expect(container).toBeInTheDocument();
+    expect(container).toBeTruthy();
   });
 
   test('css custom properties are recognized', () => {
